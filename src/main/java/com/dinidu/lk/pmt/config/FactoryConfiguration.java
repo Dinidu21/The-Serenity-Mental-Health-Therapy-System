@@ -19,6 +19,12 @@ public class FactoryConfiguration {
             cfg.addAnnotatedClass(Users.class);
             cfg.addAnnotatedClass(Roles.class);
             cfg.addAnnotatedClass(Permissions.class);
+            cfg.addAnnotatedClass(Patients.class);
+            cfg.addAnnotatedClass(Therapists.class);
+            cfg.addAnnotatedClass(TherapySessions.class);
+            cfg.addAnnotatedClass(TherapyPrograms.class);
+            cfg.addAnnotatedClass(Payments.class);
+
 
             sessionFactory = cfg.buildSessionFactory();
             System.out.println("SessionFactory created successfully");
