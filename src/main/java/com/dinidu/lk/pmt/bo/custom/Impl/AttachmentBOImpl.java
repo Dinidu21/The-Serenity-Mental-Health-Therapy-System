@@ -4,7 +4,6 @@ import com.dinidu.lk.pmt.bo.custom.IssueAttachmentBO;
 import com.dinidu.lk.pmt.dao.DAOFactory;
 import com.dinidu.lk.pmt.dao.custom.IssueAttachmentDAO;
 import com.dinidu.lk.pmt.dto.IssueAttachmentDTO;
-import com.dinidu.lk.pmt.entity.IssueAttachment;
 import com.dinidu.lk.pmt.utils.EntityDTOMapper;
 
 
