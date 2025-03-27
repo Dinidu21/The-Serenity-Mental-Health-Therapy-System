@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="TaskEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root"
+            stylesheets="@../../../styles/dashboard/task/task-edit.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.TaskEditViewController">
+    <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" spacing="30.0"
+          styleClass="content-container">
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+
+            <Label fx:id="backToMain" onMouseClicked="#backToMain" prefHeight="25.0" prefWidth="80.0"
+                   styleClass="back-link" text="Back">
+                <font>
+                    <Font name="Poppins Regular" size="16.0"/>
+                </font>
+            </Label>
+            <Label prefHeight="30.0" prefWidth="390.0" styleClass="section-title" text="Task Details"/>
+            <Button fx:id="deleteTaskBtn" onAction="#deleteTask" styleClass="delete-button" text="Delete Task"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Task Name"/>
+                <TextField fx:id="TaskNameField" onAction="#editName" prefHeight="40.0" prefWidth="300.0"
+                           promptText="Enter task name" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Project Status"/>
+                <ComboBox fx:id="TaskStatusCombo" onAction="#editStatus" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select task status" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="End Date"/>
+                <DatePicker fx:id="endDatePicker" onAction="#setEndDate" prefHeight="40.0" prefWidth="300.0"
+                            promptText="Select Deadline" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Task Priority"/>
+                <ComboBox fx:id="TaskPriorityCombo" onAction="#editPriority" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select task priority" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS"/>
+            <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                <children>
+                    <Label styleClass="form-label" text="Assign to another Member "/>
+                    <ComboBox fx:id="newMembersComboBox" onAction="#assignNewUserForCurrentTask" prefHeight="40.0"
+                              prefWidth="300.0" promptText="Select Member name" styleClass="input-field"/>
+                </children>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Task Description"/>
+                <TextField fx:id="TaskDescriptionField" onAction="#editTaskDesc" prefHeight="80.0" prefWidth="650.0"
+                           promptText="Enter task description" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+            <Button fx:id="saveTaskBtn" onAction="#saveTask" prefHeight="40.0" prefWidth="150.0"
+                    styleClass="save-button" text="Save Task"/>
+            <Button fx:id="cancelTaskBtn" onAction="#cancelTaskBtnOnClick" prefHeight="40.0" prefWidth="150.0"
+                    styleClass="cancel-button" text="Cancel"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

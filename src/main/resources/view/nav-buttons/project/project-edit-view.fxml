@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="projectEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root"
+            stylesheets="@../../../styles/dashboard/project/project-edit.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.ProjectEditViewController">
+    <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" spacing="30.0"
+          styleClass="content-container">
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+
+            <Label fx:id="backToMain" onMouseClicked="#backToMain" prefHeight="25.0" prefWidth="80.0"
+                   styleClass="back-link" text="Back">
+                <font>
+                    <Font name="Poppins Regular" size="16.0"/>
+                </font>
+            </Label>
+            <Label prefHeight="30.0" prefWidth="390.0" styleClass="section-title" text="Project Details"/>
+            <Button fx:id="deleteProjectBtn" onAction="#deleteProject" styleClass="delete-button"
+                    text="Delete Project"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Project Name"/>
+                <TextField fx:id="projectNameField" onAction="#editName" prefHeight="40.0" prefWidth="300.0"
+                           promptText="Enter project name" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Project Status"/>
+                <ComboBox fx:id="projectStatusCombo" onAction="#editStatus" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select project status" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="End Date"/>
+                <DatePicker fx:id="endDatePicker" onAction="#setEndDate" prefHeight="40.0" prefWidth="300.0"
+                            promptText="Select an End Date" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Project Priority"/>
+                <ComboBox fx:id="projectPriorityCombo" onAction="#editPriority" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select project priority" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label style="-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 14;" text="Project Visibility"/>
+                <ComboBox fx:id="projectVisibilityCombo" onAction="#editVisibility" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select project visibility" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Project Description"/>
+                <TextField fx:id="projectDescriptionField" onAction="#editProjectDesc" prefHeight="80.0"
+                           prefWidth="650.0" promptText="Enter project description" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+            <Button fx:id="saveProjectBtn" onAction="#saveProject" prefHeight="40.0" prefWidth="150.0"
+                    styleClass="save-button" text="Save Project"/>
+            <Button fx:id="cancelProjectBtn" onAction="#cancelProjectBtnOnClick" prefHeight="40.0" prefWidth="150.0"
+                    styleClass="cancel-button" text="Cancel"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

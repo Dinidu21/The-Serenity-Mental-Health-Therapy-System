@@ -1,0 +1,141 @@
+.main-container {
+    -fx-background-color: white;
+    -fx-padding: 0;
+}
+
+.content-container {
+    -fx-padding: 40 20 40 20;
+}
+
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d2d2d;
+}
+
+.subtitle-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #666666;
+}
+
+.date-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #888888;
+}
+
+.custom-chart {
+    -fx-background-color: transparent;
+    -fx-padding: 20;
+    -fx-pref-height: 400;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: #e0e0e0;
+    -fx-stroke-dash-array: 3 5;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.chart-bar {
+    -fx-bar-fill: #4a90e2;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 3);
+}
+
+.chart-bar:hover {
+    -fx-bar-fill: #357ab8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.2), 8, 0, 0, 4);
+}
+
+.axis {
+    -fx-tick-label-font-size: 13px;
+    -fx-tick-label-fill: #666666;
+}
+
+.axis-x {
+    -fx-border-color: transparent;
+    -fx-tick-label-font-size: 12px;
+}
+
+.axis-y {
+    -fx-border-color: transparent;
+    -fx-tick-label-font-size: 13px;
+    -fx-tick-label-font-weight: bold;
+}
+
+.chart-vertical-zero-line {
+    -fx-stroke: transparent;
+}
+
+.default-color0.chart-bar {
+    -fx-bar-fill: #4a90e2;
+}
+
+.chart-content {
+    -fx-padding: 0;
+}
+
+.chart {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+}
+
+.node-container {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-padding: 8px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.15), 4, 0, 0, 2);
+    -fx-transition: background-color 0.3s ease;
+}
+
+.node-container:hover {
+    -fx-background-color: #eef2ff;
+    -fx-cursor: hand;
+}
+
+
+.assignee-label {
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.task-count-label {
+    -fx-text-fill: #333;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+@media screen and (max-width: 800px) {
+    .title-label {
+        -fx-font-size: 24px;
+    }
+
+    .subtitle-label, .date-label {
+        -fx-font-size: 14px;
+    }
+
+    .custom-chart {
+        -fx-pref-height: 300;
+    }
+
+    .chart-bar {
+        -fx-background-radius: 3;
+    }
+
+    .axis .axis-y, .axis .axis-x {
+        -fx-tick-label-font-size: 10px;
+    }
+
+    .node-container {
+        -fx-padding: 5px;
+        -fx-background-radius: 5px;
+    }
+}

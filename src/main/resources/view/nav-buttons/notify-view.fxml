@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="notificationPane" prefHeight="200.0" prefWidth="350.0" styleClass="notify-card"
+            stylesheets="@../../styles/dashboard/notify.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.NotifyViewController">
+
+    <effect>
+        <DropShadow color="#00000033" offsetY="3.0" radius="10.0" spread="0.2"/>
+    </effect>
+
+    <Text layoutX="20.0" layoutY="40.0" styleClass="title" text="New Notification"/>
+
+    <Text layoutX="20.0" layoutY="80.0" styleClass="content" text="You have a new task assignment. Please review it."
+          wrappingWidth="310.0"/>
+
+    <Button fx:id="dismissButton" layoutX="150.0" layoutY="150.0" onAction="#handleDismiss"
+            styleClass="button, button-secondary" text="Dismiss"/>
+
+    <Button fx:id="viewButton" layoutX="240.0" layoutY="150.0" styleClass="button, button-primary" text="View"/>
+</AnchorPane>

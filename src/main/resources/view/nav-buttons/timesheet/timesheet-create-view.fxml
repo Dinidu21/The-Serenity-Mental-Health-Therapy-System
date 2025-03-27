@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="timesheetCreatePg" prefHeight="722.0" prefWidth="1522.0"
+            stylesheets="@../../../styles/dashboard/task/task-create.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.timesheet.CreateTimesheetViewController">
+
+    <VBox prefHeight="667.0" prefWidth="842.0" spacing="20" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="385.0"
+          AnchorPane.rightAnchor="295.0" AnchorPane.topAnchor="0.0">
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label styleClass="main-label" text="Create Timesheet"/>
+        </HBox>
+
+        <VBox prefHeight="122.0" spacing="5" styleClass="description-box">
+            <Label prefHeight="53.0" prefWidth="838.0" styleClass="para"
+                   text="A Timesheet represents a detailed record of time spent by a user on various tasks or projects. It helps track and allocate resources effectively, providing insights into productivity, project progress, and resource utilization."
+                   wrapText="true"/>
+        </VBox>
+
+        <VBox prefHeight="460.0" prefWidth="953.0">
+            <Label styleClass="section-label" text="General Info"/>
+            <GridPane hgap="20" prefHeight="373.0" prefWidth="878.0" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="234.8" minWidth="100.0" prefWidth="140.4"/>
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="375.8" minWidth="98.4" prefWidth="268.6"/>
+                    <ColumnConstraints maxWidth="511.2" minWidth="103.2" prefWidth="160.4"/>
+                    <ColumnConstraints maxWidth="511.2" minWidth="200.0" prefWidth="289.2"/>
+                </columnConstraints>
+
+                <Label styleClass="input-label" text="Select Project"/>
+                <Label prefHeight="20.0" prefWidth="109.0" styleClass="input-label" text="Select Task"
+                       GridPane.rowIndex="1"/>
+                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Work Date"
+                       GridPane.rowIndex="2"/>
+                <Label styleClass="input-label" text="Description" GridPane.rowIndex="4"/>
+
+                <ComboBox fx:id="selectProjectNameComboBox" prefHeight="46.0" prefWidth="274.0"
+                          promptText="Select Project" styleClass="combo-box" GridPane.columnIndex="1"/>
+                <ComboBox fx:id="selectTaskNameComboBox" prefHeight="46.0" prefWidth="284.0" promptText="Select Task"
+                          styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <DatePicker fx:id="datePicker" prefHeight="38.0" prefWidth="269.0" GridPane.columnIndex="1"
+                            GridPane.rowIndex="2"/>
+
+                <TextArea fx:id="descriptionIdField" prefHeight="234.0" prefWidth="570.0"
+                          promptText="Enter timesheet description" styleClass="text-area" GridPane.columnIndex="1"
+                          GridPane.columnSpan="2" GridPane.rowIndex="4"/>
+
+                <rowConstraints>
+                    <RowConstraints maxHeight="39.2" minHeight="28.0" prefHeight="39.2"/>
+                    <RowConstraints maxHeight="48.8" minHeight="37.6" prefHeight="37.6"/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
+            </GridPane>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="83.0" prefWidth="949.0" spacing="20" AnchorPane.bottomAnchor="20.0">
+            <Button onAction="#cancelOnClick" prefHeight="42.0" prefWidth="108.0" styleClass="button-secondary"
+                    text="Cancel">
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Button>
+            <Button onAction="#createTimesheetOnClick" styleClass="button-primary" text="Create Timesheet">
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+                <HBox.margin>
+                    <Insets right="30.0"/>
+                </HBox.margin>
+            </Button>
+        </HBox>
+    </VBox>
+</AnchorPane>

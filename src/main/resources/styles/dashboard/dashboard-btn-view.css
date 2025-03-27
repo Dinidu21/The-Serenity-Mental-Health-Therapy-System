@@ -1,0 +1,52 @@
+.card-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 5, 0.5, 0, 5);
+}
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-font-family: 'Poppins';
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+    -fx-text-fill: #2f6cd0;
+    -fx-arrow-color: #2f6cd0;
+}
+
+.combo-box .list-cell {
+    -fx-font-family: 'Poppins';
+    -fx-text-fill: #2f6cd0;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #d5edff;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #2f6cd0;
+}
+
+.combo-box .list-cell:selected {
+    -fx-background-color: white;
+    -fx-text-fill: #2f6cd0;
+}
+
+.combo-box-popup {
+    -fx-background-radius: 15;
+    -fx-background-color: white;
+    -fx-border-color: lightgray;
+}
+
+.combo-box .list-view {
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+}
+
+.mini-label {
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}

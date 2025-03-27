@@ -1,0 +1,54 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.forget-password-container {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 30, 0.5, 0, 5);
+}
+
+.text-field {
+    -fx-background-color: #fff;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 30;
+    -fx-padding: 10;
+    -fx-transition: all 0.3s ease;
+}
+
+.text-field:focus {
+    -fx-border-color: #ff318c;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.label {
+    -fx-text-fill: #333;
+    -fx-font-family: 'Poppins';
+}
+
+.button {
+    -fx-background-color: #ff318c;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-padding: 10 20;
+    -fx-transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    -fx-background-color: #d12b7c;
+}
+
+.progress-indicator {
+    -fx-pref-size: 40px;
+}
+
+#feedbackLabel {
+    -fx-font-size: 14px;
+}

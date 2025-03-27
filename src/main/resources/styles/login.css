@@ -1,0 +1,164 @@
+.root {
+    -fx-font-family: "Segoe UI", "SF Pro Display", system-ui, -apple-system;
+    -fx-font-size: 14px;
+}
+
+.left-panel {
+    -fx-padding: 40px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 8px;
+}
+
+.welcome-text {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.feature-item {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.feature-item:hover {
+    -fx-background-color: #f5f5f5;
+}
+
+.feature-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.feature-subtitle {
+    -fx-text-fill: #666666;
+}
+
+.right-panel {
+    -fx-padding: 40px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 2);
+    -fx-background-radius: 20px;
+    -fx-border-color: lightgray;
+
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.input-field {
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 6px;
+    -fx-padding: 12px;
+    -fx-prompt-text-fill: #999999;
+}
+
+.input-field:focused {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #167dff;
+    -fx-border-width: 2px;
+    -fx-border-radius: 6px;
+}
+
+.primary-button {
+    -fx-background-color: #167dff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 24px;
+    -fx-background-radius: 6px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.secondary-button {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #1a1a1a;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 24px;
+    -fx-background-radius: 6px;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #e5e5e5;
+}
+.cancel-button {
+    -fx-background-color: #f5f5f5;
+    -fx-text-fill: #1a1a1a;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 24px;
+    -fx-background-radius: 6px;
+}
+.cancel-button:hover {
+    -fx-background-color: white;
+}
+.forgot-password {
+    -fx-text-fill: #167dff;
+    -fx-font-weight: normal;
+    -fx-underline: false;
+}
+
+.forgot-password:hover {
+    -fx-underline: true;
+}
+
+.social-button {
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+    -fx-background-radius: 20px;
+    -fx-background-color: #f5f5f5;
+    -fx-background-size: 24px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+
+.social-button:hover {
+    -fx-background-color: #e5e5e5;
+}
+
+.google-button {
+    -fx-background-image: url('src/main/resources/asserts/icons/google-icon.jpg');
+}
+
+.github-button {
+    -fx-background-image: url('src/main/resources/asserts/icons/github-icon.png');
+}
+
+.apple-button {
+    -fx-background-image: url('src/main/resources/asserts/icons/apple-icon.png');
+}
+
+.wechat-button {
+    -fx-background-image: url('src/main/resources/asserts/icons/wechat.jpg');
+}
+
+.gitlab-button {
+    -fx-background-image: url('src/main/resources/asserts/icons/gitlab-icon.png');
+}
+
+.space-button {
+    -fx-background-image: url('src/main/resources/asserts/icons/space-icon.jpeg');
+}
+
+
+@media (max-width: 1200px) {
+    .left-panel, .right-panel {
+        -fx-max-width: 450px;
+    }
+}
+
+@media (max-width: 800px) {
+    .left-panel {
+        -fx-padding: 20px;
+    }
+
+    .right-panel {
+        -fx-padding: 20px;
+    }
+}

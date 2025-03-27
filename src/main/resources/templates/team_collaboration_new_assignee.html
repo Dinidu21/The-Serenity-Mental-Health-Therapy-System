@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Nexus - New Task Assignment</title>
+    <style>
+        body, p, h1, h2, ul, li { margin: 0; padding: 0; }
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header img {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        .notification-badge {
+            background-color: #2563EB;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .content {
+            font-size: 16px;
+            color: #444;
+        }
+        .content h1 {
+            color: #2563EB;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .task-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .task-info {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .task-label {
+            width: 120px;
+            color: #64748b;
+            font-weight: 500;
+        }
+        .task-value {
+            color: #333;
+            flex: 1;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #2563EB;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 10px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <div class="header">
+        <img src="cid:projectNexusLogo" alt="Project Nexus Logo">
+        <div class="notification-badge">New Task Assignment</div>
+    </div>
+    <div class="content">
+        <h1>Welcome to the Project</h1>
+        <p>Hello {{recipientName}},</p>
+        <p>You have been assigned to a new task in {{projectName}}. Here are the details:</p>
+
+        <div class="task-card">
+            <div class="task-info">
+                <span class="task-label">Project:</span>
+                <span class="task-value">{{projectName}}</span>
+            </div>
+            <div class="task-info">
+                <span class="task-label">Task Name:</span>
+                <span class="task-value">{{taskName}}</span>
+            </div>
+            <div class="task-info">
+                <span class="task-label">Assigned By:</span>
+                <span class="task-value">{{assignedBy}}</span>
+            </div>
+            <div class="task-info">
+                <span class="task-label">Due Date:</span>
+                <span class="task-value">{{dueDate}}</span>
+            </div>
+            <div class="task-info">
+                <span class="task-label">Priority:</span>
+                <span class="task-value">{{priority}}</span>
+            </div>
+            <div class="task-info">
+                <span class="task-label">Assignment Date:</span>
+                <span class="task-value">{{timestamp}}</span>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="{{taskUrl}}" class="btn">View Task Details</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p>This is an automated message from Project Nexus</p>
+        <p>© 2024 Project Nexus. All rights reserved.</p>
+    </div>
+</div>
+</body>
+</html>

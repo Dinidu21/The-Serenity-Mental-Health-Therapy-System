@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane fx:id="businessOverview" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.DashboardBTNViewController">
+    <children>
+        <ComboBox fx:id="dashboardComboBox" layoutX="24.0" layoutY="14.0" prefHeight="75.0" prefWidth="406.0" stylesheets="@../../styles/dashboard/dashboards-navbar.css" />
+
+        <HBox layoutX="24.0" layoutY="101.0" prefHeight="276.0" prefWidth="1467.0">
+            <children>
+                <AnchorPane fx:id="card1" prefHeight="294.0" prefWidth="454.0" styleClass="card-container" stylesheets="@../../styles/dashboard/dashboards-navbar.css">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label layoutX="14.0" layoutY="14.0" styleClass="mini-label" stylesheets="@../../styles/dashboard/dashboards-navbar.css" text="Solution Business Growth">
+                            <padding>
+                                <Insets left="5.0" top="1.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </AnchorPane>
+
+                <AnchorPane fx:id="card2" layoutX="10.0" layoutY="10.0" prefHeight="276.0" prefWidth="434.0" styleClass="card-container" stylesheets="@../../styles/dashboard/dashboards-navbar.css">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label layoutX="14.0" layoutY="14.0" styleClass="mini-label" stylesheets="@../../styles/dashboard/dashboards-navbar.css" text="Board Business Overview: Current Sprint">
+                            <padding>
+                                <Insets left="1.0" top="1.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </AnchorPane>
+
+                <AnchorPane fx:id="card3" layoutX="444.0" layoutY="10.0" prefHeight="276.0" prefWidth="512.0" styleClass="card-container" stylesheets="@../../styles/dashboard/dashboards-navbar.css">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label layoutX="14.0" layoutY="13.0" styleClass="mini-label" stylesheets="@../../styles/dashboard/dashboards-navbar.css" text="Top Assignees">
+                            <padding>
+                                <Insets left="1.0" top="2.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+
+        <HBox layoutX="27.0" layoutY="396.0" prefHeight="276.0" prefWidth="1467.0">
+            <children>
+                <AnchorPane fx:id="card4" prefHeight="276.0" prefWidth="852.0" styleClass="card-container" stylesheets="@../../styles/dashboard/dashboards-navbar.css">
+                    <HBox.margin>
+                        <Insets right="30.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label layoutX="8.0" layoutY="5.0" styleClass="mini-label" stylesheets="@../../styles/dashboard/dashboards-navbar.css" text="Event Calendar">
+                            <padding>
+                                <Insets left="1.0" top="4.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </AnchorPane>
+
+                <AnchorPane fx:id="card5" layoutX="10.0" layoutY="10.0" prefHeight="261.0" prefWidth="571.0" styleClass="card-container" stylesheets="@../../styles/dashboard/dashboards-navbar.css">
+                    <HBox.margin>
+                        <Insets right="30.0" />
+                    </HBox.margin>
+                    <children>
+                        <Label layoutX="14.0" layoutY="5.0" styleClass="mini-label" stylesheets="@../../styles/dashboard/dashboards-navbar.css" text="Product Quality Timesheet">
+                            <padding>
+                                <Insets left="1.0" top="3.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </children>
+        </HBox>
+    </children>
+   <stylesheets>
+      <URL value="@../../styles/dashboard/dashboards-navbar.css" />
+      <URL value="@../../styles/dashboard/dashboards-navbar.css" />
+      <URL value="@../../styles/dashboard/dashboard-btn-view.css" />
+   </stylesheets>
+</AnchorPane>

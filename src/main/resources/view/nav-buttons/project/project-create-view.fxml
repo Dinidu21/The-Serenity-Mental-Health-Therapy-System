@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="projectCreatePg" prefHeight="700.0" prefWidth="1522.0"
+            stylesheets="@../../../styles/dashboard/project/project-create.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.CreateProjectViewController">
+
+    <VBox prefHeight="704.0" prefWidth="948.0" spacing="20" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0"
+          AnchorPane.topAnchor="0.0">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label styleClass="main-label" text="Create Project"/>
+        </HBox>
+
+        <VBox spacing="5" styleClass="description-box">
+            <Label styleClass="para"
+                   text="Projects group related content together based on a common objective or goal. A project can be any initiative or activity that requires coordination and collaboration among team members including software development projects, marketing campaigns, and customer support initiatives."
+                   wrapText="true"/>
+        </VBox>
+
+        <VBox prefHeight="460.0" prefWidth="774.0" spacing="15">
+            <Label styleClass="section-label" text="General Info"/>
+
+            <GridPane hgap="20" prefHeight="398.0" prefWidth="908.0" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="164.79999389648438" minWidth="100.0" prefWidth="151.20001831054688"/>
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="252.00002441406252" minWidth="155.20000610351562"
+                                       prefWidth="244.00001220703126"/>
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="200.0" prefWidth="507.1999877929688"/>
+                </columnConstraints>
+
+                <Label styleClass="input-label" text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="projectNameField" prefHeight="38.0" prefWidth="210.0" promptText="Enter project name"
+                           styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Label styleClass="input-label" text="ID" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="projectIdField" promptText="Enter project ID" styleClass="text-input"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label prefHeight="30.0" prefWidth="510.0" styleClass="helper-text"
+                       text="this value is used as a prefix in IDs for issues and articles that belong to this project"
+                       GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Starting number"
+                       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="startingIdField" promptText="Enter starting number" styleClass="text-input"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label prefHeight="32.0" prefWidth="500.0" styleClass="helper-text"
+                       text="this value is used to generate the ID for the first issue in the project"
+                       GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                <Label styleClass="input-label" text="Description" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <TextArea fx:id="descriptionIdField" promptText="Enter project description" styleClass="text-area"
+                          GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
+                <rowConstraints>
+                    <RowConstraints maxHeight="39.19998779296875" minHeight="27.9999755859375"
+                                    prefHeight="39.19998779296875"/>
+                    <RowConstraints maxHeight="48.800024414062506" minHeight="37.600012207031256"
+                                    prefHeight="37.600012207031256"/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
+            </GridPane>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" prefWidth="862.0" spacing="10">
+            <Button onAction="#cancelOnClick" styleClass="button-secondary" text="Cancel"/>
+            <Button onAction="#createProjectClick" styleClass="button-primary" text="Create project"/>
+        </HBox>
+    </VBox>
+</AnchorPane>

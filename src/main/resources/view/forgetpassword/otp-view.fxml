@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="otpPg" layoutX="197.0" layoutY="86.0" prefHeight="400.0" prefWidth="450.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 20;" stylesheets="@../../styles/forgetpassword/otppw.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.forgetpassword.OTPViewController">
+    <Label layoutX="30.0" layoutY="30.0" text="Verify the Authorization Code">
+        <font>
+            <Font name="Poppins Black" size="24.0" />
+        </font>
+    </Label>
+    <HBox layoutX="60.0" layoutY="117.0" spacing="15.0">
+        <TextField fx:id="otpField1" prefWidth="40.0" styleClass="otp-field" />
+        <TextField fx:id="otpField2" prefWidth="40.0" styleClass="otp-field" />
+        <TextField fx:id="otpField3" prefWidth="40.0" styleClass="otp-field" />
+        <TextField fx:id="otpField4" prefWidth="40.0" styleClass="otp-field" />
+        <TextField fx:id="otpField5" prefWidth="40.0" styleClass="otp-field" />
+        <TextField fx:id="otpField6" prefWidth="40.0" styleClass="otp-field" />
+    </HBox>
+    <Label layoutX="30.0" layoutY="200.0" text="Resend Authorization Code in 0 sec" textFill="#007BFF">
+        <font>
+            <Font name="Poppins Regular" size="12.0" />
+        </font>
+    </Label>
+    <Button fx:id="submitBtn" layoutX="150.0" layoutY="250.0" mnemonicParsing="false" onAction="#handleSubmitOTP" prefWidth="150.0" styleClass="submit-button" text="Submit" />
+   <Label layoutX="30.0" layoutY="342.0" onMouseClicked="#backToLogin" prefHeight="18.0" prefWidth="40.0" styleClass="backToLogin" text="Back">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Label>
+</AnchorPane>

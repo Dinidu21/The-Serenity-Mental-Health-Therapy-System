@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane fx:id="myDashboard" prefHeight="722.0" prefWidth="1522.0" styleClass="main-container" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.DashboardExpandViewController">
+    <stylesheets>
+        <URL value="@../../styles/dashboard/dashboards-navbar.css" />
+    </stylesheets>
+    <children>
+        <HBox alignment="CENTER_LEFT" styleClass="top-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ComboBox fx:id="dashboardComboBox" styleClass="dashboard-combo" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button styleClass="add-widget-btn" text="Add widget" />
+            <Button styleClass="share-btn" text="Share" />
+            <Button styleClass="edit-btn" text="Edit" />
+        </HBox>
+
+        <GridPane hgap="20" layoutX="24.8" prefWidth="1477.0" styleClass="dashboard-grid" vgap="20" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="100.0">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33.33" />
+                <ColumnConstraints percentWidth="33.33" />
+                <ColumnConstraints percentWidth="33.33" />
+            </columnConstraints>
+
+            <VBox styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                <HBox prefHeight="21.0" prefWidth="428.0">
+                    <children>
+                        <ImageView fitHeight="23.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <image>
+                                <Image url="@../../asserts/icons/more.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets left="380.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Label styleClass="card-title" text="Vacation Videos" />
+                <StackPane styleClass="video-container">
+                    <MediaView fx:id="mediaView" fitHeight="250" fitWidth="400" preserveRatio="true" />
+                    <ImageView fx:id="playIcon" fitHeight="80.0" fitWidth="68.0" onMouseClicked="#setupVideoControls" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <image>
+                            <Image url="@../../asserts/icons/play.png" />
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="pauseIcon" fitHeight="80.0" fitWidth="68.0" layoutX="190.0" layoutY="101.0" onMouseClicked="#setupVideoControls" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" visible="false">
+                        <image>
+                            <Image url="@../../asserts/icons/pause.png" />
+                        </image>
+                    </ImageView>
+                </StackPane>
+            </VBox>
+
+            <VBox styleClass="dashboard-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <HBox prefHeight="21.0" prefWidth="428.0">
+                    <children>
+                        <ImageView fitHeight="23.0" fitWidth="38.0" onMouseClicked="#timerMoreOnClick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <image>
+                                <Image url="@../../asserts/icons/more.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets left="380.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Label styleClass="card-title" text="Timer" />
+                <VBox alignment="CENTER" spacing="10">
+                    <Label styleClass="timer-title" text="Time to the conference" />
+                    <HBox alignment="CENTER" spacing="20">
+                        <VBox styleClass="timer-box">
+                            <Label fx:id="daysLabel" styleClass="timer-number" text="34" />
+                            <Label styleClass="timer-label" text="Days" />
+                        </VBox>
+                        <VBox styleClass="timer-box">
+                            <Label fx:id="hoursLabel" styleClass="timer-number" text="23" />
+                            <Label styleClass="timer-label" text="Hours" />
+                        </VBox>
+                        <VBox styleClass="timer-box">
+                            <Label fx:id="minutesLabel" styleClass="timer-number" text="46" />
+                            <Label styleClass="timer-label" text="Minutes" />
+                        </VBox>
+                        <VBox styleClass="timer-box">
+                            <Label fx:id="secondsLabel" styleClass="timer-number" text="56" />
+                            <Label styleClass="timer-label" text="Seconds" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <VBox styleClass="dashboard-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                <HBox prefHeight="21.0" prefWidth="428.0">
+                    <children>
+                        <ImageView fitHeight="23.0" fitWidth="38.0" onMouseClicked="#petMoreOnClick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <image>
+                                <Image url="@../../asserts/icons/more.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets left="380.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Label styleClass="card-title" text="Pets" />
+                <ImageView fx:id="petImage" fitHeight="240.0" fitWidth="284.0" preserveRatio="true">
+                    <image>
+                        <Image url="@../../asserts/gifs/pets/kitty3.gif" />
+                    </image>
+                    <VBox.margin>
+                        <Insets left="95.0" top="-20.0" />
+                    </VBox.margin>
+                </ImageView>
+            </VBox>
+
+            <VBox styleClass="dashboard-card" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <HBox prefHeight="21.0" prefWidth="428.0">
+                    <children>
+                        <ImageView fitHeight="23.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <image>
+                                <Image url="@../../asserts/icons/more.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets left="380.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Label styleClass="card-title" text="My notes" />
+                <VBox fx:id="notesContainer" spacing="10">
+                    <CheckBox text="Meeting with Alex" />
+                    <CheckBox text="Workflow suggestions for HD project" />
+                    <CheckBox text="Event Projects demo follow up" />
+                    <Label styleClass="notes-subtitle" text="To be rescheduled for next week" />
+                    <CheckBox text="John's document" />
+                    <CheckBox text="Workflow suggestions for HD project" />
+                    <CheckBox text="Event Projects demo follow up" />
+                </VBox>
+            </VBox>
+            <VBox prefHeight="298.0" prefWidth="586.0" styleClass="dashboard-card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <HBox prefHeight="21.0" prefWidth="428.0">
+                    <children>
+                        <ImageView fitHeight="23.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <image>
+                                <Image url="@../../asserts/icons/more.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets left="380.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
+                <Label styleClass="card-title" text="Task activity feed" />
+                <VBox fx:id="activityContainer" spacing="15">
+                    <HBox spacing="10" styleClass="activity-item">
+                        <Circle fx:id="userAvatar1" radius="20" />
+                        <VBox>
+                            <Label styleClass="user-name" text="Jeremiah Thornton" />
+                            <Label styleClass="activity-text" text="Hans Endorphin, Thanks for submitting this task. We'll review it soon?" />
+                        </VBox>
+                    </HBox>
+                    <HBox spacing="10" styleClass="activity-item">
+                        <Circle fx:id="userAvatar2" radius="20" />
+                        <VBox>
+                            <Label styleClass="user-name" text="Luisa Gonzalez" />
+                            <HBox spacing="10">
+                                <Label text="Added tags:" />
+                                <Label styleClass="tag" text="Design" />
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+            <rowConstraints>
+                <RowConstraints />
+                <RowConstraints />
+            </rowConstraints>
+        </GridPane>
+    </children>
+</AnchorPane>

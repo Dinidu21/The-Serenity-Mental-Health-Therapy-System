@@ -1,0 +1,18 @@
+package com.dinidu.lk.pmt.bo;
+
+import com.dinidu.lk.pmt.dao.QueryDAO;
+import com.dinidu.lk.pmt.dto.UserDTO;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public class QueryBOImpl implements SuperBO {
+
+    QueryDAO queryDAO= (QueryDAO)
+            BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.QUERY);
+
+    public List<UserDTO> getAllActiveMembersNames() throws SQLException, ClassNotFoundException {
+        return queryDAO.getAllActiveMembersNames();
+    }
+}

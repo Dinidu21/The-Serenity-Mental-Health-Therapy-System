@@ -1,0 +1,19 @@
+#loadingCircle {
+    -fx-stroke: #ff318c;
+    -fx-stroke-width: 4;
+    -fx-fill: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(255, 49, 140, 0.5), 10, 0.5, 0, 0);
+}
+
+.label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 9, 0.5, 0, 0);
+}
+
+.progress-bar {
+    -fx-accent: #ff318c;
+    -fx-background-insets: 0;
+    -fx-background-radius: 15px;
+}

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="issuesCreatePg" prefHeight="700.0" prefWidth="1522.0"
+            stylesheets="@../../../styles/dashboard/task/task-create.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.issue.CreateIssueViewController">
+    <VBox prefHeight="704.0" prefWidth="948.0" spacing="20" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="385.0"
+          AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label styleClass="main-label" text="Create Issue"/>
+        </HBox>
+        <VBox prefHeight="122.0" spacing="5" styleClass="description-box">
+            <Label styleClass="para"
+                   text="An issue represents a task or problem within a project that requires attention, often involving specific challenges or obstacles that need to be addressed. It can be prioritized based on its severity or impact, with priority levels indicating the urgency and importance of resolving it. Issues also have a status, which tracks their progress through different stages. Managing issues effectively ensures smooth project execution by addressing potential roadblocks and ensuring timely resolutions to keep the project on track."
+                   wrapText="true"/>
+        </VBox>
+        <VBox prefHeight="460.0" prefWidth="953.0">
+            <Label styleClass="section-label" text="General Info"/>
+            <GridPane hgap="20" prefHeight="380.0" prefWidth="911.0" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="234.800048828125" minWidth="100.0" prefWidth="140.40001220703124"/>
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="375.7999877929687" minWidth="98.40000915527344"
+                                       prefWidth="268.59997558593744"/>
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="103.20001220703125"
+                                       prefWidth="194.39997558593757"/>
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="200.0" prefWidth="285.60002441406255"/>
+                </columnConstraints>
+                <Label styleClass="input-label" text="Select Project"/>
+                <Label prefHeight="20.0" prefWidth="109.0" styleClass="input-label" text="Select Task"
+                       GridPane.rowIndex="1"/>
+                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Assign To"
+                       GridPane.rowIndex="2"/>
+                <Label styleClass="input-label" text="Description" GridPane.rowIndex="3"/>
+                <TextArea fx:id="descriptionIdField" prefHeight="234.0" prefWidth="570.0"
+                          promptText="Enter issue description" styleClass="text-area" GridPane.columnIndex="1"
+                          GridPane.columnSpan="2" GridPane.rowIndex="3"/>
+                <ComboBox fx:id="selectMemberNameComboBox" prefHeight="46.0" prefWidth="274.0"
+                          promptText="Select Member" styleClass="combo-box" GridPane.columnIndex="1"
+                          GridPane.rowIndex="2"/>
+                <ComboBox fx:id="selectProjectNameComboBox" prefHeight="46.0" prefWidth="274.0"
+                          promptText="Select Project" styleClass="combo-box" GridPane.columnIndex="1"/>
+                <Label layoutX="10.0" layoutY="74.0" prefHeight="50.0" prefWidth="110.0" styleClass="input-label"
+                       text="Select Priority" GridPane.columnIndex="2"/>
+                <ComboBox fx:id="selectTaskNameComboBox" layoutX="170.0" layoutY="6.0" prefHeight="46.0"
+                          prefWidth="284.0" promptText="Select Task" styleClass="combo-box" GridPane.columnIndex="1"
+                          GridPane.rowIndex="1"/>
+                <ComboBox fx:id="selectPriorityComboBox" layoutX="170.0" layoutY="116.0" prefHeight="46.0"
+                          prefWidth="206.0" promptText="Select Priority" styleClass="combo-box"
+                          GridPane.columnIndex="3"/>
+                <Label layoutX="10.0" layoutY="120.0" prefHeight="20.0" prefWidth="154.0" styleClass="input-label"
+                       text="Due Date" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                <DatePicker fx:id="dueDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                <rowConstraints>
+                    <RowConstraints maxHeight="39.19998779296875" minHeight="27.9999755859375"
+                                    prefHeight="39.19998779296875"/>
+                    <RowConstraints maxHeight="48.800024414062506" minHeight="37.600012207031256"
+                                    prefHeight="37.600012207031256"/>
+                    <RowConstraints/>
+                    <RowConstraints/>
+                </rowConstraints>
+            </GridPane>
+            <VBox.margin>
+                <Insets bottom="10.0"/>
+            </VBox.margin>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" prefHeight="83.0" prefWidth="949.0" spacing="20" AnchorPane.bottomAnchor="20.0">
+            <Button onAction="#cancelOnClick" prefHeight="42.0" prefWidth="108.0" styleClass="button-secondary"
+                    text="Cancel">
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Button>
+            <Button onAction="#createIssueOnClick" styleClass="button-primary" text="Create issue">
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+                <HBox.margin>
+                    <Insets right="10.0"/>
+                </HBox.margin>
+            </Button>
+            <VBox.margin>
+                <Insets bottom="10.0"/>
+            </VBox.margin>
+        </HBox>
+    </VBox>
+</AnchorPane>

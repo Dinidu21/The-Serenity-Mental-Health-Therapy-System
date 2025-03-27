@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="timeSheetPage" prefHeight="700.0" prefWidth="1522.0" styleClass="timesheet-container" stylesheets="@../../styles/dashboard/timesheet.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.TimesheetViewController">
+
+    <VBox spacing="20" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <HBox spacing="20" styleClass="header-container">
+            <Label styleClass="nav-item, nav-item-selected" text="People" />
+            <Label styleClass="nav-item" text="Projects" />
+        </HBox>
+
+        <HBox spacing="10" styleClass="user-profile">
+            <ImageView fx:id="userAvatar" fitHeight="40" fitWidth="40" styleClass="user-avatar">
+            <image>
+               <Image url="@../../asserts/images/ai-professional-headshot-1.jpeg" />
+            </image></ImageView>
+            <Label prefHeight="39.0" prefWidth="243.0" styleClass="user-name" text="Sachintha Gamage" />
+        </HBox>
+
+        <HBox spacing="10" styleClass="issues-container">
+            <Label styleClass="issues-label" text="Issues:" />
+            <FlowPane fx:id="issuesPane" hgap="10" prefHeight="20.0" prefWidth="906.0" styleClass="issues-list" vgap="5" />
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="date-controls">
+            <Label fx:id="dateRangeLabel" styleClass="date-range" text="May 30 - June 5" />
+            <Label fx:id="spentTimeLabel" styleClass="spent-time" text="Spent time 5d of 5d" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="prevWeekButton" styleClass="nav-button-left" text="←" />
+            <Button fx:id="todayButton" styleClass="today-button" text="Today" />
+            <Button fx:id="nextWeekButton" styleClass="nav-button-right" text="→" />
+            <ToggleButton selected="true" styleClass="view-toggle" text="Week" />
+            <ToggleButton styleClass="view-toggle" text="Month" />
+            <Button fx:id="addTimeButton" styleClass="add-time-button" text="Add spent time" />
+        </HBox>
+    </VBox>
+    <HBox layoutX="26.0" layoutY="307.0" prefHeight="379.0" prefWidth="1464.0">
+        <GridPane fx:id="calendarGrid" prefHeight="379.0" prefWidth="1471.0" styleClass="calendar-grid" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="220.0">
+        </GridPane>
+    </HBox>
+</AnchorPane>

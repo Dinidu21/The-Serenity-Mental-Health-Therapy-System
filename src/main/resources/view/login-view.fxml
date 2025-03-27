@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="loginPg" prefHeight="700" prefWidth="1522" style="-fx-background-color: #f9f9f9;"
+            stylesheets="@../styles/login.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.LoginViewController">
+    <HBox alignment="CENTER" spacing="50" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+          AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <VBox maxWidth="500" prefWidth="581.0" spacing="30" styleClass="left-panel">
+            <ImageView fitHeight="74.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@../asserts/icons/PN.png"/>
+            </ImageView>
+
+            <Label prefHeight="30.0" prefWidth="408.0" styleClass="welcome-text" text="Welcome to Project Nexus"/>
+
+            <VBox spacing="20" styleClass="features-list">
+                <HBox spacing="15" styleClass="feature-item">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../asserts/icons/purchase-icon.jpeg"/>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label styleClass="feature-title" text="Access your purchases"/>
+                        <Label styleClass="feature-subtitle" text="and view your order history"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="15" styleClass="feature-item">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../asserts/icons/license-icon.png"/>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label styleClass="feature-title" text="Identify expired and outdated licenses"/>
+                        <Label styleClass="feature-subtitle" text="order new licenses and upgrades"/>
+                    </VBox>
+                </HBox>
+
+                <HBox spacing="15" styleClass="feature-item">
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@../asserts/icons/settings.png"/>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label styleClass="feature-title" text="Manage your company licenses"/>
+                        <Label styleClass="feature-subtitle" text="and distribute them to end users"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+        <VBox maxWidth="400" prefHeight="731.0" prefWidth="398.0" spacing="20" styleClass="right-panel">
+            <Label styleClass="section-title" text="Sign in with existing account"/>
+
+            <TextField fx:id="usernameField" promptText="Username" styleClass="input-field"/>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
+            <Label fx:id="feedbackLabelForPW" prefHeight="18.0"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button fx:id="signInButton" onAction="#handleLogin" styleClass="primary-button" text="Sign In"/>
+                <Hyperlink onMouseClicked="#handleForgotPassword" styleClass="forgot-password" text="Forgot password?"/>
+            </HBox>
+
+            <VBox spacing="15" styleClass="social-login">
+                <Label styleClass="divider-text" text="Or sign in with:"/>
+                <HBox alignment="CENTER" spacing="10">
+                    <AnchorPane prefHeight="40" prefWidth="40"
+                                style="-fx-background-radius: 20; -fx-background-color: #f5f5f5;">
+                        <ImageView fx:id="googleIcon" fitHeight="24" fitWidth="24" layoutX="8" layoutY="8">
+                            <Image url="@../asserts/icons/google-icon.jpg"/>
+                        </ImageView>
+                    </AnchorPane>
+
+                    <AnchorPane prefHeight="40" prefWidth="40"
+                                style="-fx-background-radius: 20; -fx-background-color: #f5f5f5;">
+                        <ImageView fx:id="githubIcon" fitHeight="24" fitWidth="24" layoutX="8" layoutY="8">
+                            <Image url="@../asserts/icons/github-icon.png"/>
+                        </ImageView>
+                    </AnchorPane>
+
+                    <AnchorPane prefHeight="40" prefWidth="40"
+                                style="-fx-background-radius: 20; -fx-background-color: #f5f5f5;">
+                        <ImageView fx:id="appleIcon" fitHeight="24" fitWidth="24" layoutX="8" layoutY="8">
+                            <Image url="@../asserts/icons/apple-icon.png"/>
+                        </ImageView>
+                    </AnchorPane>
+
+                    <AnchorPane prefHeight="40" prefWidth="40"
+                                style="-fx-background-radius: 20; -fx-background-color: #f5f5f5;">
+                        <ImageView fx:id="wechatIcon" fitHeight="24" fitWidth="24" layoutX="8" layoutY="8">
+                            <Image url="@../asserts/icons/wechat.jpg"/>
+                        </ImageView>
+                    </AnchorPane>
+
+                    <AnchorPane prefHeight="40" prefWidth="40"
+                                style="-fx-background-radius: 20; -fx-background-color: #f5f5f5;">
+                        <ImageView fx:id="gitlabIcon" fitHeight="24" fitWidth="24" layoutX="8" layoutY="8">
+                            <Image url="@../asserts/icons/gitlab-icon.png"/>
+                        </ImageView>
+                    </AnchorPane>
+
+                    <AnchorPane prefHeight="40" prefWidth="40"
+                                style="-fx-background-radius: 20; -fx-background-color: #f5f5f5;">
+                        <ImageView fx:id="spaceIcon" fitHeight="24" fitWidth="24" layoutX="8" layoutY="8">
+                            <Image url="@../asserts/icons/space-icon.jpeg"/>
+                        </ImageView>
+                    </AnchorPane>
+                </HBox>
+            </VBox>
+
+            <VBox prefHeight="345.0" prefWidth="357.0" spacing="15" styleClass="signup-section">
+                <Label styleClass="signup-title" text="Not registered yet?"/>
+                <Label styleClass="section-title" text="Create New Account"/>
+                <TextField fx:id="newEmailField" promptText="Your email address" styleClass="input-field"/>
+                <TextField fx:id="newFullName" layoutX="10.0" layoutY="82.0" promptText="Your Full Name"
+                           styleClass="input-field"/>
+                <Label fx:id="labelOnSignUp" prefHeight="18.0" prefWidth="335.0"/>
+                <Button fx:id="signUpButton" onAction="#onSignUp" styleClass="secondary-button" text="Sign Up"/>
+            </VBox>
+        </VBox>
+
+        <ImageView fitHeight="467.0" fitWidth="293.0" layoutX="0" layoutY="0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../asserts/gifs/login.gif"/>
+        </ImageView>
+    </HBox>
+</AnchorPane>

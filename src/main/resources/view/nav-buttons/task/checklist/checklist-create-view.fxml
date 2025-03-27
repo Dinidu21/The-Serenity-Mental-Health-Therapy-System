@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="taskChecklistCreatePage" prefHeight="700.0" prefWidth="1522.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistCreateViewController">
+    <VBox prefHeight="680.0" prefWidth="948.0" spacing="15" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label styleClass="main-label" text="Create CheckList" />
+        </HBox>
+        <VBox spacing="5" styleClass="description-box">
+            <Label styleClass="para" text="Checklists provide a structured approach to tracking essential steps and actions required for successful project completion. Each checklist item represents a clear task or requirement that needs to be addressed, like verifying data accuracy, confirming approvals, or completing testing. By organizing tasks into checklist items, team members can ensure that nothing is overlooked, stay focused on detailed objectives, and efficiently mark progress, ultimately contributing to a thorough and polished final outcome." wrapText="true" />
+        </VBox>
+        <VBox prefHeight="440.0" prefWidth="774.0" spacing="10">
+            <Label styleClass="section-label" text="General Info" />
+            <GridPane hgap="20" prefHeight="398.0" prefWidth="908.0" vgap="15">
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="234.800048828125" minWidth="100.0" prefWidth="140.40001220703124" />
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="375.7999877929687" minWidth="98.40000915527344" prefWidth="375.7999877929687" />
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="103.20001220703125" prefWidth="103.20001220703125" />
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="200.0" prefWidth="268.8000244140625" />
+                </columnConstraints>
+                <Label styleClass="input-label" text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="checkListNameField" prefHeight="38.0" prefWidth="310.0" promptText="Enter CheckList name" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Assign To" GridPane.rowIndex="2" />
+                <Label styleClass="input-label" text="Description" GridPane.rowIndex="3" />
+                <TextArea fx:id="descriptionIdField" prefHeight="200.0" prefWidth="563.0" promptText="Enter CheckList description" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <ComboBox fx:id="selectMemberNameComboBox" prefHeight="34.0" prefWidth="251.0" promptText="Select Member" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ComboBox fx:id="checklistPriorityComboBox" prefHeight="38.0" prefWidth="250.0" promptText="Select Priority" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label layoutX="10.0" layoutY="74.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Due Date" GridPane.columnIndex="2" />
+                <DatePicker fx:id="deadlineForChecklist" prefHeight="38.0" prefWidth="391.0" GridPane.columnIndex="3" />
+                <Label layoutX="565.0" layoutY="10.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Priority" GridPane.rowIndex="1" />
+            </GridPane>
+        </VBox>
+        <HBox alignment="CENTER_RIGHT" prefWidth="862.0" spacing="10">
+            <Button onAction="#cancelOnClick" styleClass="button-secondary" text="Cancel" />
+            <Button onAction="#createChecklistClick" styleClass="button-primary" text="Create CheckList" />
+        </HBox>
+    </VBox>
+    <stylesheets>
+        <URL value="@../../../../styles/dashboard/task/task-create.css" />
+    </stylesheets>
+</AnchorPane>

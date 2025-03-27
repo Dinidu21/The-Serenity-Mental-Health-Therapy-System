@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="projectPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/project.css"
+            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.ProjectViewController">
+    <children>
+        <Label layoutX="376.0" layoutY="20.0" styleClass="main-label" text="Projects"/>
+
+        <TextField fx:id="searchBox" layoutX="598.0" layoutY="16.0" onAction="#searchProjectOnClick" prefHeight="50.0"
+                   prefWidth="541.0" promptText="      Search projects by name" styleClass="search-field"/>
+
+        <ListView fx:id="suggestionList" layoutX="596.0" layoutY="66.0" prefHeight="110.0" prefWidth="542.0"
+                  styleClass="suggestion-list" visible="false"/>
+
+        <Button fx:id="createProjBtn" layoutX="1325.0" layoutY="21.0" mnemonicParsing="false"
+                onAction="#createProjectOnClick" styleClass="button" text="Create Project"/>
+
+        <ImageView fx:id="searchImg" fitHeight="56.0" fitWidth="42.0" layoutX="604.0" layoutY="20.0" pickOnBounds="true"
+                   preserveRatio="true">
+            <Image url="@../../asserts/icons/search.png"/>
+        </ImageView>
+
+        <Label fx:id="noProjectLabel" layoutX="632.0" layoutY="369.0" prefHeight="32.0" prefWidth="207.0"
+               styleClass="mini-label" text="There are no projects yet."/>
+
+        <Label fx:id="createLabel" layoutX="832.0" layoutY="373.0" onMouseClicked="#startCreateLabelOnClick"
+               styleClass="start-create-label" text="Start creating one." textFill="#3157d4"/>
+
+        <ScrollPane fx:id="scrollPane" layoutX="160.0" layoutY="250.0" prefHeight="442.0" prefWidth="1331.0"
+                    styleClass="scroll-pane">
+            <content>
+                <VBox fx:id="projectCardContainer" spacing="10.0" styleClass="project-card-container"/>
+            </content>
+        </ScrollPane>
+
+        <ComboBox fx:id="sortByStatus" layoutX="1179.0" layoutY="135.0" prefHeight="46.0" prefWidth="160.0"
+                  promptText="Sort By Status" styleClass="combo-box"/>
+
+        <ComboBox fx:id="priorityDropdown" layoutX="1353.0" layoutY="135.0" prefHeight="36.0" prefWidth="134.0"
+                  promptText="Sort By" styleClass="combo-box"/>
+        <Label fx:id="noProjectsFoundLabel" layoutX="625.0" layoutY="170.0" style="-fx-visible: false;"
+               styleClass="main-label" text="No projects found"/>
+        <ComboBox fx:id="sortByVisibility" layoutX="998.0" layoutY="134.0" prefHeight="46.0" prefWidth="172.0"
+                  promptText="Sort By Visibility" styleClass="combo-box"/>
+        <Button fx:id="resetBTN" layoutX="892.0" layoutY="137.0" mnemonicParsing="false" onAction="#resetBtnClick"
+                prefHeight="39.0" prefWidth="95.0" styleClass="button" text=" Reset" visible="false"/>
+    </children>
+</AnchorPane>

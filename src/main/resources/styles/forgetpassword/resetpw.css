@@ -1,0 +1,70 @@
+.container-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 10, 0.1, 0, 2);
+}
+
+.header-label {
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-padding-bottom: 20px;
+}
+
+.form-label {
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+
+.input-field {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 19px;
+    -fx-font-family: 'Poppins';
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-pref-width: 280px;
+}
+
+.input-field:focused {
+    -fx-border-color: #FF8BA0;
+    -fx-font-family: 'Poppins';
+    -fx-background-color: white;
+}
+
+.error-message {
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 12px;
+    -fx-text-fill: red;
+    -fx-padding-top: 5px;
+}
+
+.submit-button {
+    -fx-background-color: #ff318c;
+    -fx-text-fill: white;
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25px;
+    -fx-padding: 10px 30px;
+    -fx-cursor: hand;
+}
+
+.submit-button:hover {
+    -fx-background-color: #e02d7a;
+}
+
+.submit-button:pressed {
+    -fx-background-color: #c02d6b;
+}
+
+.backToLogin {
+    -fx-font-family: 'Poppins';
+    -fx-font-size: 16px;
+    -fx-text-fill: #007BFF;
+    -fx-cursor: hand;
+}

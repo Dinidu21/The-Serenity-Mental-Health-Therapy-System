@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="assigneeView" prefHeight="700.0" prefWidth="1522.0" styleClass="main-container"
+            stylesheets="@../../../styles/dashboard/report/taskAssignment.css"
+            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.report.ReportTaskViewController">
+    <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+          AnchorPane.topAnchor="0.0">
+        <VBox maxWidth="1000" styleClass="content-container">
+            <VBox spacing="10" styleClass="header-container">
+                <Label styleClass="title-label" text="Number of tasks per assignee"/>
+                <HBox spacing="10" styleClass="subtitle-container">
+                    <Label styleClass="subtitle-label" text="Showing totals for: Task count"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="currentDateTime" styleClass="date-label" text="demoTIme"/>
+                    <ImageView fx:id="csvIcon" fitHeight="20" fitWidth="50.0" onMouseClicked="#CSVonClick"
+                               pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <image>
+                            <Image url="@../../../asserts/icons/csv.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="excelIcon" fitHeight="20" fitWidth="62.0" onMouseClicked="#XLSXonClick"
+                               pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <image>
+                            <Image url="@../../../asserts/icons/xlsx.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="refreshIcon" fitHeight="20" fitWidth="70.0" onMouseClicked="#refreshClick"
+                               pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <image>
+                            <Image url="@../../../asserts/icons/refresh.png"/>
+                        </image>
+                    </ImageView>
+                    <ImageView fx:id="printIcon" fitHeight="20" fitWidth="54.0" onMouseClicked="#PRINTonClick"
+                               pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                        <image>
+                            <Image url="@../../../asserts/icons/print.png"/>
+                        </image>
+                    </ImageView>
+                </HBox>
+                <Label styleClass="subtitle-label" text="Task per assignee"/>
+                <padding>
+                    <Insets bottom="20.0"/>
+                </padding>
+            </VBox>
+            <BarChart fx:id="taskChart" animated="true" barGap="10" categoryGap="20" legendVisible="false"
+                      styleClass="custom-chart">
+                <xAxis>
+                    <NumberAxis fx:id="xAxis" minorTickVisible="false" side="BOTTOM" styleClass="axis-x"
+                                tickLabelGap="10"/>
+                </xAxis>
+                <yAxis>
+                    <CategoryAxis fx:id="yAxis" side="LEFT" styleClass="axis-y" tickLabelGap="10"/>
+                </yAxis>
+            </BarChart>
+            <VBox.margin>
+                <Insets bottom="80.0"/>
+            </VBox.margin>
+            <padding>
+                <Insets bottom="20.0"/>
+            </padding>
+        </VBox>
+    </VBox>
+    <VBox.margin>
+        <Insets bottom="80.0"/>
+    </VBox.margin>
+</AnchorPane>

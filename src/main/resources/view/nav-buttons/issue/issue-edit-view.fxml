@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="projectEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root"
+            stylesheets="@../../../styles/dashboard/project/project-edit.css" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.issue.IssueEditViewController">
+    <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" spacing="30.0"
+          styleClass="content-container">
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+
+            <Label fx:id="backToMain" onMouseClicked="#backToMain" prefHeight="25.0" prefWidth="80.0"
+                   styleClass="back-link" text="Back">
+                <font>
+                    <Font name="Poppins Regular" size="16.0"/>
+                </font>
+            </Label>
+            <Label prefHeight="30.0" prefWidth="390.0" styleClass="section-title" text="Issue Details"/>
+            <Button fx:id="deleteIssueBtn" onAction="#deleteIssue" styleClass="delete-button" text="Delete Issue"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Project Name"/>
+                <ComboBox fx:id="selectProjectNameComboBox" onAction="#editProjectName" prefHeight="40.0"
+                          prefWidth="300.0" promptText="Select Project name" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Assign to "/>
+                <ComboBox fx:id="selectMemberNameComboBox" onAction="#editMember" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select Member" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Task Name"/>
+                <ComboBox fx:id="selectTaskNameComboBox" onAction="#editTaskName" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select Task name" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                <children>
+                    <Label styleClass="form-label" text="Due Date"/>
+                    <DatePicker fx:id="dueDate" onAction="#setDueDate" prefHeight="62.0" prefWidth="295.0"
+                                promptText="Select an End Date" styleClass="input-field"/>
+                </children>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Issue Priority"/>
+                <ComboBox fx:id="issuePriorityComboBox" onAction="#editPriority" prefHeight="40.0" prefWidth="300.0"
+                          promptText="Select issue priority" styleClass="input-field"/>
+            </VBox>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS"/>
+            <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                <children>
+                    <Label styleClass="form-label" text="Issue Status"/>
+                    <ComboBox fx:id="issueStatusComboBox" onAction="#editStatus" prefHeight="40.0" prefWidth="300.0"
+                              promptText="Select Issue status" styleClass="input-field"/>
+                </children>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Issue Description"/>
+                <TextField fx:id="issueDescriptionField" onAction="#editIssueDesc" prefHeight="80.0" prefWidth="650.0"
+                           promptText="Enter issue description" styleClass="input-field"/>
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" spacing="20.0">
+            <Button fx:id="saveIssueBtn" onAction="#saveIssue" prefHeight="40.0" prefWidth="150.0"
+                    styleClass="save-button" text="Save Issue"/>
+            <Button fx:id="cancelProjectBtn" onAction="#cancelIssueBtnOnClick" prefHeight="40.0" prefWidth="150.0"
+                    styleClass="cancel-button" text="Cancel"/>
+        </HBox>
+    </VBox>
+</AnchorPane>
