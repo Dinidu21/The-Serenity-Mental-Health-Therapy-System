@@ -1,0 +1,24 @@
+package com.dinidu.lk.pmt.entity;
+
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Date;
+
+@NoArgsConstructor
+@ToString
+@Getter
+@Setter
+@AllArgsConstructor
+public class Timesheet {
+    private Long id;
+    private Long userId;
+    private String projectId;
+    private Long taskId;
+    private BigDecimal hours;
+    private Date workDate;
+    private String description;
+    private Timestamp createdAt;
+    private Timestamp updatedAt;
+}
