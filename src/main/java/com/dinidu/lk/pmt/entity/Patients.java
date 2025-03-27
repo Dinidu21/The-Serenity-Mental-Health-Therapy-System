@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "patients")
 public class Patients {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,4 +21,7 @@ public class Patients {
 
     @Column(name = "medical_history")
     private String medicalHistory;
+
+    @Column(name = "registration_date", nullable = false)
+    private java.time.LocalDateTime registrationDate;
 }
