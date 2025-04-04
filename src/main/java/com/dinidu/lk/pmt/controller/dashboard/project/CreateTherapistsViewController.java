@@ -28,16 +28,16 @@ public class CreateTherapistsViewController {
     private AnchorPane projectCreatePg;
 
     @FXML
-    private TextField projectNameField;
+    private TextField TherapistsNameField;
 
     @FXML
-    private TextField projectIdField;
+    private TextField emailField;
 
     @FXML
-    private TextField startingIdField;
+    private TextField phoneNumberField;
 
     @FXML
-    private TextArea descriptionIdField;
+    private TextArea addressField;
 
     UserBO userBO =
             (UserBO) BOFactory.getInstance().
@@ -51,15 +51,15 @@ public class CreateTherapistsViewController {
 
 
     public void initialize() {
-        startingIdField.setText("1");
-        startingIdField.setDisable(true);
-        projectIdField.setDisable(true);
-        projectNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+        phoneNumberField.setText("1");
+        phoneNumberField.setDisable(true);
+        emailField.setDisable(true);
+        TherapistsNameField.textProperty().addListener((observable, oldValue, newValue) -> {
             generateProjectId(newValue);
             updateFullProjectId();
         });
 
-        startingIdField.textProperty().addListener((observable, oldValue, newValue) -> updateFullProjectId());
+        phoneNumberField.textProperty().addListener((observable, oldValue, newValue) -> updateFullProjectId());
     }
 
     private void generateProjectId(String name) {
@@ -76,20 +76,20 @@ public class CreateTherapistsViewController {
             }
         }
 
-        projectIdField.setText(projectId.length() > 2 ? projectId.substring(0, 2) : projectId.toString());
+        emailField.setText(projectId.length() > 2 ? projectId.substring(0, 2) : projectId.toString());
     }
 
     private void updateFullProjectId() {
-        String projectId = projectIdField.getText();
+        String projectId = emailField.getText();
         System.out.println("Project ID: " + projectId);
-        String startingId = startingIdField.getText();
+        String startingId = phoneNumberField.getText();
         String fullProjectId = projectId + "-00" + startingId;
 
         try {
             if (projectsBO.isTherapistIdTaken(fullProjectId).isPresent()) {
                 System.out.println("Project ID already exists: " + fullProjectId);
                 int newStartingId = Integer.parseInt(startingId) + 1;
-                startingIdField.setText(String.valueOf(newStartingId));
+                phoneNumberField.setText(String.valueOf(newStartingId));
             }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -130,9 +130,9 @@ public class CreateTherapistsViewController {
 
         if (validateInputFields()) {
             ProjectDTO projectDTO = new ProjectDTO();
-            projectDTO.setId(projectIdField.getText() + "-00" + startingIdField.getText());
-            projectDTO.setName(projectNameField.getText());
-            projectDTO.setDescription(descriptionIdField.getText());
+            projectDTO.setId(emailField.getText() + "-00" + phoneNumberField.getText());
+            projectDTO.setName(TherapistsNameField.getText());
+            projectDTO.setDescription(addressField.getText());
             projectDTO.setStartDate(new Date());
             projectDTO.setEndDate(null);
             projectDTO.setStatus(ProjectStatus.PLANNED);
@@ -173,21 +173,21 @@ public class CreateTherapistsViewController {
     }
 
     private boolean areFieldsCleared() {
-        return projectNameField.getText().isEmpty() &&
-                projectIdField.getText().isEmpty() &&
-                descriptionIdField.getText().isEmpty();
+        return TherapistsNameField.getText().isEmpty() &&
+                emailField.getText().isEmpty() &&
+                addressField.getText().isEmpty();
     }
 
     private void clearContent() {
-        projectNameField.clear();
-        projectIdField.clear();
-        descriptionIdField.clear();
-        startingIdField.setText("1");
+        TherapistsNameField.clear();
+        emailField.clear();
+        addressField.clear();
+        phoneNumberField.setText("1");
     }
 
     private boolean validateInputFields() {
-        return !projectNameField.getText().isEmpty() &&
-                !projectIdField.getText().isEmpty() &&
-                !descriptionIdField.getText().isEmpty();
+        return !TherapistsNameField.getText().isEmpty() &&
+                !emailField.getText().isEmpty() &&
+                !addressField.getText().isEmpty();
     }
 }

@@ -33,16 +33,16 @@
                 </columnConstraints>
 
                 <Label styleClass="input-label" text="Full Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="projectNameField" prefHeight="38.0" prefWidth="210.0" promptText="Enter Therapists name" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <TextField fx:id="TherapistsNameField" prefHeight="38.0" prefWidth="210.0" promptText="Enter Therapists name" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                 <Label styleClass="input-label" text="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <TextField fx:id="projectIdField" promptText="Enter Email" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="emailField" promptText="Enter Email" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Label prefHeight="30.0" prefWidth="510.0" styleClass="helper-text" text="this value is used as a prefix in IDs for issues and articles that belong to this project" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
                 <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Phone number" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="startingIdField" promptText="Enter phone number" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="phoneNumberField" promptText="Enter phone number" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <Label prefHeight="32.0" prefWidth="500.0" styleClass="helper-text" text="this value is used to generate the ID for the first issue in the project" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                 <Label styleClass="input-label" text="Address" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <TextArea fx:id="descriptionIdField" promptText="Enter therapists address" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <TextArea fx:id="addressField" promptText="Enter therapists address" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                 <rowConstraints>
                     <RowConstraints maxHeight="39.19998779296875" minHeight="27.9999755859375" prefHeight="39.19998779296875" />
                     <RowConstraints maxHeight="48.800024414062506" minHeight="37.600012207031256" prefHeight="37.600012207031256" />
