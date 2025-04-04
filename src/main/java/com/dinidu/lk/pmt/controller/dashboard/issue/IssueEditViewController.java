@@ -1,11 +1,11 @@
 package com.dinidu.lk.pmt.controller.dashboard.issue;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.IssuesBO;
+import com.dinidu.lk.pmt.bo.custom.PatientBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.IssueDTO;
+import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
@@ -55,20 +55,20 @@ public class IssueEditViewController implements Initializable {
     private ComboBox<IssuePriority> issuePriorityComboBox;
     @FXML
     private TextField issueDescriptionField;
-    private static IssueDTO currentIssue;
+    private static PatientsDTO currentIssue;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    IssuesBO issuesBO =
-            (IssuesBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ISSUES);
+    PatientBO issuesBO =
+            (PatientBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.PatientBO);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
 
-    public static void setIssue(IssueDTO issueDTO) {
-        currentIssue = issueDTO;
+    public static void setIssue(PatientsDTO patientsDTO) {
+        currentIssue = patientsDTO;
     }
 
     @FXML
@@ -85,7 +85,7 @@ public class IssueEditViewController implements Initializable {
         currentIssue.setPriority(issuePriorityComboBox.getValue());
 
         try {
-            currentIssue.setProjectId(issuesBO.getProjectIdByName(selectProjectNameComboBox.getValue()));
+            currentIssue.setProjectId(issuesBO.getTherapistsIdByName(selectProjectNameComboBox.getValue()));
         } catch (SQLException e) {
             System.out.println("Error retrieving project ID: " + e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -95,7 +95,7 @@ public class IssueEditViewController implements Initializable {
         try {
             String selectedTaskName = selectTaskNameComboBox.getValue();
             if (selectedTaskName != null) {
-                Long taskId = issuesBO.getTaskIdByName(selectedTaskName);
+                Long taskId = issuesBO.getProgramIdByName(selectedTaskName);
                 if (taskId != null) {
                     currentIssue.setTaskId(taskId);
                 } else {
@@ -125,7 +125,7 @@ public class IssueEditViewController implements Initializable {
         currentIssue.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         try {
-            boolean issueUpdated = issuesBO.updateIssue(currentIssue);
+            boolean issueUpdated = issuesBO.updatePatient(currentIssue);
 
             if (issueUpdated) {
                 System.out.println("Issue saved successfully.");
@@ -159,10 +159,10 @@ public class IssueEditViewController implements Initializable {
         issuePriorityComboBox.getItems().setAll(IssuePriority.values());
 
         if (currentIssue == null) {
-            List<IssueDTO> issues = null;
+            List<PatientsDTO> issues = null;
 
             try {
-                issues = issuesBO.getAllIssues();
+                issues = issuesBO.getAllPatients();
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -195,7 +195,7 @@ public class IssueEditViewController implements Initializable {
     private void initializeProjectComboBox() {
         ObservableList<String> projectNames = FXCollections.observableArrayList();
         try {
-            List<String> projects = issuesBO.getActiveProjectNames();  // Assuming getActiveProjectNames is refactored to return List<String>
+            List<String> projects = issuesBO.getActiveTherapistsNames();  // Assuming getActiveProjectNames is refactored to return List<String>
             projectNames.addAll(projects);
             selectProjectNameComboBox.setItems(projectNames);
         } catch (SQLException | ClassNotFoundException e) {
@@ -210,7 +210,7 @@ public class IssueEditViewController implements Initializable {
             if (selectedProject != null) {
                 ObservableList<String> taskNames = FXCollections.observableArrayList();
                 try {
-                    List<String> tasks = issuesBO.getTasksByProject(selectedProject);  // Assuming getTasksByProject is refactored to return List<String>
+                    List<String> tasks = issuesBO.getProgramsByTherapist(selectedProject);  // Assuming getTasksByProject is refactored to return List<String>
                     taskNames.addAll(tasks);
                     selectTaskNameComboBox.setItems(taskNames);
                 } catch (SQLException | ClassNotFoundException e) {
@@ -223,7 +223,7 @@ public class IssueEditViewController implements Initializable {
     private void initializeMemberComboBox() {
         ObservableList<String> memberNames = FXCollections.observableArrayList();
         try {
-            List<String> members = issuesBO.getActiveMembers();  // This now returns a List<String>
+            List<String> members = issuesBO.getActivePatients();  // This now returns a List<String>
             memberNames.addAll(members);  // Add all member names to the ObservableList
             selectMemberNameComboBox.setItems(memberNames);
         } catch (SQLException | ClassNotFoundException e) {
@@ -247,13 +247,13 @@ public class IssueEditViewController implements Initializable {
         try {
             String projectId = currentIssue.getProjectId();
             if (projectId != null) {
-                String projectName = issuesBO.getProjectNameById(projectId);
+                String projectName = issuesBO.getTherapistNameById(projectId);
                 selectProjectNameComboBox.setValue(projectName);
             }
 
             long taskId = currentIssue.getTaskId();
             if (taskId != 0) {
-                String taskName = issuesBO.getTaskNameById(taskId);
+                String taskName = issuesBO.getProgramNameById(taskId);
                 selectTaskNameComboBox.setValue(taskName);
             }
 
@@ -339,7 +339,7 @@ public class IssueEditViewController implements Initializable {
             System.out.println("Deleting issue...");
             boolean isDeleted;
             try {
-                isDeleted = issuesBO.deleteIssue(currentIssue.getId());
+                isDeleted = issuesBO.deletePatient(currentIssue.getId());
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

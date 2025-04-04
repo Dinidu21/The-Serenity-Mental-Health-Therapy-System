@@ -1,13 +1,13 @@
 package com.dinidu.lk.pmt.controller.dashboard.task;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
-import com.dinidu.lk.pmt.bo.custom.TasksBO;
+import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
 import com.dinidu.lk.pmt.bo.custom.TeamAssignmentBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.TasksDTO;
+import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.dto.TeamAssignmentDTO;
 import com.dinidu.lk.pmt.dto.UserDTO;
 import com.dinidu.lk.pmt.utils.*;
@@ -61,24 +61,24 @@ public class TaskEditViewController implements Initializable {
     private TextField TaskDescriptionField;
     @FXML
     private DatePicker endDatePicker;
-    private static TasksDTO currentTask;
+    private static ProgramsDTO currentTask;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    ProjectsBO projectBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
-    TasksBO tasksBO = (TasksBO)
+    TherapistsBO projectBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
+    ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TASKS);
-    TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
-            BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
+                    getBO(BOFactory.BOTypes.ProgramsBO);
+//    TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
+//            BOFactory.getInstance().
+//                    getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
 
     QueryDAO queryDAO= new QueryDAOImpl();
 
-    public static void setTask(TasksDTO task) {
+    public static void setTask(ProgramsDTO task) {
         currentTask = task;
     }
 
@@ -173,7 +173,7 @@ public class TaskEditViewController implements Initializable {
 
         if (isTaskModified) {
             try {
-                tasksBO.updateTask(currentTask);
+                programsBO.updateProgram(currentTask);
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -194,7 +194,7 @@ public class TaskEditViewController implements Initializable {
     }
 
     private void handleTeamAssignment(String selectedUser) {
-        try {
+/*        try {
             Long userIdByFullName;
             try {
                 userIdByFullName = userBO.getUserIdByFullName(selectedUser);
@@ -219,7 +219,7 @@ public class TaskEditViewController implements Initializable {
             CustomErrorAlert.showAlert("Error", "Database error while saving assignment.");
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     private TeamAssignmentDTO createTeamAssignment(Long userId) {
@@ -230,27 +230,6 @@ public class TaskEditViewController implements Initializable {
         return newAssignment;
     }
 
-    private void handleSuccessfulAssignment(String selectedUser) {
-        try {
-            CustomAlert.showAlert("SUCCESS", "User successfully assigned.");
-            System.out.println("New user assigned: " + selectedUser);
-
-            List<String> existingTeamEmails = teamAssignmentBO.getTeamMemberEmailsByTask(currentTask.idProperty().get());
-            System.out.println("\n================= TASK EDIT VIEW =================\n");
-            System.out.println("Existing team emails: " + existingTeamEmails);
-            System.out.println("\n================= TASK EDIT VIEW =================\n");
-            String newAssigneeEmail = userBO.getUserEmailByFullName(selectedUser);
-            String projectName = projectBO.getProjectNameById(currentTask.projectIdProperty().get());
-            String username = SessionUser.getLoggedInUsername();
-            String userFullName = userBO.getUserFullNameById(userBO.getUserIdByUsername(username));
-
-            System.out.println("Notification sent successfully. For Project : " + projectName);
-        } catch (SQLException e) {
-            System.out.println("Error while sending notification: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -271,9 +250,9 @@ public class TaskEditViewController implements Initializable {
         TaskPriorityCombo.getItems().setAll(TaskPriority.values());
 
         if (currentTask == null) {
-            List<TasksDTO> tasks;
+            List<ProgramsDTO> tasks;
             try {
-                tasks = tasksBO.getAllTasks();
+                tasks = programsBO.getAllPrograms();
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -391,7 +370,7 @@ public class TaskEditViewController implements Initializable {
         if (confirmed) {
             System.out.println("Deleting task...");
             try {
-                boolean b = tasksBO.deleteTask(currentTask.getName().get());
+                boolean b = programsBO.deleteProgram(currentTask.getName().get());
                 if (!b) {
                     System.out.println("Task deletion failed.");
                     CustomErrorAlert.showAlert("Error", "Task deletion failed.");

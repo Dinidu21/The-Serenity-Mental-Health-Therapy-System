@@ -1,10 +1,10 @@
 package com.dinidu.lk.pmt.controller.dashboard.issue;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.IssuesBO;
+import com.dinidu.lk.pmt.bo.custom.PatientBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
-import com.dinidu.lk.pmt.dto.IssueDTO;
+import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
@@ -47,9 +47,9 @@ public class CreateIssueViewController implements Initializable {
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    IssuesBO issuesBO = (IssuesBO)
+    PatientBO patientBO = (PatientBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ISSUES);
+                    getBO(BOFactory.BOTypes.PatientBO);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -62,7 +62,7 @@ public class CreateIssueViewController implements Initializable {
     private void initializeProjectComboBox() {
         ObservableList<String> projectNames = FXCollections.observableArrayList();
         try {
-            List<String> projects = issuesBO.getActiveProjectNames();  // Now returns a List<String>
+            List<String> projects = patientBO.getActiveTherapistsNames();  // Now returns a List<String>
             projectNames.addAll(projects);
             selectProjectNameComboBox.setItems(projectNames);
         } catch (SQLException | ClassNotFoundException e) {
@@ -76,7 +76,7 @@ public class CreateIssueViewController implements Initializable {
             if (selectedProject != null) {
                 ObservableList<String> taskNames = FXCollections.observableArrayList();
                 try {
-                    List<String> tasks = issuesBO.getTasksByProject(selectedProject);
+                    List<String> tasks = patientBO.getProgramByTherapist(selectedProject);
                     taskNames.addAll(tasks);
                     selectTaskNameComboBox.setItems(taskNames);
                 } catch (SQLException | ClassNotFoundException e) {
@@ -102,7 +102,7 @@ public class CreateIssueViewController implements Initializable {
     private void initializeMemberComboBox() {
         ObservableList<String> memberNames = FXCollections.observableArrayList();
         try {
-            List<String> members = issuesBO.getActiveMembers();  // Now returns a List<String>
+            List<String> members = patientBO.getActivePatients();  // Now returns a List<String>
             memberNames.addAll(members);  // Add all member names to the ObservableList
             selectMemberNameComboBox.setItems(memberNames);
         } catch (SQLException | ClassNotFoundException e) {
@@ -146,9 +146,9 @@ public class CreateIssueViewController implements Initializable {
         }
 
         try {
-            String projectId = issuesBO.getProjectIdByName(projectName);
-            Long taskId = issuesBO.getTaskIdByName(taskName);
-            Long memberId = issuesBO.getUserIdByName(memberName);
+            String projectId = patientBO.getTherapistsIdByName(projectName);
+            Long taskId = patientBO.getProgramIdByName(taskName);
+            Long memberId = patientBO.getUserIdByName(memberName);
             String username = SessionUser.getLoggedInUsername();
 
             if (username == null) {
@@ -163,22 +163,22 @@ public class CreateIssueViewController implements Initializable {
             }
             IssueStatus status = IssueStatus.OPEN;
 
-            IssueDTO issueDTO = new IssueDTO();
-            issueDTO.setProjectId(projectId);
-            issueDTO.setTaskId(taskId != null ? taskId : 0L);
-            issueDTO.setDescription(description);
-            issueDTO.setReportedBy(idByUsername);
-            issueDTO.setAssignedTo(memberId);
-            issueDTO.setStatus(status);
-            issueDTO.setPriority(priority);
-            issueDTO.setDueDate(Date.valueOf(dueDate));
+            PatientsDTO patientsDTO = new PatientsDTO();
+            patientsDTO.setProjectId(projectId);
+            patientsDTO.setTaskId(taskId != null ? taskId : 0L);
+            patientsDTO.setDescription(description);
+            patientsDTO.setReportedBy(idByUsername);
+            patientsDTO.setAssignedTo(memberId);
+            patientsDTO.setStatus(status);
+            patientsDTO.setPriority(priority);
+            patientsDTO.setDueDate(Date.valueOf(dueDate));
 
-            boolean isCreated = issuesBO.createIssue(issueDTO);
+            boolean isCreated = patientBO.createPatient(patientsDTO);
             if (isCreated) {
                 new Thread(() -> {
                     String recipientName ;
                     try {
-                        recipientName = userBO.getUserFullNameById(issueDTO.assignedToProperty().get());
+                        recipientName = userBO.getUserFullNameById(patientsDTO.assignedToProperty().get());
                     } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -200,7 +200,7 @@ public class CreateIssueViewController implements Initializable {
                     String receiverEmail = null;
 
                     try {
-                        receiverEmail = userBO.getUserEmailById(issueDTO.assignedToProperty().get());
+                        receiverEmail = userBO.getUserEmailById(patientsDTO.assignedToProperty().get());
                         System.out.println("=======Create Issue Email====="+receiverEmail);
                     } catch (SQLException e) {
                         System.out.println("Error getting receiver email: " + e.getMessage());
@@ -218,7 +218,7 @@ public class CreateIssueViewController implements Initializable {
                         Platform.runLater(() -> {
                             System.out.println("Issue created successfully.");
                             CustomAlert.showAlert("SUCCESS", "Issue created successfully.");
-                            ProjectViewController.bindNavigation(issuesCreatePg, "/view/nav-buttons/issues-view.fxml");
+                            ProjectViewController.bindNavigation(issuesCreatePg, "/view/nav-buttons/patients-view.fxml");
                         });
                     } catch (Exception e) {
                         e.printStackTrace();

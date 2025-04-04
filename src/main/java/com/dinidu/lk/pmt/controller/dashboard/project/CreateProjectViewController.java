@@ -1,7 +1,7 @@
 package com.dinidu.lk.pmt.controller.dashboard.project;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
@@ -43,9 +43,9 @@ public class CreateProjectViewController {
             (UserBO) BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
 
-    ProjectsBO projectsBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
+    TherapistsBO projectsBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
@@ -86,7 +86,7 @@ public class CreateProjectViewController {
         String fullProjectId = projectId + "-00" + startingId;
 
         try {
-            if (projectsBO.isProjectIdTaken(fullProjectId).isPresent()) {
+            if (projectsBO.isTherapistIdTaken(fullProjectId).isPresent()) {
                 System.out.println("Project ID already exists: " + fullProjectId);
                 int newStartingId = Integer.parseInt(startingId) + 1;
                 startingIdField.setText(String.valueOf(newStartingId));
@@ -148,7 +148,7 @@ public class CreateProjectViewController {
                 if (isSaved) {
                     System.out.println("Project created successfully!");
                     CustomAlert.showAlert("Project created", "Project created successfully!");
-                    ProjectViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/project-view.fxml");
+                    ProjectViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
                     clearContent();
                 } else {
                     System.out.println("Error saving project.");
@@ -166,7 +166,7 @@ public class CreateProjectViewController {
 
     public void cancelOnClick(ActionEvent actionEvent) {
         if (areFieldsCleared()) {
-            ProjectViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/project-view.fxml");
+            ProjectViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
         } else {
             clearContent();
         }

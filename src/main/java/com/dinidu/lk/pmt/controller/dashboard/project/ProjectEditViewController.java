@@ -1,7 +1,7 @@
 package com.dinidu.lk.pmt.controller.dashboard.project;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
@@ -58,9 +58,9 @@ public class ProjectEditViewController implements Initializable {
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
 
-    ProjectsBO projectsBO= (ProjectsBO)
+    TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
+                    getBO(BOFactory.BOTypes.TherapistsBO);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
@@ -78,7 +78,7 @@ public class ProjectEditViewController implements Initializable {
         if (currentProject == null) {
             List<ProjectDTO> projects;
             try {
-                projects = projectsBO.getAllProjects();
+                projects = therapistsBO.getAllTherapists();
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -153,7 +153,7 @@ public class ProjectEditViewController implements Initializable {
         }
 
         try {
-            projectsBO.updateProject(currentProject);
+            therapistsBO.updateTherapist(currentProject);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -228,7 +228,7 @@ public class ProjectEditViewController implements Initializable {
         if (confirmed) {
             System.out.println("Deleting project...");
             try {
-                boolean b = projectsBO.deleteProject(currentProject.getId());
+                boolean b = therapistsBO.deleteTherapists(currentProject.getId());
                 if(!b){
                     System.out.println("Deletion failed.");
                     CustomErrorAlert.showAlert("Failed","Project deletion failed.");

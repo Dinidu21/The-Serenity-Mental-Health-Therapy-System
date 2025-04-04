@@ -1,7 +1,7 @@
 package com.dinidu.lk.pmt.controller.dashboard;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.controller.BaseController;
 import com.dinidu.lk.pmt.controller.dashboard.project.CreateProjectSuccessViewController;
 import com.dinidu.lk.pmt.controller.dashboard.project.ProjectEditViewController;
@@ -69,9 +69,9 @@ public class ProjectViewController extends BaseController implements Initializab
 
     public static String backgroundColor = null;
 
-    static ProjectsBO projectBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
+    static TherapistsBO therapistsBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
@@ -135,7 +135,7 @@ public class ProjectViewController extends BaseController implements Initializab
                 String projectName = searchBox.getText().trim();
                 if (!projectName.isEmpty()) {
                     try {
-                        projectBO.searchProjectsByName(projectName);
+                        therapistsBO.searchTherapistByName(projectName);
                     } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -151,7 +151,7 @@ public class ProjectViewController extends BaseController implements Initializab
                 suggestionList.setVisible(false);
                 List<ProjectDTO> filteredProjects;
                 try {
-                    filteredProjects = projectBO.searchProjectsByName(selectedProjectName);
+                    filteredProjects = therapistsBO.searchTherapistByName(selectedProjectName);
                 } catch (SQLException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -194,7 +194,7 @@ public class ProjectViewController extends BaseController implements Initializab
         sortByStatus.getSelectionModel().clearSelection();
         priorityDropdown.getSelectionModel().clearSelection();
         sortByVisibility.getSelectionModel().clearSelection();
-        ProjectViewController.bindNavigation(projectPage, "/view/nav-buttons/project-view.fxml");
+        ProjectViewController.bindNavigation(projectPage, "/view/nav-buttons/therapist-view.fxml");
         searchBox.clear();
         updateProjectView();
     }
@@ -202,7 +202,7 @@ public class ProjectViewController extends BaseController implements Initializab
     private void updateProjectView() {
         List<ProjectDTO> projects;
         try {
-            projects = projectBO.getAllProjects();
+            projects = therapistsBO.getAllTherapists();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -309,7 +309,7 @@ public class ProjectViewController extends BaseController implements Initializab
     private void showSearchSuggestions(String query) {
         List<ProjectDTO> filteredProjects;
         try {
-            filteredProjects = projectBO.searchProjectsByName(query);
+            filteredProjects = therapistsBO.searchTherapistByName(query);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -1,15 +1,15 @@
 package com.dinidu.lk.pmt.controller.dashboard.project;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
-import com.dinidu.lk.pmt.bo.custom.TasksBO;
+import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
 import com.dinidu.lk.pmt.bo.custom.TeamAssignmentBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.DashboardViewController;
 import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.TasksDTO;
+import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.dto.TeamAssignmentDTO;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.listeners.ProjectDeletionHandler;
@@ -21,6 +21,7 @@ import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
 import com.dinidu.lk.pmt.utils.taskTypes.TaskStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -90,19 +91,21 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    ProjectsBO projectsBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
+    TherapistsBO projectsBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
-    TasksBO tasksBO = (TasksBO)
+    ProgramsBO tasksBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TASKS);
+                    getBO(BOFactory.BOTypes.ProgramsBO);
 
+/*
     TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
+*/
 
     @FXML
     private Label projectId;
@@ -201,14 +204,14 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
 
     public List<TeamAssignmentDTO> getTeamAssignmentsForProject(String projectId) {
         List<TeamAssignmentDTO> assignments = new ArrayList<>();
-        List<TasksDTO> tasks ;
+        List<ProgramsDTO> tasks ;
         try {
-            tasks = tasksBO.getTaskByProjectId(projectId);
+            tasks = tasksBO.getProgramByTherapistId(projectId);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        for (TasksDTO task : tasks) {
+/*        for (ProgramsDTO task : tasks) {
             List<TeamAssignmentDTO> taskAssignments;
             try {
                 taskAssignments = teamAssignmentBO.getAssignmentsByTaskId(task.getId().get());
@@ -216,7 +219,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
                 throw new RuntimeException(e);
             }
             assignments.addAll(taskAssignments);
-        }
+        }*/
 
         return assignments;
     }
@@ -306,7 +309,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
     private void setupRefreshButtonForTasks() {
         refreshButtonForTasks.setOnMouseClicked(e -> {
             System.out.println("Refresh button clicked for tasks");
-            Timeline timeline = new Timeline(new javafx.animation.KeyFrame(Duration.millis(700), z -> DashboardViewController.fadeIn(unresolvedTaskOnCurrentProject)));
+            Timeline timeline = new Timeline(new KeyFrame(Duration.millis(700), z -> DashboardViewController.fadeIn(unresolvedTaskOnCurrentProject)));
             timeline.play();
             loadUnresolvedTasks();
         });
@@ -315,9 +318,9 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
     private void loadUnresolvedTasks() {
         tasksContainer.getChildren().clear();
         System.out.println("Loading unresolved tasks for project: " + projectIdForTasks);
-        List<TasksDTO> unresolvedTasks = null;
-        try {
-            unresolvedTasks = tasksBO.getTasksCurrentProjectByStatus(projectIdForTasks, TaskStatus.NOT_STARTED);
+        List<ProgramsDTO> unresolvedTasks = null;
+/*        try {
+            unresolvedTasks = tasksBO.getProgramsCurrentTherapistByStatus(projectIdForTasks, TaskStatus.NOT_STARTED);
             System.out.println("Unresolved tasks: " + unresolvedTasks);
             if (unresolvedTasks.isEmpty()) {
                 System.out.println("No unresolved tasks found for project: " + projectIdForTasks);
@@ -331,13 +334,13 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
         }
 
         assert unresolvedTasks != null;
-        for (TasksDTO task : unresolvedTasks) {
+        for (ProgramsDTO task : unresolvedTasks) {
             HBox taskItem = createTaskItem(task);
             tasksContainer.getChildren().add(taskItem);
-        }
+        }*/
     }
 
-    private HBox createTaskItem(TasksDTO task) {
+    private HBox createTaskItem(ProgramsDTO task) {
         HBox taskItem = new HBox();
         taskItem.getStyleClass().add("task-item");
         taskItem.setAlignment(Pos.CENTER_LEFT);
@@ -357,7 +360,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
 
         String PROJECT_ID = null;
         try {
-            PROJECT_ID = projectsBO.getProjectIdByTaskId(task.idProperty().get());
+            PROJECT_ID = projectsBO.getTherapistIdByTaskId(task.idProperty().get());
         } catch (SQLException e) {
             System.out.println("Error fetching project ID: " + e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -377,7 +380,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
         return taskItem;
     }
 
-    private void handleTaskClick(TasksDTO task) {
+    private void handleTaskClick(ProgramsDTO task) {
         System.out.println("Task clicked: " + task.getName());
     }
 
@@ -426,7 +429,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
     @Override
     public void onProjectDeleted() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/project-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/therapist-view.fxml"));
             AnchorPane newContent = loader.load();
 
             AnchorPane parentPane = (AnchorPane) projectSID.getParent();

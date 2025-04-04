@@ -11,20 +11,16 @@ public class BOFactory {
 
 
     public enum BOTypes{
-        USER,TASKS,PROJECTS,ISSUES,QUERY,TIMESHEET,REPORTS,CHECKLISTS,ATTACHMENTS,TEAM_ASSIGNMENTS
+        USER,TIMESHEET,ProgramsBO,TherapistsBO,PatientBO
     }
 
     public SuperBO getBO(BOFactory.BOTypes daoTypes){
         return switch (daoTypes) {
             case USER -> new UserBOImpl();
-            case PROJECTS -> new ProjectsBOImpl();
-/*            case TASKS -> new TasksBOImpl();*/
             case TIMESHEET -> new TimesheetBOImpl();
-            case REPORTS -> new ReportBOImpl();
-            case CHECKLISTS -> new ChecklistBOImpl();
-            case ISSUES -> new IssueBOImpl();
-            case ATTACHMENTS -> new AttachmentBOImpl();
-            case TEAM_ASSIGNMENTS -> new TeamAssignmentBOImpl();
+            case ProgramsBO -> new ProgramsBOImpl();
+            case TherapistsBO -> new TherapistsBOImpl();
+            case PatientBO -> new PatientBOImpl();
             default -> null;
         };
     }

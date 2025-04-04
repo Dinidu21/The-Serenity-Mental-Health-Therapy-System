@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TasksDTO {
+public class ProgramsDTO {
     private LongProperty id = new SimpleLongProperty();
     private StringProperty projectId = new SimpleStringProperty();
     private StringProperty name = new SimpleStringProperty();

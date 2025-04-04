@@ -1,12 +1,11 @@
 package com.dinidu.lk.pmt.controller.dashboard;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
 import com.dinidu.lk.pmt.bo.custom.ReportsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
 import com.dinidu.lk.pmt.dto.ReportDTO;
-import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.reportTypes.ReportType;
@@ -25,15 +24,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Duration;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 
-import java.io.File;
 import java.net.URL;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
@@ -60,12 +53,12 @@ public class ReportViewController implements Initializable {
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    ProjectsBO projectBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
-    ReportsBO reportBO =
-            (ReportsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.REPORTS);
+    TherapistsBO projectBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
+//    ReportsBO reportBO =
+//            (ReportsBO) BOFactory.getInstance().
+//                    getBO(BOFactory.BOTypes.REPORTS);
 
     @FXML
     public void toggleCardContainer() {
@@ -140,7 +133,7 @@ public class ReportViewController implements Initializable {
 
         String id;
         try {
-            id = projectBO.getProjectIdByName(selectedProjectName);
+            id = projectBO.getTherapistIdByName(selectedProjectName);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -172,7 +165,7 @@ public class ReportViewController implements Initializable {
         reportDTO.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         reportDTO.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-        boolean isSuccess;
+/*        boolean isSuccess;
         try {
             isSuccess = reportBO.insertReport(reportDTO);
         } catch (ClassNotFoundException | SQLException e) {
@@ -184,7 +177,7 @@ public class ReportViewController implements Initializable {
         } else {
             System.out.println("Failed to create report.");
             CustomErrorAlert.showAlert("ERROR", "Failed to create report.");
-        }
+        }*/
     }
 
     private void clearContent() {
@@ -198,7 +191,7 @@ public class ReportViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<ProjectDTO> allProjects;
         try {
-            allProjects = projectBO.getAllProjects();
+            allProjects = projectBO.getAllTherapists();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }

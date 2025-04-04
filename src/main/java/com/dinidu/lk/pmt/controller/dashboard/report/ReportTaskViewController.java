@@ -55,11 +55,11 @@ public class ReportTaskViewController implements Initializable {
     @FXML
     private CategoryAxis yAxis;
 
-    ReportsBO  reportsBO = (ReportsBO)
-            BOFactory.getInstance().getBO(BOFactory.BOTypes.REPORTS);
+//    ReportsBO reportsBO = (ReportsBO)
+//            BOFactory.getInstance().getBO(BOFactory.BOTypes.REPORTS);
 
 
-    @Override
+/*    @Override
     public void initialize(URL url, ResourceBundle rb) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
         String formattedDateTime = LocalDateTime.now().format(formatter);
@@ -186,7 +186,7 @@ public class ReportTaskViewController implements Initializable {
                 throw new RuntimeException(e);
             }
         }
-    }
+    }*/
 
     public void PRINTonClick(MouseEvent mouseEvent) {
 
@@ -207,5 +207,10 @@ public class ReportTaskViewController implements Initializable {
 
     public void refreshClick(MouseEvent mouseEvent) {
         ProjectViewController.bindNavigation(assigneeView, "/view/nav-buttons/report/report-task-view.fxml");
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

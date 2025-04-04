@@ -1,14 +1,14 @@
 package com.dinidu.lk.pmt.controller.dashboard;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.IssuesBO;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
+import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.controller.BaseController;
 import com.dinidu.lk.pmt.controller.dashboard.issue.IssueEditViewController;
 import com.dinidu.lk.pmt.controller.dashboard.issue.CreateIssueSuccessViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.IssueDTO;
+import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.issuesTypes.IssuePriority;
 import com.dinidu.lk.pmt.utils.issuesTypes.IssueStatus;
@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class IssuesViewController extends BaseController implements Initializable {
     @FXML
@@ -66,25 +65,25 @@ public class IssuesViewController extends BaseController implements Initializabl
     @FXML
     private ListView<String> suggestionList;
 
-    ProjectsBO projectBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
-    IssuesBO issuesBO =
-            (IssuesBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ISSUES);
+    TherapistsBO therapistsBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
+    ProgramsBO programsBO =
+            (ProgramsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.ProgramsBO);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
 
-    private void openIssue(IssueDTO issueDTO) {
+    private void openIssue(PatientsDTO patientsDTO) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/issue/issue-create-success-view.fxml"));
             Parent root = loader.load();
 
             CreateIssueSuccessViewController controller = loader.getController();
-            controller.setIssuesData(issueDTO);
+            controller.setIssuesData(patientsDTO);
 
-            IssueEditViewController.setIssue(issueDTO);
+            IssueEditViewController.setIssue(patientsDTO);
 
             FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/nav-buttons/issue/issue-edit-view.fxml"));
             Parent editRoot = editLoader.load();
@@ -106,7 +105,7 @@ public class IssuesViewController extends BaseController implements Initializabl
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            Map<String, String> projectNamesMap = projectBO.getAllProjectNames();
+            Map<String, String> projectNamesMap = therapistsBO.getAllTherapistNames();
             sortByProjectName.setItems(FXCollections.observableArrayList(projectNamesMap.values()));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -148,7 +147,7 @@ public class IssuesViewController extends BaseController implements Initializabl
                 String projectName = searchBox.getText().trim();
                 if (!projectName.isEmpty()) {
                     try {
-                        issuesBO.searchIssuesByName(projectName);
+                        programsBO.searchProgramByTherapistName(projectName);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     } catch (ClassNotFoundException e) {
@@ -164,9 +163,9 @@ public class IssuesViewController extends BaseController implements Initializabl
             if (selectedIssueName != null) {
                 searchBox.setText(selectedIssueName);
                 suggestionList.setVisible(false);
-                List<IssueDTO> filteredIssues = null;
+                List<PatientsDTO> filteredIssues = null;
                 try {
-                    filteredIssues = issuesBO.searchIssuesByName(selectedIssueName);
+                    filteredIssues = programsBO.searchProgramsByPatientName(selectedIssueName);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -209,9 +208,9 @@ public class IssuesViewController extends BaseController implements Initializabl
     }
 
     private void updateIssuesView() {
-        List<IssueDTO> issues = null;
+        List<PatientsDTO> issues = null;
         try {
-            issues = issuesBO.getAllIssues();
+            issues = programsBO.getAllPatients();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -237,15 +236,16 @@ public class IssuesViewController extends BaseController implements Initializabl
 
         Map<String, String> projectNamesMap = null;
         try {
-            projectNamesMap = projectBO.getAllProjectNames();
+            projectNamesMap = therapistsBO.getAllTherapistNames();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
+/*
         Map<String, String> finalProjectNamesMap = projectNamesMap;
-        List<IssueDTO> filteredIssues = issues.stream()
+        List<PatientsDTO> filteredIssues = issues.stream()
                 .filter(issue -> {
                     if ((selectedStatus != null && issue.getStatus() != selectedStatus) ||
                             (selectedPriority != null && issue.getPriority() != selectedPriority)) return false;
@@ -261,15 +261,16 @@ public class IssuesViewController extends BaseController implements Initializabl
         } else {
             noIssuesFoundLabel.setVisible(false);
         }
+*/
 
-        displayIssues(filteredIssues);
+//        displayIssues(filteredIssues);
     }
 
     public void resetBtnClick() {
         sortByStatus.getSelectionModel().clearSelection();
         priorityDropdown.getSelectionModel().clearSelection();
         sortByProjectName.getSelectionModel().clearSelection();
-        ProjectViewController.bindNavigation(issuesPage, "/view/nav-buttons/issues-view.fxml");
+        ProjectViewController.bindNavigation(issuesPage, "/view/nav-buttons/patients-view.fxml");
         searchBox.clear();
         updateIssuesView();
     }
@@ -278,11 +279,11 @@ public class IssuesViewController extends BaseController implements Initializabl
         searchImg.setDisable(true);
     }
 
-    private void displayIssues(List<IssueDTO> issueDTOS) {
+    private void displayIssues(List<PatientsDTO> patientsDTOS) {
         projectIssuesContainer.getChildren().clear();
         projectIssuesContainer.getStyleClass().add("project-card-container");
 
-        for (IssueDTO issue : issueDTOS) {
+        for (PatientsDTO issue : patientsDTOS) {
             AnchorPane projectCard = new AnchorPane();
             projectCard.getStyleClass().add("project-card");
             projectCard.setPrefHeight(120.0);
@@ -312,7 +313,7 @@ public class IssuesViewController extends BaseController implements Initializabl
             
             String projName = null;
             try {
-                 projName = issuesBO.getProjectNameById(issue.getProjectId());
+                 projName = programsBO.getTherapistNameById(issue.getProjectId());
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } catch (ClassNotFoundException e) {
@@ -321,7 +322,7 @@ public class IssuesViewController extends BaseController implements Initializabl
 
             String taskName = "";
             try {
-                taskName = issuesBO.getTaskNameById(issue.getTaskId());
+                taskName = programsBO.getProgramNameById(issue.getTaskId());
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } catch (ClassNotFoundException e) {
@@ -359,9 +360,9 @@ public class IssuesViewController extends BaseController implements Initializabl
     }
 
     private void showSearchSuggestions(String query) {
-        List<IssueDTO> filteredIssues = null;
+        List<PatientsDTO> filteredIssues = null;
         try {
-            filteredIssues = issuesBO.searchIssuesByName(query);
+            filteredIssues = programsBO.searchPatientsByName(query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
@@ -370,7 +371,7 @@ public class IssuesViewController extends BaseController implements Initializabl
         assert filteredIssues != null;
         if (!filteredIssues.isEmpty()) {
             suggestionList.getItems().clear();
-            for (IssueDTO issue : filteredIssues) {
+            for (PatientsDTO issue : filteredIssues) {
                 suggestionList.getItems().add(issue.getDescription());
             }
             suggestionList.setVisible(true);

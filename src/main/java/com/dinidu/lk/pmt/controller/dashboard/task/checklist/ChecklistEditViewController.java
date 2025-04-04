@@ -1,7 +1,6 @@
 package com.dinidu.lk.pmt.controller.dashboard.task.checklist;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ChecklistBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
@@ -59,7 +58,7 @@ public class ChecklistEditViewController implements Initializable {
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    ChecklistBO checklistBO = (ChecklistBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHECKLISTS);
+//    ChecklistBO checklistBO = (ChecklistBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHECKLISTS);
 
 
     QueryDAO queryDAO= new QueryDAOImpl();
@@ -83,7 +82,7 @@ public class ChecklistEditViewController implements Initializable {
         checklistPriorityComboBox.getItems().setAll(ChecklistPriority.values());
 
         if (currentChecklist == null) {
-            List<ChecklistDTO> checklistDTOList = null;
+/*            List<ChecklistDTO> checklistDTOList = null;
             try {
                 checklistDTOList = checklistBO.getAllChecklists();
             } catch (SQLException e) {
@@ -99,7 +98,7 @@ public class ChecklistEditViewController implements Initializable {
             } else {
                 System.out.println("No Checklists available.");
                 return;
-            }
+            }*/
         }
         loadChecklistData();
 
@@ -177,7 +176,7 @@ public class ChecklistEditViewController implements Initializable {
             return;
         }
 
-        boolean isChecklistUpdated;
+/*        boolean isChecklistUpdated;
         try {
             isChecklistUpdated = checklistBO.updateChecklist(currentChecklist);
         } catch (SQLException | ClassNotFoundException e) {
@@ -186,7 +185,7 @@ public class ChecklistEditViewController implements Initializable {
         if (!isChecklistUpdated) {
             CustomErrorAlert.showAlert("Error", "Failed to update checklist.");
             return;
-        }
+        }*/
 
         System.out.println("Checklist updated successfully.");
         CustomAlert.showAlert("Success", "Changes saved successfully.");
@@ -238,7 +237,7 @@ public class ChecklistEditViewController implements Initializable {
     }
 
     private void handleMemberAssignment(String selectedUser) {
-        Long selectedUserId;
+/*        Long selectedUserId;
         try {
             selectedUserId = userBO.getUserIdByFullName(selectedUser);
         } catch (SQLException | ClassNotFoundException e) {
@@ -263,7 +262,7 @@ public class ChecklistEditViewController implements Initializable {
             handleSuccessfulAssignment(selectedUser);
         } else {
             CustomErrorAlert.showAlert("Error", "Failed to assign the user to the checklist.");
-        }
+        }*/
     }
 
     private boolean validateFilledFields() {
@@ -352,7 +351,7 @@ public class ChecklistEditViewController implements Initializable {
                 "Are you sure you want to delete this checklist? "
         );
 
-        if (confirmed) {
+/*        if (confirmed) {
             System.out.println("Deleting checklist...");
             try {
                 if(checklistBO.deleteChecklist(currentChecklist.idProperty())) {
@@ -376,7 +375,7 @@ public class ChecklistEditViewController implements Initializable {
             }
         } else {
             System.out.println("Checklist deletion canceled by user.");
-        }
+        }*/
     }
 
     @FXML

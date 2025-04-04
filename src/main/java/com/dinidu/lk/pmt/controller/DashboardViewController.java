@@ -42,6 +42,10 @@ public class DashboardViewController extends BaseController {
     public Label totalProjectsLabel;
     public VBox ongoingProjectsContainer;
     public ImageView refreshButtonForProjects;
+    public Button therapistsButton;
+    public Button programButton;
+    public Button patientButton;
+    public Button dashboardButton;
     @FXML
     private ImageView profileImageIcon;
     public AnchorPane dashboardPage;
@@ -107,7 +111,7 @@ public class DashboardViewController extends BaseController {
     }
 
     private void loadOngoingProjects() {
-
+        System.out.println("Loading ongoing projects...");
     }
 
     private void setupScrollPane() {
@@ -121,13 +125,11 @@ public class DashboardViewController extends BaseController {
     }
 
     private void loadUnresolvedTasks() {
-
+        System.out.println("Loading unresolved tasks...");
     }
 
     private void setupRefreshButtonForPieChart() {
-        refreshButton.setOnMouseClicked(event -> {
-            System.out.println("Refresh button clicked for pie chart");
-        });
+        refreshButton.setOnMouseClicked(event -> System.out.println("Refresh button clicked for pie chart"));
     }
 
     private void setupRefreshButtonForProjects(){
@@ -257,10 +259,10 @@ public class DashboardViewController extends BaseController {
         navigateTo("/view/nav-buttons/report-view.fxml");
     }
 
-    public void clickOnTask(ActionEvent actionEvent) {
+    public void clickOnProgram(ActionEvent actionEvent) {
         handleButtonClick((Button) actionEvent.getSource());
         hideCardContainers();
-        navigateTo("/view/nav-buttons/task-view.fxml");
+        navigateTo("/view/nav-buttons/program-view.fxml");
     }
 
     public void clickOnDashboard(ActionEvent actionEvent) {
@@ -269,10 +271,10 @@ public class DashboardViewController extends BaseController {
         navigateTo("/view/nav-buttons/dashboard-expand-view.fxml");
     }
 
-    public void clickOnProjects(ActionEvent actionEvent) {
+    public void clickOnTherapists(ActionEvent actionEvent) {
         handleButtonClick((Button) actionEvent.getSource());
         hideCardContainers();
-        navigateTo("/view/nav-buttons/project-view.fxml");
+        navigateTo("/view/nav-buttons/therapist-view.fxml");
     }
 
     public void clickOnTimesheets(ActionEvent actionEvent) {
@@ -308,9 +310,9 @@ public class DashboardViewController extends BaseController {
         }
     }
 
-    public void clickOnIssues() {
+    public void clickOnPatients() {
         handleButtonClick((Button) dashboardPage.lookup("#issuesButton"));
         hideCardContainers();
-        navigateTo("/view/nav-buttons/issues-view.fxml");
+        navigateTo("/view/nav-buttons/patients-view.fxml");
     }
 }

@@ -80,7 +80,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     public ImageView teamMember2Img;
     public ImageView teamMember3Img;
     public ImageView teamMember4Img;
-    private IssueDTO issueDTO;
+    private PatientsDTO patientsDTO;
     private static Long currentIssueId;
     private static Long currentUserId;
     private static final long MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB in bytes
@@ -91,19 +91,21 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
-    ProjectsBO projectsBO= (ProjectsBO)
+    TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
+                    getBO(BOFactory.BOTypes.TherapistsBO);
 
-    TasksBO tasksBO = (TasksBO)
+    ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TASKS);
+                    getBO(BOFactory.BOTypes.ProgramsBO);
+/*
     TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
-    IssueAttachmentBO issueAttachmentBO = (IssueAttachmentBO)
-            BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ATTACHMENTS);
+*/
+//    IssueAttachmentBO issueAttachmentBO = (IssueAttachmentBO)
+//            BOFactory.getInstance().
+//                    getBO(BOFactory.BOTypes.ATTACHMENTS);
 
     private boolean isFileSizeValid(File file) {
         if (file == null || !file.exists()) {
@@ -202,7 +204,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
                     Thread.sleep(20);
                 }
 
-                issueAttachmentBO.saveAttachment(attachment);
+//                issueAttachmentBO.saveAttachment(attachment);
 
                 System.out.println("=================CREATE ISSUE SUCCESS VIEW CONTROLLER=================");
                 System.out.println("Here is the Uploaded id "+ attachment.getId());
@@ -260,7 +262,8 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         Task<List<IssueAttachmentDTO>> loadTask = new Task<>() {
             @Override
             protected List<IssueAttachmentDTO> call() throws Exception {
-                return issueAttachmentBO.getAttachments(currentIssueId);
+//                return issueAttachmentBO.getAttachments(currentIssueId);
+                return null;
             }
         };
 
@@ -313,6 +316,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         }
 
 
+/*
         if (attachment.getId() == null) {
             System.out.println("❌ ERROR: Attachment ID is null! Cannot delete.");
             System.out.println("Fetching Last Added Attachment ID...");
@@ -322,6 +326,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
                 throw new RuntimeException(e);
             }
         }
+*/
 
         boolean confirmed = CustomDeleteAlert.showAlert(
                 (Stage) attachmentContainer.getScene().getWindow(),
@@ -343,7 +348,8 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
                     System.out.println("Fetching Last Added Attachment ID...: "+ finalCurrentIssueAttachmentId);
 
                 }
-                return issueAttachmentBO.deleteAttachment(attachment.getId() == null ? finalCurrentIssueAttachmentId : attachment.getId());
+                return null;
+//                return issueAttachmentBO.deleteAttachment(attachment.getId() == null ? finalCurrentIssueAttachmentId : attachment.getId());
             }
         };
 
@@ -378,33 +384,33 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         return String.format("%.2f %s", size, units[unitIndex]);
     }
 
-    public void setIssuesData(IssueDTO issueDTO) {
-        this.issueDTO = issueDTO;
-        currentIssueId = issueDTO.getIssueId();
+    public void setIssuesData(PatientsDTO patientsDTO) {
+        this.patientsDTO = patientsDTO;
+        currentIssueId = patientsDTO.getIssueId();
         System.out.println("currentIssueId: " + currentIssueId);
 
-        issueDes.textProperty().bind(issueDTO.descriptionProperty());
-        issueStatus.textProperty().bind(issueDTO.statusProperty().asString());
-        issuePriority.textProperty().bind(issueDTO.priorityProperty().asString());
+        issueDes.textProperty().bind(patientsDTO.descriptionProperty());
+        issueStatus.textProperty().bind(patientsDTO.statusProperty().asString());
+        issuePriority.textProperty().bind(patientsDTO.priorityProperty().asString());
         issueDueDate.textProperty().bind(Bindings.createStringBinding(() -> {
-            Date dueDate = issueDTO.getDueDate();
+            Date dueDate = patientsDTO.getDueDate();
             if (dueDate == null) {
                 return "Due date is not set";
             }
             return dueDate.toString();
-        }, issueDTO.dueDateProperty()));
+        }, patientsDTO.dueDateProperty()));
 
-        setProjectDetails(issueDTO.getProjectId());
-        setAssigneeName(issueDTO.getAssignedTo());
-        setTaskName(issueDTO.getTaskId());
+        setProjectDetails(patientsDTO.getProjectId());
+        setAssigneeName(patientsDTO.getAssignedTo());
+        setTaskName(patientsDTO.getTaskId());
         setTeamDetails();
 
         setupStyleListeners();
-        updateStyles(issueDTO);
+        updateStyles(patientsDTO);
     }
 
     private void setTeamDetails() {
-        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(issueDTO.getProjectId());
+        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(patientsDTO.getProjectId());
         Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
         ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
         int teamMemberCount = 0;
@@ -452,7 +458,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     private void setProjectDetails(String projectId) {
         List<ProjectDTO> projectDtoList;
         try {
-            projectDtoList = projectsBO.getProjectById(projectId);
+            projectDtoList = therapistsBO.getTherapistById(projectId);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -500,7 +506,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         if (taskId != null) {
             String taskNameValue = null;
             try {
-                taskNameValue = tasksBO.getTaskNameById(taskId);
+                taskNameValue = programsBO.getProgramNameById(taskId);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } catch (ClassNotFoundException e) {
@@ -514,14 +520,15 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
     public List<TeamAssignmentDTO> getTeamAssignmentsForProject(String projectId) {
         List<TeamAssignmentDTO> assignments = new ArrayList<>();
-        List<TasksDTO> tasks ;
+        List<ProgramsDTO> tasks ;
         try {
-            tasks = tasksBO.getTaskByProjectId(projectId);
+            tasks = programsBO.getProgramByTherapistId(projectId);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        for (TasksDTO task : tasks) {
+/*
+        for (ProgramsDTO task : tasks) {
             List<TeamAssignmentDTO> taskAssignments ;
             try {
                 taskAssignments = teamAssignmentBO.getAssignmentsByTaskId(task.getId().get());
@@ -530,15 +537,16 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
             }
             assignments.addAll(taskAssignments);
         }
+*/
 
         return assignments;
     }
 
     private void setupStyleListeners() {
-        if (issueDTO != null) {
-            issueDTO.statusProperty().addListener((observable, oldValue, newValue) ->
+        if (patientsDTO != null) {
+            patientsDTO.statusProperty().addListener((observable, oldValue, newValue) ->
                     updateStatusStyle(newValue));
-            issueDTO.priorityProperty().addListener((observable, oldValue, newValue) ->
+            patientsDTO.priorityProperty().addListener((observable, oldValue, newValue) ->
                     updatePriorityStyle(newValue));
         }
     }
@@ -564,13 +572,13 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         }
     }
 
-    private void updateStyles(IssueDTO issueDTO) {
-        updateStatusStyle(issueDTO.getStatus());
-        updatePriorityStyle(issueDTO.getPriority());
+    private void updateStyles(PatientsDTO patientsDTO) {
+        updateStatusStyle(patientsDTO.getStatus());
+        updatePriorityStyle(patientsDTO.getPriority());
     }
 
     @Override
-    public void onIssueUpdated(IssueDTO updatedIssue) {
+    public void onIssueUpdated(PatientsDTO updatedIssue) {
         updateStyles(updatedIssue);
     }
 
@@ -652,7 +660,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     @Override
     public void onIssueDeleted() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/issues-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/patients-view.fxml"));
             AnchorPane newContent = loader.load();
 
             AnchorPane parentPane = (AnchorPane) issueSuccessPage.getParent();

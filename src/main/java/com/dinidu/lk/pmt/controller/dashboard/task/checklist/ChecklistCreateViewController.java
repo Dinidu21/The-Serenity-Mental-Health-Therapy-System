@@ -1,7 +1,6 @@
 package com.dinidu.lk.pmt.controller.dashboard.task.checklist;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ChecklistBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
@@ -43,8 +42,10 @@ public class ChecklistCreateViewController {
                     getBO(BOFactory.BOTypes.USER);
 
     QueryDAO queryDAO= new QueryDAOImpl();
+/*
     ChecklistBO checklistBO = (ChecklistBO)
             BOFactory.getInstance().getBO(BOFactory.BOTypes.CHECKLISTS);
+*/
 
 
 
@@ -85,7 +86,7 @@ public class ChecklistCreateViewController {
     public void createChecklistClick(ActionEvent actionEvent) {
         userAuthorityCheck();
 
-        if (validateInputFields()) {
+/*        if (validateInputFields()) {
             ChecklistDTO checklistDTO = new ChecklistDTO();
             checklistDTO.nameProperty().set(checkListNameField.getText());
             checklistDTO.descriptionProperty().set(descriptionIdField.getText());
@@ -124,7 +125,7 @@ public class ChecklistCreateViewController {
         } else {
             System.out.println("Please fill all the required fields.");
             CustomErrorAlert.showAlert("Invalid Input", "Please fill all the required fields.");
-        }
+        }*/
     }
 
     private void userAuthorityCheck() {
@@ -161,7 +162,7 @@ public class ChecklistCreateViewController {
 
     public void cancelOnClick(ActionEvent actionEvent) {
         if (areFieldsCleared()) {
-            ProjectViewController.bindNavigation(taskChecklistCreatePage, "/view/nav-buttons/task-view.fxml");
+            ProjectViewController.bindNavigation(taskChecklistCreatePage, "/view/nav-buttons/program-view.fxml");
         } else {
             clearContent();
         }

@@ -1,15 +1,15 @@
 package com.dinidu.lk.pmt.controller.dashboard;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
-import com.dinidu.lk.pmt.bo.custom.TasksBO;
+import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.controller.BaseController;
 import com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskSuccessViewController;
 import com.dinidu.lk.pmt.controller.dashboard.task.TaskEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
-import com.dinidu.lk.pmt.dto.TasksDTO;
+import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.taskTypes.TaskPriority;
@@ -55,13 +55,13 @@ public class TaskViewController extends BaseController implements Initializable 
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
-    ProjectsBO projectsBO= (ProjectsBO)
+    TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
+                    getBO(BOFactory.BOTypes.TherapistsBO);
 
-    TasksBO tasksBO = (TasksBO)
+    ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TASKS);
+                    getBO(BOFactory.BOTypes.ProgramsBO);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -97,7 +97,7 @@ public class TaskViewController extends BaseController implements Initializable 
                 String taskName = searchBox.getText().trim();
                 if (!taskName.isEmpty()) {
                     try {
-                        tasksBO.searchTasksByName(taskName);
+                        programsBO.searchProgramsByName(taskName);
                     } catch (SQLException | ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
@@ -111,9 +111,9 @@ public class TaskViewController extends BaseController implements Initializable 
             if (selectedTaskName != null) {
                 searchBox.setText(selectedTaskName);
                 suggestionList.setVisible(false);
-                List<TasksDTO> filteredTasks;
+                List<ProgramsDTO> filteredTasks;
                 try {
-                    filteredTasks = tasksBO.searchTasksByName(selectedTaskName);
+                    filteredTasks = programsBO.searchProgramsByName(selectedTaskName);
                 } catch (SQLException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -150,15 +150,15 @@ public class TaskViewController extends BaseController implements Initializable 
     }
 
     private void updateTaskView() {
-        List<TasksDTO> tasks;
+        List<ProgramsDTO> tasks;
         try {
-            tasks = tasksBO.getAllTasks();
+            tasks = programsBO.getAllPrograms();
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         System.out.println("dto size:" + tasks.size());
 
-        for (TasksDTO task : tasks) {
+        for (ProgramsDTO task : tasks) {
             System.out.println(task);
         }
 
@@ -180,7 +180,7 @@ public class TaskViewController extends BaseController implements Initializable 
         taskCardContainer.setVisible(true);
 
 
-        List<TasksDTO> filteredTasks = tasks.stream().filter(task -> (selectedStatus == null || task.getStatus() == selectedStatus) && (selectedPriority == null || task.getPriority() == selectedPriority)).collect(Collectors.toList());
+        List<ProgramsDTO> filteredTasks = tasks.stream().filter(task -> (selectedStatus == null || task.getStatus() == selectedStatus) && (selectedPriority == null || task.getPriority() == selectedPriority)).collect(Collectors.toList());
 
         if (filteredTasks.isEmpty()) {
             noTasksFoundLabel.setVisible(true);
@@ -193,15 +193,15 @@ public class TaskViewController extends BaseController implements Initializable 
     }
 
     private void showSearchSuggestions(String query) {
-        List<TasksDTO> filteredTasks;
+        List<ProgramsDTO> filteredTasks;
         try {
-            filteredTasks = tasksBO.searchTasksByName(query);
+            filteredTasks = programsBO.searchProgramsByName(query);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         if (!filteredTasks.isEmpty()) {
             suggestionList.getItems().clear();
-            for (TasksDTO task : filteredTasks) {
+            for (ProgramsDTO task : filteredTasks) {
                 suggestionList.getItems().add(task.getName().get());
             }
             suggestionList.setVisible(true);
@@ -210,11 +210,11 @@ public class TaskViewController extends BaseController implements Initializable 
         }
     }
 
-    private void displayTasks(List<TasksDTO> tasks) {
+    private void displayTasks(List<ProgramsDTO> tasks) {
         taskCardContainer.getChildren().clear();
         taskCardContainer.getStyleClass().add("task-card-container");
 
-        for (TasksDTO task : tasks) {
+        for (ProgramsDTO task : tasks) {
             AnchorPane taskCard = new AnchorPane();
             taskCard.getStyleClass().add("task-card");
             taskCard.setPrefHeight(120.0);
@@ -258,7 +258,7 @@ public class TaskViewController extends BaseController implements Initializable 
 
             List<ProjectDTO> projectById;
             try {
-                projectById = projectsBO.getProjectById(task.getProjectId().get());
+                projectById = therapistsBO.getTherapistById(task.getProjectId().get());
                 if(projectById.isEmpty()){
                     System.out.println("Project not found");
                     CustomErrorAlert.showAlert("Not Found", "Project not found");
@@ -293,7 +293,7 @@ public class TaskViewController extends BaseController implements Initializable 
         }
     }
 
-    private void openTask(TasksDTO task) {
+    private void openTask(ProgramsDTO task) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/task/task-create-success-view.fxml"));
             Parent root = loader.load();
@@ -330,7 +330,7 @@ public class TaskViewController extends BaseController implements Initializable 
     public void resetBtnClick(ActionEvent actionEvent) {
         sortByStatus.getSelectionModel().clearSelection();
         priorityDropdown.getSelectionModel().clearSelection();
-        ProjectViewController.bindNavigation(tasksPage, "/view/nav-buttons/task-view.fxml");
+        ProjectViewController.bindNavigation(tasksPage, "/view/nav-buttons/program-view.fxml");
         searchBox.clear();
         updateTaskView();
     }

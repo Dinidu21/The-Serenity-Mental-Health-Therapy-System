@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @AllArgsConstructor
-public class IssueDTO {
+public class PatientsDTO {
     private Long id;
     private StringProperty projectId = new SimpleStringProperty();
     private LongProperty taskId = new SimpleLongProperty();

@@ -1,14 +1,14 @@
 package com.dinidu.lk.pmt.controller.dashboard.task;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ProjectsBO;
-import com.dinidu.lk.pmt.bo.custom.TasksBO;
+import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
+import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
-import com.dinidu.lk.pmt.dto.TasksDTO;
+import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.dto.UserDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
@@ -48,12 +48,12 @@ public class CreateTaskViewController {
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
-    ProjectsBO projectBO =
-            (ProjectsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROJECTS);
-    TasksBO tasksBO =
-            (TasksBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TASKS);
+    TherapistsBO therapistsBO =
+            (TherapistsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.TherapistsBO);
+    ProgramsBO programsBO =
+            (ProgramsBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.ProgramsBO);
     QueryDAO queryDAO= new QueryDAOImpl();
 
 
@@ -66,7 +66,7 @@ public class CreateTaskViewController {
         }
         List<ProjectDTO> allProjects;
         try {
-            allProjects = projectBO.getAllProjects();
+            allProjects = therapistsBO.getAllTherapists();
             System.out.println("All projects: " + allProjects);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -131,9 +131,9 @@ public class CreateTaskViewController {
         }
 
         if (validateInputFields()) {
-            TasksDTO tasksDTO = new TasksDTO();
-            tasksDTO.nameProperty().set(taskNameField.getText());
-            tasksDTO.descriptionProperty().set(descriptionIdField.getText());
+            ProgramsDTO programsDTO = new ProgramsDTO();
+            programsDTO.nameProperty().set(taskNameField.getText());
+            programsDTO.descriptionProperty().set(descriptionIdField.getText());
 
             String selectedProjectName = selectProjectNameComboBox.getValue();
             System.out.println("===========Create Task View===========");
@@ -146,7 +146,7 @@ public class CreateTaskViewController {
 
             String projectId;
             try {
-                projectId = projectBO.getProjectIdByName(selectedProjectName);
+                projectId = therapistsBO.getTherapistIdByName(selectedProjectName);
                 if(projectId == null){
                     CustomErrorAlert.showAlert("Project not found", "Project Id is null");
                     return;
@@ -156,7 +156,7 @@ public class CreateTaskViewController {
                 throw new RuntimeException(e);
             }
 
-            tasksDTO.projectIdProperty().set(projectId);
+            programsDTO.projectIdProperty().set(projectId);
 
             String selectedMemberName = selectMemberNameComboBox.getValue();
             Long assignedTo;
@@ -166,25 +166,25 @@ public class CreateTaskViewController {
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            tasksDTO.assignedToProperty().set(assignedTo);
+            programsDTO.assignedToProperty().set(assignedTo);
 
-            tasksDTO.priorityProperty().set(TaskPriority.MEDIUM);
-            tasksDTO.statusProperty().set(TaskStatus.NOT_STARTED);
+            programsDTO.priorityProperty().set(TaskPriority.MEDIUM);
+            programsDTO.statusProperty().set(TaskStatus.NOT_STARTED);
 
-            tasksDTO.createdAtProperty().set(Date.from(Instant.now()));
+            programsDTO.createdAtProperty().set(Date.from(Instant.now()));
 
             if (taskDeadline.getValue() != null) {
-                tasksDTO.dueDateProperty().set(Date.from(taskDeadline.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+                programsDTO.dueDateProperty().set(Date.from(taskDeadline.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             }
 
             boolean isSaved;
             try {
-                isSaved = tasksBO.insertTask(tasksDTO);
+                isSaved = programsBO.insertProgram(programsDTO);
                 if (isSaved) {
-                    Date deadline = tasksDTO.dueDateProperty().get();
+                    Date deadline = programsDTO.dueDateProperty().get();
 
-                    String Email = userBO.getUserEmailById(tasksDTO.assignedToProperty().get());
-                    String Name = userBO.getUserFullNameById(tasksDTO.assignedToProperty().get());
+                    String Email = userBO.getUserEmailById(programsDTO.assignedToProperty().get());
+                    String Name = userBO.getUserFullNameById(programsDTO.assignedToProperty().get());
                     System.out.println("===========Create Task Notification===========");
                     System.out.println("Name: " + Name);
 
@@ -193,7 +193,7 @@ public class CreateTaskViewController {
                     new Thread(() -> {
                         String receiverName;
                         try {
-                            receiverName = userBO.getUserFullNameById(tasksDTO.assignedToProperty().get());
+                            receiverName = userBO.getUserFullNameById(programsDTO.assignedToProperty().get());
                         } catch (SQLException | ClassNotFoundException e) {
                             throw new RuntimeException(e);
                         }
@@ -215,7 +215,7 @@ public class CreateTaskViewController {
                         String receiverEmail = null;
 
                         try {
-                            receiverEmail = userBO.getUserEmailById(tasksDTO.assignedToProperty().get());
+                            receiverEmail = userBO.getUserEmailById(programsDTO.assignedToProperty().get());
                         } catch (SQLException e) {
                             System.out.println("Error getting receiver email: " + e.getMessage());
                         } catch (ClassNotFoundException e) {
@@ -232,7 +232,7 @@ public class CreateTaskViewController {
                             Platform.runLater(() -> {
                                 System.out.println("Task created successfully!");
                                 CustomAlert.showAlert("Task created", "Task created successfully!");
-                                ProjectViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/task-view.fxml");
+                                ProjectViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/program-view.fxml");
                                 clearContent();
                             });
                         } catch (Exception e) {
@@ -255,7 +255,7 @@ public class CreateTaskViewController {
 
     public void cancelOnClick() {
         if (areFieldsCleared()) {
-            ProjectViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/task-view.fxml");
+            ProjectViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/program-view.fxml");
         } else {
             clearContent();
         }

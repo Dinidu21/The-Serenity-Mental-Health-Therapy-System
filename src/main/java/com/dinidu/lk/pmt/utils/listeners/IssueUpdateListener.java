@@ -1,9 +1,9 @@
 package com.dinidu.lk.pmt.utils.listeners;
 
-import com.dinidu.lk.pmt.dto.IssueDTO;
+import com.dinidu.lk.pmt.dto.PatientsDTO;
 
 @FunctionalInterface
 public interface IssueUpdateListener {
-    void onIssueUpdated(IssueDTO updatedProject);
+    void onIssueUpdated(PatientsDTO updatedProject);
 
 }
