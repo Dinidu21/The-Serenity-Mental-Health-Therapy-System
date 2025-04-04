@@ -131,12 +131,12 @@ public class DashboardExpandViewController implements Initializable {
             System.out.println("Selected dashboard: " + selectedDashboard);
 
             if ("Business Overview".equals(selectedDashboard)) {
-                ProjectViewController.bindNavigation(
+                TherapistsViewController.bindNavigation(
                         myDashboard,
                         "/view/nav-buttons/dashboard-btn-view.fxml"
                 );
             } else if ("My Dashboard".equals(selectedDashboard)) {
-                ProjectViewController.bindNavigation(
+                TherapistsViewController.bindNavigation(
                         myDashboard,
                         "/view/nav-buttons/dashboard-expand-view.fxml"
                 );

@@ -4,7 +4,7 @@ import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
@@ -232,7 +232,7 @@ public class CreateTaskViewController {
                             Platform.runLater(() -> {
                                 System.out.println("Task created successfully!");
                                 CustomAlert.showAlert("Task created", "Task created successfully!");
-                                ProjectViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/program-view.fxml");
+                                TherapistsViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/program-view.fxml");
                                 clearContent();
                             });
                         } catch (Exception e) {
@@ -255,7 +255,7 @@ public class CreateTaskViewController {
 
     public void cancelOnClick() {
         if (areFieldsCleared()) {
-            ProjectViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/program-view.fxml");
+            TherapistsViewController.bindNavigation(taskCreatePage, "/view/nav-buttons/program-view.fxml");
         } else {
             clearContent();
         }

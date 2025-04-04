@@ -36,12 +36,12 @@ public class DashboardBTNViewController {
         dashboardComboBox.setOnAction(event -> {
             String selectedDashboard = dashboardComboBox.getValue();
             if ("Business Overview".equals(selectedDashboard)) {
-                ProjectViewController.bindNavigation(
+                TherapistsViewController.bindNavigation(
                         businessOverview,
                         "/view/nav-buttons/dashboard-btn-view.fxml"
                 );
             } else if ("My Dashboard".equals(selectedDashboard)) {
-                ProjectViewController.bindNavigation(
+                TherapistsViewController.bindNavigation(
                         businessOverview,
                         "/view/nav-buttons/dashboard-expand-view.fxml"
                 );

@@ -43,7 +43,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class ProjectViewController extends BaseController implements Initializable {
+public class TherapistsViewController extends BaseController implements Initializable {
     @FXML
     public Label createLabel;
     @FXML
@@ -194,7 +194,7 @@ public class ProjectViewController extends BaseController implements Initializab
         sortByStatus.getSelectionModel().clearSelection();
         priorityDropdown.getSelectionModel().clearSelection();
         sortByVisibility.getSelectionModel().clearSelection();
-        ProjectViewController.bindNavigation(projectPage, "/view/nav-buttons/therapist-view.fxml");
+        TherapistsViewController.bindNavigation(projectPage, "/view/nav-buttons/therapist-view.fxml");
         searchBox.clear();
         updateProjectView();
     }
@@ -240,7 +240,7 @@ public class ProjectViewController extends BaseController implements Initializab
         displayProjects(filteredProjects);
     }
 
-    public void searchProjectOnClick(ActionEvent actionEvent) {
+    public void searchTherapistsOnClick(ActionEvent actionEvent) {
         searchImg.setDisable(true);
     }
 
@@ -261,8 +261,8 @@ public class ProjectViewController extends BaseController implements Initializab
             projectIcon.setLayoutY(30);
             projectIcon.getStyleClass().add("project-icon");
 
-            ProjectViewController.backgroundColor = generateRandomColor();
-            projectIcon.setStyle(String.format("-fx-background-color: %s;", ProjectViewController.backgroundColor));
+            TherapistsViewController.backgroundColor = generateRandomColor();
+            projectIcon.setStyle(String.format("-fx-background-color: %s;", TherapistsViewController.backgroundColor));
 
             String initials = project.getId().split("-00")[0].toUpperCase();
             Label initialLabel = new Label(initials);
@@ -369,7 +369,7 @@ public class ProjectViewController extends BaseController implements Initializab
         return String.format("rgb(%d, %d, %d)", r, g, b);
     }
 
-    public void createProjectOnClick() {
+    public void createTherapistsOnClick() {
         bindNavigation(projectPage, "/view/nav-buttons/project/project-create-view.fxml");
     }
 
@@ -381,7 +381,7 @@ public class ProjectViewController extends BaseController implements Initializab
         try {
             pane.getChildren().clear();
 
-            URL fxmlUrl = ProjectViewController.class.getResource(fxmlPath);
+            URL fxmlUrl = TherapistsViewController.class.getResource(fxmlPath);
             if (fxmlUrl == null) {
                 throw new IOException("FXML file not found: " + fxmlPath);
             }

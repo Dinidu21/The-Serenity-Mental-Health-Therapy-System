@@ -2,16 +2,13 @@ package com.dinidu.lk.pmt.controller.dashboard.task.checklist;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ChecklistDTO;
 import com.dinidu.lk.pmt.dto.UserDTO;
-import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
-import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.beans.property.LongProperty;
 import javafx.collections.FXCollections;
@@ -162,7 +159,7 @@ public class ChecklistCreateViewController {
 
     public void cancelOnClick(ActionEvent actionEvent) {
         if (areFieldsCleared()) {
-            ProjectViewController.bindNavigation(taskChecklistCreatePage, "/view/nav-buttons/program-view.fxml");
+            TherapistsViewController.bindNavigation(taskChecklistCreatePage, "/view/nav-buttons/program-view.fxml");
         } else {
             clearContent();
         }

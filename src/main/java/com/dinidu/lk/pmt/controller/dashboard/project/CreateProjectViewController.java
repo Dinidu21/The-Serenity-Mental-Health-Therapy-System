@@ -3,7 +3,7 @@ package com.dinidu.lk.pmt.controller.dashboard.project;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
@@ -148,7 +148,7 @@ public class CreateProjectViewController {
                 if (isSaved) {
                     System.out.println("Project created successfully!");
                     CustomAlert.showAlert("Project created", "Project created successfully!");
-                    ProjectViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
+                    TherapistsViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
                     clearContent();
                 } else {
                     System.out.println("Error saving project.");
@@ -166,7 +166,7 @@ public class CreateProjectViewController {
 
     public void cancelOnClick(ActionEvent actionEvent) {
         if (areFieldsCleared()) {
-            ProjectViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
+            TherapistsViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
         } else {
             clearContent();
         }

@@ -1,41 +1,18 @@
 package com.dinidu.lk.pmt.controller.dashboard.report;
 
-import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ReportsBO;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
-import com.dinidu.lk.pmt.dto.TaskReportData;
-import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class ReportTaskViewController implements Initializable {
@@ -206,7 +183,7 @@ public class ReportTaskViewController implements Initializable {
     }
 
     public void refreshClick(MouseEvent mouseEvent) {
-        ProjectViewController.bindNavigation(assigneeView, "/view/nav-buttons/report/report-task-view.fxml");
+        TherapistsViewController.bindNavigation(assigneeView, "/view/nav-buttons/report/report-task-view.fxml");
     }
 
     @Override

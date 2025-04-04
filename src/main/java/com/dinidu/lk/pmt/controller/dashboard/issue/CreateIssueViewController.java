@@ -3,7 +3,7 @@ package com.dinidu.lk.pmt.controller.dashboard.issue;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.PatientBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
@@ -218,7 +218,7 @@ public class CreateIssueViewController implements Initializable {
                         Platform.runLater(() -> {
                             System.out.println("Issue created successfully.");
                             CustomAlert.showAlert("SUCCESS", "Issue created successfully.");
-                            ProjectViewController.bindNavigation(issuesCreatePg, "/view/nav-buttons/patients-view.fxml");
+                            TherapistsViewController.bindNavigation(issuesCreatePg, "/view/nav-buttons/patients-view.fxml");
                         });
                     } catch (Exception e) {
                         e.printStackTrace();

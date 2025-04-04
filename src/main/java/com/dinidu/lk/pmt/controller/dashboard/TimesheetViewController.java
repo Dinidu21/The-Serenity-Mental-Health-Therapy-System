@@ -265,6 +265,6 @@ public class TimesheetViewController implements Initializable {
     @FXML
     private void handleAddSpentTime() {
         System.out.println("Add spent time clicked");
-        ProjectViewController.bindNavigation(timeSheetPage, "/view/nav-buttons/timesheet/timesheet-create-view.fxml");
+        TherapistsViewController.bindNavigation(timeSheetPage, "/view/nav-buttons/timesheet/timesheet-create-view.fxml");
     }
 }

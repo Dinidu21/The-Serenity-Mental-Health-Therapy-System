@@ -2,7 +2,7 @@ package com.dinidu.lk.pmt.controller.dashboard.issue;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.*;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.*;
@@ -583,7 +583,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     }
 
     private void userAccessControl() {
-        if (ProjectViewController.backgroundColor == null) {
+        if (TherapistsViewController.backgroundColor == null) {
             System.out.println("Project background color is null");
         }
 

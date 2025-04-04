@@ -270,7 +270,7 @@ public class IssuesViewController extends BaseController implements Initializabl
         sortByStatus.getSelectionModel().clearSelection();
         priorityDropdown.getSelectionModel().clearSelection();
         sortByProjectName.getSelectionModel().clearSelection();
-        ProjectViewController.bindNavigation(issuesPage, "/view/nav-buttons/patients-view.fxml");
+        TherapistsViewController.bindNavigation(issuesPage, "/view/nav-buttons/patients-view.fxml");
         searchBox.clear();
         updateIssuesView();
     }
@@ -296,8 +296,8 @@ public class IssuesViewController extends BaseController implements Initializabl
             projectIcon.setLayoutY(30);
             projectIcon.getStyleClass().add("project-icon");
 
-            ProjectViewController.backgroundColor = generateRandomColor();
-            projectIcon.setStyle(String.format("-fx-background-color: %s;", ProjectViewController.backgroundColor));
+            TherapistsViewController.backgroundColor = generateRandomColor();
+            projectIcon.setStyle(String.format("-fx-background-color: %s;", TherapistsViewController.backgroundColor));
 
             long initials = issue.getId();
             Label initialLabel = new Label(""+initials);
@@ -437,7 +437,7 @@ public class IssuesViewController extends BaseController implements Initializabl
         try {
             pane.getChildren().clear();
 
-            URL fxmlUrl = ProjectViewController.class.getResource(fxmlPath);
+            URL fxmlUrl = TherapistsViewController.class.getResource(fxmlPath);
             if (fxmlUrl == null) {
                 throw new IOException("FXML file not found: " + fxmlPath);
             }

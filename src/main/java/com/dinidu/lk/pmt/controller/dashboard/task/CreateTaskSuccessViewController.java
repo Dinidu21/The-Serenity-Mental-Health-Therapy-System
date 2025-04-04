@@ -2,7 +2,7 @@ package com.dinidu.lk.pmt.controller.dashboard.task;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.*;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistCreateViewController;
 import com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
@@ -10,7 +10,6 @@ import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ChecklistDTO;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
 import com.dinidu.lk.pmt.dto.ProgramsDTO;
-import com.dinidu.lk.pmt.dto.TeamAssignmentDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistStatus;
@@ -369,7 +368,7 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
 
     public void createCheckList() {
         ChecklistCreateViewController.setTaskId(programsDTO.getId());
-        ProjectViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/task/checklist/checklist-create-view.fxml");
+        TherapistsViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/task/checklist/checklist-create-view.fxml");
 
         ProgramsDTO updatedProgramsDTO = CreateTaskSuccessViewController.current_Task;
         updateTaskView(updatedProgramsDTO);
@@ -612,15 +611,15 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
     }
 
     public void newIssueClick() {
-        ProjectViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/issue/issue-create-view.fxml");
+        TherapistsViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/issue/issue-create-view.fxml");
     }
 
     private void colorSetter() {
-        if (ProjectViewController.backgroundColor == null) {
+        if (TherapistsViewController.backgroundColor == null) {
             System.out.println("Project background color is null");
         }
-        taskIcon.setStyle("-fx-background-color: " + ProjectViewController.backgroundColor + ";");
-        projectIdWith2Digits.setStyle("-fx-text-fill: " + ProjectViewController.backgroundColor + ";");
+        taskIcon.setStyle("-fx-background-color: " + TherapistsViewController.backgroundColor + ";");
+        projectIdWith2Digits.setStyle("-fx-text-fill: " + TherapistsViewController.backgroundColor + ";");
     }
 
     private void userAccessControl() {

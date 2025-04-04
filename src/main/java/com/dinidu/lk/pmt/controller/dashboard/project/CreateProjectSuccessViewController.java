@@ -2,11 +2,10 @@ package com.dinidu.lk.pmt.controller.dashboard.project;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
-import com.dinidu.lk.pmt.bo.custom.TeamAssignmentBO;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.DashboardViewController;
-import com.dinidu.lk.pmt.controller.dashboard.ProjectViewController;
+import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProgramsDTO;
@@ -18,7 +17,6 @@ import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
 import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
 import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
-import com.dinidu.lk.pmt.utils.taskTypes.TaskStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -279,11 +277,11 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
         setupRefreshButtonForTasks();
         loadUnresolvedTasks();
 
-        if (ProjectViewController.backgroundColor == null) {
+        if (TherapistsViewController.backgroundColor == null) {
             System.out.println("Project background color is null");
         }
-        projectIcon.setStyle("-fx-background-color: " + ProjectViewController.backgroundColor + ";");
-        projectIdWith2Digits.setStyle("-fx-text-fill: " + ProjectViewController.backgroundColor + ";");
+        projectIcon.setStyle("-fx-background-color: " + TherapistsViewController.backgroundColor + ";");
+        projectIdWith2Digits.setStyle("-fx-text-fill: " + TherapistsViewController.backgroundColor + ";");
 
         String username = SessionUser.getLoggedInUsername();
 
@@ -455,6 +453,6 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
     }
 
     public void newIssueClick(MouseEvent mouseEvent) {
-        ProjectViewController.bindNavigation(projectSID, "/view/nav-buttons/issue/issue-create-view.fxml");
+        TherapistsViewController.bindNavigation(projectSID, "/view/nav-buttons/issue/issue-create-view.fxml");
     }
 }

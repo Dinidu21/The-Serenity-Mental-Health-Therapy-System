@@ -1,7 +1,6 @@
 package com.dinidu.lk.pmt.controller.dashboard;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.ReportsBO;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
@@ -105,11 +104,11 @@ public class ReportViewController implements Initializable {
     }
 
     public void noOFTaskPerAssigneeViewOnClicked(MouseEvent mouseEvent) {
-        ProjectViewController.bindNavigation(createRp, "/view/nav-buttons/report/report-task-view.fxml");
+        TherapistsViewController.bindNavigation(createRp, "/view/nav-buttons/report/report-task-view.fxml");
     }
 
     public void openToFixedThisWeekViewOnClick(MouseEvent mouseEvent) {
-        ProjectViewController.bindNavigation(createRp, "/view/nav-buttons/report/open-to-fixed-this-week-view.fxml");
+        TherapistsViewController.bindNavigation(createRp, "/view/nav-buttons/report/open-to-fixed-this-week-view.fxml");
     }
 
     public void cancelOnClick(ActionEvent actionEvent) {

@@ -227,8 +227,8 @@ public class TaskViewController extends BaseController implements Initializable 
             taskIcon.setLayoutY(30);
             taskIcon.getStyleClass().add("task-icon");
 
-            ProjectViewController.backgroundColor = ProjectViewController.generateRandomColor();
-            taskIcon.setStyle(String.format("-fx-background-color: %s;", ProjectViewController.backgroundColor));
+            TherapistsViewController.backgroundColor = TherapistsViewController.generateRandomColor();
+            taskIcon.setStyle(String.format("-fx-background-color: %s;", TherapistsViewController.backgroundColor));
             String taskName = task.getName().get();
             String[] nameParts = taskName.split(" ");
             StringBuilder initials = new StringBuilder();
@@ -276,17 +276,17 @@ public class TaskViewController extends BaseController implements Initializable 
             actionButtons.setLayoutY(40);
             actionButtons.getStyleClass().add("action-buttons");
 
-            ProjectViewController.addHoverEffect(taskCard);
+            TherapistsViewController.addHoverEffect(taskCard);
 
             taskCard.setOnMouseClicked(e -> {
-                ProjectViewController.playClickAnimation(taskCard);
+                TherapistsViewController.playClickAnimation(taskCard);
                 openTask(task);
                 System.out.println("clicked task : " + task);
             });
 
             taskCard.getChildren().addAll(taskIcon, taskDetails, actionButtons);
 
-            ProjectViewController.playEntranceAnimation(taskCard);
+            TherapistsViewController.playEntranceAnimation(taskCard);
 
             taskCardContainer.getChildren().add(taskCard);
             taskCardContainer.setPrefWidth(1522.0);
@@ -316,11 +316,11 @@ public class TaskViewController extends BaseController implements Initializable 
     }
 
     public void startCreateLabelOnClick(MouseEvent mouseEvent) {
-        ProjectViewController.bindNavigation(tasksPage, "/view/nav-buttons/task/task-create-view.fxml");
+        TherapistsViewController.bindNavigation(tasksPage, "/view/nav-buttons/task/task-create-view.fxml");
     }
 
     public void createTaskOnClick(ActionEvent actionEvent) {
-        ProjectViewController.bindNavigation(tasksPage, "/view/nav-buttons/task/task-create-view.fxml");
+        TherapistsViewController.bindNavigation(tasksPage, "/view/nav-buttons/task/task-create-view.fxml");
     }
 
     public void searchTaskOnClick(ActionEvent actionEvent) {
@@ -330,7 +330,7 @@ public class TaskViewController extends BaseController implements Initializable 
     public void resetBtnClick(ActionEvent actionEvent) {
         sortByStatus.getSelectionModel().clearSelection();
         priorityDropdown.getSelectionModel().clearSelection();
-        ProjectViewController.bindNavigation(tasksPage, "/view/nav-buttons/program-view.fxml");
+        TherapistsViewController.bindNavigation(tasksPage, "/view/nav-buttons/program-view.fxml");
         searchBox.clear();
         updateTaskView();
     }
