@@ -23,7 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import java.sql.SQLException;
 import java.util.Date;
 
-public class CreateProjectViewController {
+public class CreateTherapistsViewController {
     @FXML
     private AnchorPane projectCreatePg;
 
@@ -98,7 +98,7 @@ public class CreateProjectViewController {
     }
 
 
-    public void createProjectClick(ActionEvent actionEvent) {
+    public void createTherapistsClick(ActionEvent actionEvent) {
         String username = SessionUser.getLoggedInUsername();
         System.out.println("Logged in username Inside Create Project: " + username);
         UserRole userRole;

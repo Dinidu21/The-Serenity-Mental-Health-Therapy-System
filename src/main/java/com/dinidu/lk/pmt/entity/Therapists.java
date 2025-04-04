@@ -19,4 +19,7 @@ public class Therapists {
 
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
+
+    @Column(name = "address", nullable = false)
+    private String address;
 }
