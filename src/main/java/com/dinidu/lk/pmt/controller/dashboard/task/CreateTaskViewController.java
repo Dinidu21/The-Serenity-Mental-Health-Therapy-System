@@ -101,21 +101,7 @@ public class CreateTaskViewController {
     }
 
     public void createTaskClick() {
-        String username = SessionUser.getLoggedInUsername();
-        System.out.println("Logged in username Inside Create Project: " + username);
-        UserRole userRole;
-        try {
-            userRole = queryDAO.getUserRoleByUsername(username);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if ((userRole != UserRole.ADMIN &&
-                userRole != UserRole.RECEPTIONIST)) {
-            CustomErrorAlert.showAlert("Access Denied", "You do not have permission to create projects.");
-            return;
-        }
-
+        Auth.userAccessLevelCheck();
         String loggedInUsername = SessionUser.getLoggedInUsername();
         Long userIdByUsername;
         try {

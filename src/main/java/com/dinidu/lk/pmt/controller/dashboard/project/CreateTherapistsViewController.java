@@ -4,16 +4,14 @@ import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
-import com.dinidu.lk.pmt.dao.QueryDAO;
-import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.utils.Auth;
 import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
 import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
 import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
-import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -46,9 +44,6 @@ public class CreateTherapistsViewController {
     TherapistsBO projectsBO =
             (TherapistsBO) BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.TherapistsBO);
-
-    QueryDAO queryDAO = new QueryDAOImpl();
-
 
     public void initialize() {
         phoneNumberField.setText("1");
@@ -99,21 +94,7 @@ public class CreateTherapistsViewController {
 
 
     public void createTherapistsClick(ActionEvent actionEvent) {
-        String username = SessionUser.getLoggedInUsername();
-        System.out.println("Logged in username Inside Create Project: " + username);
-        UserRole userRole;
-        try {
-            userRole = queryDAO.getUserRoleByUsername(username);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if ((userRole != UserRole.ADMIN &&
-                userRole != UserRole.RECEPTIONIST)) {
-            CustomErrorAlert.showAlert("Access Denied", "You do not have permission to create projects.");
-            return;
-        }
-
+        Auth.userAccessLevelCheck();
         String loggedInUsername = SessionUser.getLoggedInUsername();
         Long userIdByUsername = null;
         try {
