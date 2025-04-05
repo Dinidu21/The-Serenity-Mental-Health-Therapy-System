@@ -77,6 +77,9 @@ public class TherapistsBOImpl implements TherapistsBO {
     }
 
     public void updateTherapist(TherapistDTO currentProject) throws SQLException,ClassNotFoundException{
-
+        System.out.println("TherapistDTO: " + currentProject);
+        System.out.println("Controller: " + this);
+        therapistDAO.update(EntityDTOMapper.mapDTOToEntity(currentProject,
+                Therapists.class));
     }
 }

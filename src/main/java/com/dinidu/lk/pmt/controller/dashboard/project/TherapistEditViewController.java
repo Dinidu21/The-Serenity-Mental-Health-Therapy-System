@@ -114,6 +114,8 @@ public class TherapistEditViewController implements Initializable {
             return;
         }
 
+        currentTherapist.setEmail(therapistEmail.getText());
+        currentTherapist.setPhoneNumber(therapistPhoneNumber.getText());
         currentTherapist.setFullName(therapistNameField.getText());
         currentTherapist.setAddress(therapistAddress.getText());
         currentTherapist.setStatus(therapistStatusCombo.getValue());
@@ -154,7 +156,6 @@ public class TherapistEditViewController implements Initializable {
     public void editName(ActionEvent actionEvent) {
         System.out.println("Editing project name...");
     }
-
 
     @FXML
     public void deleteProject(ActionEvent actionEvent) {

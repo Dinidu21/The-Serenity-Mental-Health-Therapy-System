@@ -3,6 +3,7 @@ package com.dinidu.lk.pmt.dao.custom.impl;
 import com.dinidu.lk.pmt.config.FactoryConfiguration;
 import com.dinidu.lk.pmt.dao.custom.TherapistDAO;
 import com.dinidu.lk.pmt.entity.Therapists;
+import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -20,7 +21,30 @@ public class TherapistDAOImpl implements TherapistDAO {
 
     @Override
     public boolean update(Therapists dto) throws SQLException, ClassNotFoundException {
-        return false;
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            session.merge(dto);
+            transaction.commit();
+            System.out.println("Therapist updated successfully: " + dto);
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("Error updating therapist: " + e.getMessage());
+            CustomErrorAlert.showAlert("Error", "Update Failed Failed to update therapist details.");
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
