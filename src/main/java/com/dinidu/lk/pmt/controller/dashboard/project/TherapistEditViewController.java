@@ -24,12 +24,18 @@ import lombok.Setter;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class TherapistEditViewController implements Initializable {
     public Button saveProjectBtn;
+    public Button deleteTherapistBtn;
+    public TextField therapistEmail;
+    public TextField therapistPhoneNumber;
+    public Button saveTherapistBtn;
+    public Button cancelProjectBtn;
+    public TextField therapistNameField;
+    public TextField therapistAddress;
     @Setter
     private ProjectDeletionHandler deletionHandler;
     @Setter
@@ -39,13 +45,8 @@ public class TherapistEditViewController implements Initializable {
     @FXML
     private AnchorPane projectEdit;
     @FXML
-    private TextField projectNameField;
+    private ComboBox<TherapistStatus> therapistStatusCombo;
     @FXML
-    private ComboBox<TherapistStatus> projectStatusCombo;
-    @FXML
-    private TextField projectDescriptionField;
-    @FXML
-    private DatePicker endDatePicker;
     private static TherapistDTO currentTherapist;
 
     UserBO userBO= (UserBO)
@@ -65,7 +66,7 @@ public class TherapistEditViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        projectStatusCombo.getItems().setAll(TherapistStatus.values());
+        therapistStatusCombo.getItems().setAll(TherapistStatus.values());
 
         if (currentTherapist == null) {
             List<TherapistDTO> projects;
@@ -83,20 +84,10 @@ public class TherapistEditViewController implements Initializable {
         }
 
         loadProjectData();
-
-        endDatePicker.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (date != null && (date.isBefore(LocalDate.now()) || date.isEqual(LocalDate.now()))) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        });
-
-        projectNameField.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
-        projectDescriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
+        therapistNameField.setText(currentTherapist.getFullName() != null ? currentTherapist.getFullName() : "");
+        therapistAddress.setText(currentTherapist.getAddress() != null ? currentTherapist.getAddress() : "");
+        therapistPhoneNumber.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
+        therapistEmail.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
     }
 
     private void loadProjectData() {
@@ -107,23 +98,25 @@ public class TherapistEditViewController implements Initializable {
             return;
         }
 
-        projectNameField.setText(currentTherapist.getFullName() != null ? currentTherapist.getFullName() : "");
-        projectDescriptionField.setText(currentTherapist.getAddress() != null ? currentTherapist.getAddress() : "");
-        projectStatusCombo.setValue(currentTherapist.getStatus());
+        therapistNameField.setText(currentTherapist.getFullName());
+        therapistAddress.setText(currentTherapist.getAddress());
+        therapistPhoneNumber.setText(currentTherapist.getPhoneNumber());
+        therapistEmail.setText(currentTherapist.getEmail());
+        therapistStatusCombo.setValue(currentTherapist.getStatus());
     }
 
     @FXML
     public void saveProject() {
         System.out.println("Saving project...");
 
-        if (projectNameField.getText().isEmpty() || projectDescriptionField.getText().isEmpty()) {
+        if (therapistNameField.getText().isEmpty() || therapistAddress.getText().isEmpty()) {
             CustomErrorAlert.showAlert("Error", "Therapist name and description cannot be empty.");
             return;
         }
 
-        currentTherapist.setFullName(projectNameField.getText());
-        currentTherapist.setAddress(projectDescriptionField.getText());
-        currentTherapist.setStatus(projectStatusCombo.getValue());
+        currentTherapist.setFullName(therapistNameField.getText());
+        currentTherapist.setAddress(therapistAddress.getText());
+        currentTherapist.setStatus(therapistStatusCombo.getValue());
 
         try {
             therapistsBO.updateTherapist(currentTherapist);
@@ -141,7 +134,7 @@ public class TherapistEditViewController implements Initializable {
     }
 
     private void validateFields() {
-        boolean isValid = !projectNameField.getText().isEmpty() && !projectDescriptionField.getText().isEmpty();
+        boolean isValid = !therapistNameField.getText().isEmpty() && !therapistAddress.getText().isEmpty();
         saveProjectBtn.setDisable(!isValid);
     }
 
@@ -227,22 +220,6 @@ public class TherapistEditViewController implements Initializable {
     public void editStatus(ActionEvent actionEvent) {
         System.out.println("Editing project status...");
     }
-
-    @FXML
-    public void editPriority(ActionEvent actionEvent) {
-        System.out.println("Editing project priority...");
-    }
-
-    @FXML
-    public void editVisibility(ActionEvent actionEvent) {
-        System.out.println("Editing project visibility...");
-    }
-
-    @FXML
-    public void setEndDate(ActionEvent actionEvent) {
-        System.out.println("Setting end date...");
-    }
-
     @FXML
     public void editProjectDesc(ActionEvent actionEvent) {
         System.out.println("Editing project description...");
