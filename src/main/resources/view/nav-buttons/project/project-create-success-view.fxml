@@ -71,11 +71,6 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </Label>
-            <Label fx:id="projectStartDate1" layoutX="109.0" layoutY="400.0" prefHeight="38.0" prefWidth="218.0" styleClass="project-start-date-label">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </Label>
             <Label fx:id="therapistStartDate" layoutX="119.0" layoutY="390.0" prefHeight="38.0" prefWidth="218.0" styleClass="project-start-date-label">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

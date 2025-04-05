@@ -131,7 +131,6 @@ public class TherapistDAOImpl implements TherapistDAO {
         return therapistsList;
     }
 
-
     @Override
     public Map<String, String> getAllNames() throws SQLException, ClassNotFoundException {
         return Map.of();

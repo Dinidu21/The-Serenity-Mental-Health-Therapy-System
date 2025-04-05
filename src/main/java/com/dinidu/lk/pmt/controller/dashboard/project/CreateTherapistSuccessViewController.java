@@ -51,16 +51,14 @@ import java.util.ResourceBundle;
 
 public class CreateTherapistSuccessViewController implements Initializable, ProjectDeletionHandler, ProjectUpdateListener {
     public Label therapistLocation;
-    public Label projectStartDate;
     public Label therapistStatus;
     public AnchorPane unresolvedTaskOnCurrentProject;
     public ImageView refreshButtonForTasks;
     public VBox tasksContainer;
     public Label therapistEmail;
     public Label phoneNumber;
-    public Label projectStartDate1;
-    public Label therapistStartDate;
     public Label therapistName;
+    public Label therapistStartDate;
     private double xOffset = 0;
     private double yOffset = 0;
     public ImageView moreIcon;
@@ -115,7 +113,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         therapistStatus.textProperty().bind(Bindings.convert(therapistDto.statusProperty()));
         therapistEmail.textProperty().bind(therapistDto.emailProperty());
         phoneNumber.textProperty().bind(therapistDto.phoneNumberProperty());
-        projectStartDate.setText(""+therapistDto.getCreatedAt());
+        therapistStartDate.setText(therapistDto.getCreatedAt().toString());
         projectIdForTasks = therapistDto.getId();
 
         System.out.println("This is the therapistDto id for tasks : " + projectIdForTasks);
