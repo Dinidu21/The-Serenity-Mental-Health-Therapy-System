@@ -11,176 +11,144 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="projectSID" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;"
-            stylesheets="@../../../styles/dashboard/project/project-create-success-view.css"
-            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.CreateTherapistSuccessViewController">
+<AnchorPane fx:id="projectSID" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" stylesheets="@../../../styles/dashboard/project/project-create-success-view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.CreateTherapistSuccessViewController">
     <children>
-        <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="127.0" prefWidth="1055.0"
-                    styleClass="card-container">
+        <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="127.0" prefWidth="1055.0" styleClass="card-container">
             <children>
-                <Label fx:id="projectName" layoutX="35.0" layoutY="14.0" prefHeight="103.0" prefWidth="518.0"
-                       styleClass="main-label">
+                <Label fx:id="therapistName" layoutX="35.0" layoutY="14.0" prefHeight="103.0" prefWidth="518.0" styleClass="main-label">
                     <font>
-                        <Font size="46.0"/>
+                        <Font size="46.0" />
                     </font>
                 </Label>
-                <Label fx:id="newIssue" layoutX="895.0" layoutY="54.0" onMouseClicked="#newIssueClick" prefHeight="28.0"
-                       prefWidth="80.0" style="-fx-text-fill: #295fb1; -fx-cursor: hand;" styleClass="new-issue-label"
-                       text="New Issue">
+                <Label fx:id="newIssue" layoutX="895.0" layoutY="54.0" onMouseClicked="#newIssueClick" prefHeight="28.0" prefWidth="80.0" style="-fx-text-fill: #295fb1; -fx-cursor: hand;" styleClass="new-issue-label" text="New Issue">
                     <font>
-                        <Font name="Poppins Regular" size="16.0"/>
+                        <Font name="Poppins Regular" size="16.0" />
                     </font>
                 </Label>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="sideBar" layoutX="1138.0" layoutY="37.0" prefHeight="617.0" prefWidth="370.0"
-                    styleClass="card-container">
+        <AnchorPane fx:id="sideBar" layoutX="1138.0" layoutY="37.0" prefHeight="617.0" prefWidth="370.0" styleClass="card-container">
             <children>
-                <AnchorPane fx:id="projectIcon" layoutX="91.0" layoutY="168.0" prefHeight="38.0" prefWidth="178.0"
-                            style="-fx-background-radius: 9; -fx-background-color: lightgray;"/>
-                <Label fx:id="projectId" layoutX="92.0" layoutY="207.0" prefHeight="38.0" prefWidth="178.0"
-                       style="-fx-wrap-text: true;">
+                <AnchorPane fx:id="projectIcon" layoutX="91.0" layoutY="168.0" prefHeight="38.0" prefWidth="178.0" style="-fx-background-radius: 9; -fx-background-color: lightgray;" />
+                <Label fx:id="projectId" layoutX="92.0" layoutY="207.0" prefHeight="38.0" prefWidth="178.0" style="-fx-wrap-text: true;">
                     <font>
-                        <Font name="Poppins Regular" size="16.0"/>
+                        <Font name="Poppins Regular" size="16.0" />
                     </font>
                 </Label>
-                <ImageView fx:id="moreIcon" fitHeight="22.0" fitWidth="29.0" layoutX="313.0" layoutY="13.0"
-                           onMouseClicked="#moreIconOnclick" pickOnBounds="true" preserveRatio="true"
-                           style="-fx-cursor: hand;">
+                <ImageView fx:id="moreIcon" fitHeight="22.0" fitWidth="29.0" layoutX="313.0" layoutY="13.0" onMouseClicked="#moreIconOnclick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                     <image>
-                        <Image url="@../../../asserts/icons/more.png"/>
+                        <Image url="@../../../asserts/icons/more.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="26.0" layoutY="309.0" styleClass="mini-label" text="About"/>
-                <AnchorPane layoutX="91.0" layoutY="23.0" prefHeight="158.0" prefWidth="178.0"
-                            style="-fx-background-color: #2d3436; -fx-background-radius: 9;">
+                <Label layoutX="26.0" layoutY="309.0" styleClass="mini-label" text="Location" />
+                <AnchorPane layoutX="91.0" layoutY="23.0" prefHeight="158.0" prefWidth="178.0" style="-fx-background-color: #2d3436; -fx-background-radius: 9;">
                     <children>
-                        <Label fx:id="projectIdWith2Digits" layoutX="-1.0" layoutY="-1.0" prefHeight="158.0"
-                               prefWidth="178.0" styleClass="project-name-label"/>
+                        <Label fx:id="projectIdWith2Digits" layoutX="-1.0" layoutY="-1.0" prefHeight="158.0" prefWidth="178.0" styleClass="project-name-label" />
                     </children>
                 </AnchorPane>
-                <Label fx:id="projectDescription" layoutX="26.0" layoutY="337.0" prefHeight="51.0" prefWidth="310.0"
-                       style="-fx-wrap-text: true;" styleClass="project-description-label"/>
-                <Label fx:id="projectStartDate" layoutX="99.0" layoutY="390.0" prefHeight="38.0" prefWidth="218.0"
-                       styleClass="project-start-date-label">
+                <Label fx:id="therapistLocation" layoutX="26.0" layoutY="337.0" prefHeight="51.0" prefWidth="310.0" style="-fx-wrap-text: true;" styleClass="project-description-label" />
+                <Label fx:id="projectStartDate" layoutX="99.0" layoutY="390.0" prefHeight="38.0" prefWidth="218.0" styleClass="project-start-date-label">
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </Label>
-                <Label layoutX="26.0" layoutY="399.0" styleClass="mini-label" text="Start On  : "/>
-                <Label fx:id="projectDeadline" layoutX="99.0" layoutY="435.0" prefHeight="38.0" prefWidth="218.0"
-                       styleClass="project-end-date-label">
+                <Label layoutX="26.0" layoutY="399.0" styleClass="mini-label" text="Start On  : " />
+                <Label fx:id="therapistEmail" layoutX="81.0" layoutY="435.0" prefHeight="38.0" prefWidth="256.0" styleClass="project-end-date-label">
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </Label>
-                <Label layoutX="26.0" layoutY="444.0" styleClass="mini-label" text="Deadline :"/>
-                <Label fx:id="projectStatus" layoutX="99.0" layoutY="474.0" prefHeight="38.0" prefWidth="218.0"
-                       text="Label">
+                <Label layoutX="26.0" layoutY="444.0" styleClass="mini-label" text="Email :" />
+                <Label fx:id="therapistStatus" layoutX="99.0" layoutY="474.0" prefHeight="38.0" prefWidth="218.0" text="Label">
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </Label>
-                <Label layoutX="26.0" layoutY="483.0" styleClass="mini-label" text="Status     :"/>
-                <Label layoutX="26.0" layoutY="521.0" styleClass="mini-label" text="Priority   :"/>
-                <Label fx:id="projectPriority" layoutX="99.0" layoutY="512.0" prefHeight="38.0" prefWidth="218.0"
-                       text="Label">
+                <Label layoutX="26.0" layoutY="483.0" styleClass="mini-label" text="Status     :" />
+                <Label layoutX="26.0" layoutY="521.0" styleClass="mini-label" text="Phone Number :" />
+                <Label fx:id="phoneNumber" layoutX="139.0" layoutY="512.0" prefHeight="38.0" prefWidth="178.0" text="Label">
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
                 </Label>
-                <Label layoutX="25.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" styleClass="mini-label"
-                       text="Visibility :"/>
-                <Label fx:id="visibilityLabel" layoutX="99.0" layoutY="547.0" prefHeight="38.0" prefWidth="218.0"
-                       text="Label">
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                    </padding>
-                </Label>
+            <Label fx:id="projectStartDate1" layoutX="109.0" layoutY="400.0" prefHeight="38.0" prefWidth="218.0" styleClass="project-start-date-label">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Label>
+            <Label fx:id="therapistStartDate" layoutX="119.0" layoutY="390.0" prefHeight="38.0" prefWidth="218.0" styleClass="project-start-date-label">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Label>
             </children>
         </AnchorPane>
         <AnchorPane layoutX="708.0" layoutY="210.0" prefHeight="443.0" prefWidth="402.0" styleClass="card-container">
             <children>
-                <Label layoutX="14.0" layoutY="14.0" styleClass="mini-label" text="Team"/>
-                <Label fx:id="teamCount" layoutX="62.0" layoutY="14.0" prefHeight="22.0" prefWidth="38.0" text="0"
-                       textFill="#615e5e">
+                <Label layoutX="14.0" layoutY="14.0" styleClass="mini-label" text="Team" />
+                <Label fx:id="teamCount" layoutX="62.0" layoutY="14.0" prefHeight="22.0" prefWidth="38.0" text="0" textFill="#615e5e">
                     <font>
-                        <Font name="Poppins Bold" size="15.0"/>
+                        <Font name="Poppins Bold" size="15.0" />
                     </font>
                 </Label>
-                <Label layoutX="14.0" layoutY="68.0" prefHeight="19.0" prefWidth="151.0" styleClass="sub-label"
-                       text="P R O J E C T   O W N E R"/>
-                <Label layoutX="18.0" layoutY="147.0" prefHeight="18.0" prefWidth="142.0" styleClass="sub-label"
-                       text="T E A M"/>
-                <Label fx:id="projectOwnerName" layoutX="18.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0"
-                       styleClass="team-label">
+                <Label layoutX="14.0" layoutY="68.0" prefHeight="19.0" prefWidth="151.0" styleClass="sub-label" text="P R O J E C T   O W N E R" />
+                <Label layoutX="18.0" layoutY="147.0" prefHeight="18.0" prefWidth="142.0" styleClass="sub-label" text="T E A M" />
+                <Label fx:id="projectOwnerName" layoutX="18.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                     <graphic>
-                        <ImageView fx:id="projectOwnerImg" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
+                        <ImageView fx:id="projectOwnerImg" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                     </graphic>
                 </Label>
                 <VBox layoutX="20.0" layoutY="175.0" prefHeight="199.0" prefWidth="342.0">
                     <children>
                         <Label fx:id="teamMember1" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember1Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember1Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="teamMember2" layoutX="10.0" layoutY="10.0" prefHeight="42.0" prefWidth="342.0"
-                               styleClass="team-label">
+                        <Label fx:id="teamMember2" layoutX="10.0" layoutY="10.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember2Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember2Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="teamMember3" layoutX="10.0" layoutY="52.0" prefHeight="42.0" prefWidth="342.0"
-                               styleClass="team-label">
+                        <Label fx:id="teamMember3" layoutX="10.0" layoutY="52.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember3Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember3Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="teamMember4" layoutX="10.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0"
-                               styleClass="team-label">
+                        <Label fx:id="teamMember4" layoutX="10.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember4Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember4Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
                     </children>
                 </VBox>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="unresolvedTaskOnCurrentProject" layoutX="56.0" layoutY="214.0" prefHeight="437.0"
-                    prefWidth="630.0" styleClass="card-container">
-            <VBox spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-                  AnchorPane.topAnchor="0">
+        <AnchorPane fx:id="unresolvedTaskOnCurrentProject" layoutX="56.0" layoutY="214.0" prefHeight="437.0" prefWidth="630.0" styleClass="card-container">
+            <VBox spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                 <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label styleClass="mini-label" text="Unresolved tasks"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <ImageView fx:id="refreshButtonForTasks" fitHeight="25.0" fitWidth="19.0" pickOnBounds="true"
-                               preserveRatio="true" style="-fx-cursor: hand;">
+                    <Label styleClass="mini-label" text="Unresolved tasks" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <ImageView fx:id="refreshButtonForTasks" fitHeight="25.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                         <image>
-                            <Image url="@../../../asserts/icons/refresh.png"/>
+                            <Image url="@../../../asserts/icons/refresh.png" />
                         </image>
                     </ImageView>
                 </HBox>
                 <ScrollPane fitToWidth="true" styleClass="task-scroll-pane" VBox.vgrow="ALWAYS">
-                    <VBox fx:id="tasksContainer" spacing="8"/>
+                    <VBox fx:id="tasksContainer" spacing="8" />
                 </ScrollPane>
             </VBox>
         </AnchorPane>

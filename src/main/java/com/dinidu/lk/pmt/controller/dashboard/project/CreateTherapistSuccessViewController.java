@@ -50,15 +50,17 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CreateTherapistSuccessViewController implements Initializable, ProjectDeletionHandler, ProjectUpdateListener {
-    public Label projectDescription;
+    public Label therapistLocation;
     public Label projectStartDate;
-    public Label projectDeadline;
-    public Label projectStatus;
-    public Label projectPriority;
-    public Label visibilityLabel;
+    public Label therapistStatus;
     public AnchorPane unresolvedTaskOnCurrentProject;
     public ImageView refreshButtonForTasks;
     public VBox tasksContainer;
+    public Label therapistEmail;
+    public Label phoneNumber;
+    public Label projectStartDate1;
+    public Label therapistStartDate;
+    public Label therapistName;
     private double xOffset = 0;
     private double yOffset = 0;
     public ImageView moreIcon;
@@ -79,9 +81,10 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
     public ImageView teamMember2Img;
     public ImageView teamMember3Img;
     public ImageView teamMember4Img;
-    @FXML
-    private Label projectName;
     String projectIdForTasks;
+    @FXML
+    private Label projectId;
+    private TherapistDTO therapistDTO;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
@@ -96,48 +99,42 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.ProgramsBO);
 
-/*
-    TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
-            BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
-*/
-
-    @FXML
-    private Label projectId;
-    private TherapistDTO project;
-
-    public void setProjectData(TherapistDTO project) {
-        if (project == null || project.getId() == null) {
+    public void setProjectData(TherapistDTO therapistDto) {
+        if (therapistDto == null || therapistDto.getId() == null) {
             return;
         }
-        if (project.getCreatedBy() == null) {
+
+        if (therapistDto.getCreatedBy() == null) {
             System.out.println("User is null ");
             return;
         }
 
-        this.project = project;
+        this.therapistDTO = therapistDto;
+        therapistName.textProperty().bind(therapistDto.fullNameProperty());
+        therapistLocation.textProperty().bind(therapistDto.addressProperty());
+        therapistStatus.textProperty().bind(Bindings.convert(therapistDto.statusProperty()));
+        therapistEmail.textProperty().bind(therapistDto.emailProperty());
+        phoneNumber.textProperty().bind(therapistDto.phoneNumberProperty());
+        projectStartDate.setText(""+therapistDto.getCreatedAt());
+        projectIdForTasks = therapistDto.getId();
 
-        projectName.textProperty().bind(project.fullNameProperty());
-        projectDescription.textProperty().bind(project.addressProperty());
-        projectStatus.textProperty().bind(Bindings.convert(project.statusProperty()));
-        projectIdForTasks = project.getId();
-        System.out.println("This is the project id for tasks : " + projectIdForTasks);
+        System.out.println("This is the therapistDto id for tasks : " + projectIdForTasks);
         String ownerName;
         try {
-            ownerName = project.getCreatedBy() != null ? userBO.getUserFullNameById(project.getCreatedBy()) : "Owner not specified";
+            ownerName = therapistDto.getCreatedBy() != null ? userBO.getUserFullNameById(therapistDto.getCreatedBy()) : "Owner not specified";
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         projectOwnerName.setText(" " + ownerName);
         Image profilePic;
         try {
-            profilePic = userBO.getUserProfilePicByUserId(project.getCreatedBy());
+            profilePic = userBO.getUserProfilePicByUserId(therapistDto.getCreatedBy());
         } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         projectOwnerImg.setImage(profilePic);
 
-        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(project.getId());
+        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(therapistDto.getId());
 
         Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
         ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
@@ -170,7 +167,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         teamCount.setText("" + teamMemberCount);
 
         setupStyleListeners();
-        updateStyles(project);
+        updateStyles(therapistDto);
         loadUnresolvedTasks();
     }
 
@@ -197,16 +194,16 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
     }
 
     private void setupStyleListeners() {
-        if (project != null) {
-            project.statusProperty().addListener((observable, oldValue, newValue) ->
+        if (therapistDTO != null) {
+            therapistDTO.statusProperty().addListener((observable, oldValue, newValue) ->
                     updateStatusStyle(newValue));}
     }
 
     private void updateStatusStyle(TherapistStatus status) {
-        projectStatus.getStyleClass().clear();
+        therapistStatus.getStyleClass().clear();
         switch (status) {
-            case AVAILABLE -> projectStatus.getStyleClass().add("status-completed");
-            case NOT_AVAILABLE -> projectStatus.getStyleClass().add("status-cancelled");
+            case AVAILABLE -> therapistStatus.getStyleClass().add("status-completed");
+            case NOT_AVAILABLE -> therapistStatus.getStyleClass().add("status-cancelled");
         }
     }
 
@@ -262,13 +259,13 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
 
     private void loadUnresolvedTasks() {
         tasksContainer.getChildren().clear();
-        System.out.println("Loading unresolved tasks for project: " + projectIdForTasks);
+        System.out.println("Loading unresolved tasks for therapistDto: " + projectIdForTasks);
         List<ProgramsDTO> unresolvedTasks = null;
 /*        try {
             unresolvedTasks = tasksBO.getProgramsCurrentTherapistByStatus(projectIdForTasks, TaskStatus.NOT_STARTED);
             System.out.println("Unresolved tasks: " + unresolvedTasks);
             if (unresolvedTasks.isEmpty()) {
-                System.out.println("No unresolved tasks found for project: " + projectIdForTasks);
+                System.out.println("No unresolved tasks found for therapistDto: " + projectIdForTasks);
                 unresolvedTaskOnCurrentProject.setVisible(true);
             }
         } catch (SQLException e) {
@@ -307,7 +304,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         try {
             PROJECT_ID = projectsBO.getTherapistIdByTaskId(task.idProperty().get());
         } catch (SQLException e) {
-            System.out.println("Error fetching project ID: " + e.getMessage());
+            System.out.println("Error fetching therapistDto ID: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -395,7 +392,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
 
         } catch (IOException e) {
             e.printStackTrace();
-            CustomErrorAlert.showAlert("Error", "Failed to load the project view.");
+            CustomErrorAlert.showAlert("Error", "Failed to load the therapistDto view.");
         }
     }
 
