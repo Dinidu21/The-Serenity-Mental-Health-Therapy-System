@@ -44,13 +44,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CreateProjectSuccessViewController implements Initializable, ProjectDeletionHandler, ProjectUpdateListener {
+public class CreateTherapistSuccessViewController implements Initializable, ProjectDeletionHandler, ProjectUpdateListener {
     public Label projectDescription;
     public Label projectStartDate;
     public Label projectDeadline;
@@ -343,7 +342,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            ProjectEditViewController controller = loader.getController();
+            TherapistEditViewController controller = loader.getController();
             controller.setDeletionHandler(this);
 
             root.setOnMousePressed(event -> {

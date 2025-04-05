@@ -3,8 +3,8 @@ package com.dinidu.lk.pmt.controller.dashboard;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.controller.BaseController;
-import com.dinidu.lk.pmt.controller.dashboard.project.CreateProjectSuccessViewController;
-import com.dinidu.lk.pmt.controller.dashboard.project.ProjectEditViewController;
+import com.dinidu.lk.pmt.controller.dashboard.project.CreateTherapistSuccessViewController;
+import com.dinidu.lk.pmt.controller.dashboard.project.TherapistEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.TherapistDTO;
@@ -75,14 +75,14 @@ public class TherapistsViewController extends BaseController implements Initiali
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/project/project-create-success-view.fxml"));
             Parent root = loader.load();
 
-            CreateProjectSuccessViewController controller = loader.getController();
+            CreateTherapistSuccessViewController controller = loader.getController();
             controller.setProjectData(project);
 
-            ProjectEditViewController.setProject(project);
+            TherapistEditViewController.setProject(project);
 
             FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/nav-buttons/project/project-edit-view.fxml"));
             Parent editRoot = editLoader.load();
-            ProjectEditViewController editController = editLoader.getController();
+            TherapistEditViewController editController = editLoader.getController();
 
             editController.setUpdateListener(controller);
 

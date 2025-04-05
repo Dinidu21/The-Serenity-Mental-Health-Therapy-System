@@ -28,7 +28,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProjectEditViewController implements Initializable {
+public class TherapistEditViewController implements Initializable {
     public Button saveProjectBtn;
     @Setter
     private ProjectDeletionHandler deletionHandler;

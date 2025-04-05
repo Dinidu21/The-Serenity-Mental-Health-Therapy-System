@@ -14,7 +14,7 @@
 <AnchorPane fx:id="projectSID" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;"
             stylesheets="@../../../styles/dashboard/project/project-create-success-view.css"
             xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.CreateProjectSuccessViewController">
+            fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.CreateTherapistSuccessViewController">
     <children>
         <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="127.0" prefWidth="1055.0"
                     styleClass="card-container">
