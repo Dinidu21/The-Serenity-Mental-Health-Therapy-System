@@ -36,10 +36,7 @@
         </ScrollPane>
 
         <ComboBox fx:id="sortByStatus" layoutX="1179.0" layoutY="135.0" prefHeight="46.0" prefWidth="160.0" promptText="Sort By Status" styleClass="combo-box" />
-
-        <ComboBox fx:id="priorityDropdown" layoutX="1353.0" layoutY="135.0" prefHeight="36.0" prefWidth="134.0" promptText="Sort By" styleClass="combo-box" />
         <Label fx:id="noProjectsFoundLabel" layoutX="625.0" layoutY="170.0" style="-fx-visible: false;" styleClass="main-label" text="No Therapists found" />
-        <ComboBox fx:id="sortByVisibility" layoutX="998.0" layoutY="134.0" prefHeight="46.0" prefWidth="172.0" promptText="Sort By Visibility" styleClass="combo-box" />
         <Button fx:id="resetBTN" layoutX="892.0" layoutY="137.0" mnemonicParsing="false" onAction="#resetBtnClick" prefHeight="39.0" prefWidth="95.0" styleClass="button" text=" Reset" visible="false" />
     </children>
 </AnchorPane>

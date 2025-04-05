@@ -9,9 +9,7 @@ import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -59,11 +57,7 @@ public class TherapistsViewController extends BaseController implements Initiali
     public Label noProjectsFoundLabel;
     public Button resetBTN;
     @FXML
-    private ComboBox<ProjectStatus> sortByStatus;
-    @FXML
-    private ComboBox<ProjectPriority> priorityDropdown;
-    @FXML
-    private ComboBox<ProjectVisibility> sortByVisibility;
+    private ComboBox<TherapistStatus> sortByStatus;
     @FXML
     private ListView<String> suggestionList;
 
@@ -102,19 +96,9 @@ public class TherapistsViewController extends BaseController implements Initiali
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resetBTN.setVisible(false);
 
-        sortByStatus.getItems().addAll(ProjectStatus.values());
-        priorityDropdown.getItems().addAll(ProjectPriority.values());
-        sortByVisibility.getItems().addAll(ProjectVisibility.values());
+        sortByStatus.getItems().addAll(TherapistStatus.values());
 
         sortByStatus.setOnAction(event -> {
-            updateProjectView();
-            resetBTN.setVisible(true);
-        });
-        priorityDropdown.setOnAction(event -> {
-            updateProjectView();
-            resetBTN.setVisible(true);
-        });
-        sortByVisibility.setOnAction(event -> {
             updateProjectView();
             resetBTN.setVisible(true);
         });
@@ -186,14 +170,11 @@ public class TherapistsViewController extends BaseController implements Initiali
                 userRoleByUsername != UserRole.RECEPTIONIST) {
             System.out.println("Access denied: Only Admin, Project Manager, or Product Owner can create projects.");
             createProjBtn.setDisable(true);
-            sortByVisibility.setVisible(false);
         }
     }
 
     public void resetBtnClick(ActionEvent actionEvent) {
         sortByStatus.getSelectionModel().clearSelection();
-        priorityDropdown.getSelectionModel().clearSelection();
-        sortByVisibility.getSelectionModel().clearSelection();
         TherapistsViewController.bindNavigation(projectPage, "/view/nav-buttons/therapist-view.fxml");
         searchBox.clear();
         updateProjectView();
@@ -207,10 +188,7 @@ public class TherapistsViewController extends BaseController implements Initiali
             throw new RuntimeException(e);
         }
 
-        ProjectStatus selectedStatus = sortByStatus.getValue();
-        ProjectPriority selectedPriority = priorityDropdown.getValue();
-        ProjectVisibility selectedVisibility = sortByVisibility.getValue();
-
+        TherapistStatus selectedStatus = sortByStatus.getValue();
         noProjectLabel.setVisible(false);
         createLabel.setVisible(false);
         noProjectsFoundLabel.setVisible(false);
@@ -225,9 +203,7 @@ public class TherapistsViewController extends BaseController implements Initiali
         }
 
         List<ProjectDTO> filteredProjects = projects.stream()
-                .filter(project -> (selectedStatus == null || project.getStatus() == selectedStatus) &&
-                        (selectedPriority == null || project.getPriority() == selectedPriority) &&
-                        (selectedVisibility == null || project.getVisibility() == selectedVisibility))
+                .filter(project -> (selectedStatus == null || project.getStatus() == selectedStatus))
                 .collect(Collectors.toList());
 
         if (filteredProjects.isEmpty()) {

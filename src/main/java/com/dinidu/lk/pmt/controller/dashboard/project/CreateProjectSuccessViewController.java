@@ -14,9 +14,7 @@ import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.listeners.ProjectDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.ProjectUpdateListener;
 import com.dinidu.lk.pmt.utils.SessionUser;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -233,7 +231,7 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
         }
     }
 
-    private void updateStatusStyle(ProjectStatus status) {
+    private void updateStatusStyle(TherapistStatus status) {
         projectStatus.getStyleClass().clear();
         switch (status) {
             case PLANNED -> projectStatus.getStyleClass().add("status-planned");

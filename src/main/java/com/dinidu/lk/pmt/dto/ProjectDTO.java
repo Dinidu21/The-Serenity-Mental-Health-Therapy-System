@@ -1,8 +1,6 @@
 package com.dinidu.lk.pmt.dto;
 
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,22 +19,18 @@ public class ProjectDTO {
     private StringProperty description = new SimpleStringProperty();
     private ObjectProperty<Date> startDate = new SimpleObjectProperty<>();
     private ObjectProperty<Date> endDate = new SimpleObjectProperty<>();
-    private ObjectProperty<ProjectStatus> status = new SimpleObjectProperty<>();
-    private ObjectProperty<ProjectPriority> priority = new SimpleObjectProperty<>();
-    private ObjectProperty<ProjectVisibility> visibility = new SimpleObjectProperty<>();
+    private ObjectProperty<TherapistStatus> status = new SimpleObjectProperty<>();
     private Long createdBy;
     private Date createdAt;
     private Date updatedAt;
 
-    public ProjectDTO(String id, String name, String description, Date startDate, Date endDate, ProjectStatus status, ProjectPriority priority, ProjectVisibility visibility, Long createdBy, Date createdAt, Date updatedAt) {
+    public ProjectDTO(String id, String name, String description, Date startDate, Date endDate, TherapistStatus status, Long createdBy, Date createdAt, Date updatedAt) {
         this.id = id;
         this.name = new SimpleStringProperty(name);
         this.description = new SimpleStringProperty(description);
         this.startDate = new SimpleObjectProperty<>(startDate);
         this.endDate = new SimpleObjectProperty<>(endDate);
         this.status = new SimpleObjectProperty<>(status);
-        this.priority = new SimpleObjectProperty<>(priority);
-        this.visibility = new SimpleObjectProperty<>(visibility);
         this.createdBy = createdBy;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -58,15 +52,7 @@ public class ProjectDTO {
     public void setEndDate(Date endDate) { this.endDate.set(endDate); }
     public ObjectProperty<Date> endDateProperty() { return endDate; }
 
-    public ProjectStatus getStatus() { return status.get(); }
-    public void setStatus(ProjectStatus status) { this.status.set(status); }
-    public ObjectProperty<ProjectStatus> statusProperty() { return status; }
-
-    public ProjectPriority getPriority() { return priority.get(); }
-    public void setPriority(ProjectPriority priority) { this.priority.set(priority); }
-    public ObjectProperty<ProjectPriority> priorityProperty() { return priority; }
-
-    public ProjectVisibility getVisibility() { return visibility.get(); }
-    public void setVisibility(ProjectVisibility visibility) { this.visibility.set(visibility); }
-    public ObjectProperty<ProjectVisibility> visibilityProperty() { return visibility; }
+    public TherapistStatus getStatus() { return status.get(); }
+    public void setStatus(TherapistStatus status) { this.status.set(status); }
+    public ObjectProperty<TherapistStatus> statusProperty() { return status; }
 }

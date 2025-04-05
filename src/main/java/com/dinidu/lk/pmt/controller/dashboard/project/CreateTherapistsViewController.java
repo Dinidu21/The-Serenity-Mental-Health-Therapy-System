@@ -6,9 +6,7 @@ import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dto.ProjectDTO;
 import com.dinidu.lk.pmt.utils.Auth;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
@@ -46,52 +44,8 @@ public class CreateTherapistsViewController {
                     getBO(BOFactory.BOTypes.TherapistsBO);
 
     public void initialize() {
-        phoneNumberField.setText("1");
-        phoneNumberField.setDisable(true);
-        emailField.setDisable(true);
-        TherapistsNameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            generateProjectId(newValue);
-            updateFullProjectId();
-        });
 
-        phoneNumberField.textProperty().addListener((observable, oldValue, newValue) -> updateFullProjectId());
     }
-
-    private void generateProjectId(String name) {
-        StringBuilder projectId = new StringBuilder();
-
-        if (!name.isEmpty()) {
-            projectId.append(Character.toUpperCase(name.charAt(0)));
-
-            for (int i = 1; i < name.length(); i++) {
-                char currentChar = name.charAt(i);
-                if (Character.isUpperCase(currentChar)) {
-                    projectId.append(currentChar);
-                }
-            }
-        }
-
-        emailField.setText(projectId.length() > 2 ? projectId.substring(0, 2) : projectId.toString());
-    }
-
-    private void updateFullProjectId() {
-        String projectId = emailField.getText();
-        System.out.println("Project ID: " + projectId);
-        String startingId = phoneNumberField.getText();
-        String fullProjectId = projectId + "-00" + startingId;
-
-        try {
-            if (projectsBO.isTherapistIdTaken(fullProjectId).isPresent()) {
-                System.out.println("Project ID already exists: " + fullProjectId);
-                int newStartingId = Integer.parseInt(startingId) + 1;
-                phoneNumberField.setText(String.valueOf(newStartingId));
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Full Project ID: " + fullProjectId);
-    }
-
 
     public void createTherapistsClick(ActionEvent actionEvent) {
         Auth.userAccessLevelCheck();
@@ -116,9 +70,7 @@ public class CreateTherapistsViewController {
             projectDTO.setDescription(addressField.getText());
             projectDTO.setStartDate(new Date());
             projectDTO.setEndDate(null);
-            projectDTO.setStatus(ProjectStatus.PLANNED);
-            projectDTO.setPriority(ProjectPriority.MEDIUM);
-            projectDTO.setVisibility(ProjectVisibility.PUBLIC);
+            projectDTO.setStatus(TherapistStatus.AVAILABLE);
             projectDTO.setCreatedBy(userIdByUsername);
             projectDTO.setCreatedAt(new Date());
             projectDTO.setUpdatedAt(new Date());
@@ -156,19 +108,21 @@ public class CreateTherapistsViewController {
     private boolean areFieldsCleared() {
         return TherapistsNameField.getText().isEmpty() &&
                 emailField.getText().isEmpty() &&
-                addressField.getText().isEmpty();
+                addressField.getText().isEmpty()
+                && phoneNumberField.getText().isEmpty();
     }
 
     private void clearContent() {
         TherapistsNameField.clear();
         emailField.clear();
         addressField.clear();
-        phoneNumberField.setText("1");
+        phoneNumberField.clear();
     }
 
     private boolean validateInputFields() {
         return !TherapistsNameField.getText().isEmpty() &&
                 !emailField.getText().isEmpty() &&
-                !addressField.getText().isEmpty();
+                !addressField.getText().isEmpty() &&
+                !phoneNumberField.getText().isEmpty();
     }
 }

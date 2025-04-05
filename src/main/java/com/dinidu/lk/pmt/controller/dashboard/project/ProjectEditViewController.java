@@ -12,9 +12,7 @@ import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.listeners.ProjectDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.ProjectUpdateListener;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectPriority;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectStatus;
-import com.dinidu.lk.pmt.utils.projectTypes.ProjectVisibility;
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,7 +41,7 @@ public class ProjectEditViewController implements Initializable {
     @FXML
     private TextField projectNameField;
     @FXML
-    private ComboBox<ProjectStatus> projectStatusCombo;
+    private ComboBox<TherapistStatus> projectStatusCombo;
     @FXML
     private ComboBox<ProjectPriority> projectPriorityCombo;
     @FXML
@@ -71,7 +69,7 @@ public class ProjectEditViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        projectStatusCombo.getItems().setAll(ProjectStatus.values());
+        projectStatusCombo.getItems().setAll(TherapistStatus.values());
         projectPriorityCombo.getItems().setAll(ProjectPriority.values());
         projectVisibilityCombo.getItems().setAll(ProjectVisibility.values());
 
