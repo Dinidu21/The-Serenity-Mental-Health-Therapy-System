@@ -19,7 +19,11 @@ public class TherapistsBOImpl implements TherapistsBO {
 
 
     public List<TherapistDTO> getAllTherapists() throws SQLException,ClassNotFoundException {
-        return null;
+        List<Therapists> therapists = therapistDAO.fetchAll();
+        System.out.println("Therapists From DB: " + therapists);
+        return EntityDTOMapper.mapEntityListToDTOList(therapists,
+                TherapistDTO.class);
+
     }
 
     public boolean deleteTherapists(String id) throws SQLException,ClassNotFoundException{

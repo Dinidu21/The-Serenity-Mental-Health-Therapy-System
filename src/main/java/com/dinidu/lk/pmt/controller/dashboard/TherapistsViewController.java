@@ -181,9 +181,10 @@ public class TherapistsViewController extends BaseController implements Initiali
     }
 
     private void updateProjectView() {
-        List<TherapistDTO> projects;
+        List<TherapistDTO> therapistDTOS;
         try {
-            projects = therapistsBO.getAllTherapists();
+            therapistDTOS = therapistsBO.getAllTherapists();
+            System.out.println("Retrieved therapists: " + therapistDTOS);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -194,21 +195,21 @@ public class TherapistsViewController extends BaseController implements Initiali
         noProjectsFoundLabel.setVisible(false);
         projectCardContainer.setVisible(true);
 
-        if (projects == null || projects.isEmpty()) {
+        if (therapistDTOS == null || therapistDTOS.isEmpty()) {
             noProjectLabel.setVisible(true);
             createLabel.setVisible(true);
-            System.out.println("No projects found.");
+            System.out.println("No Therapist found.");
             projectCardContainer.setVisible(false);
             return;
         }
 
-        List<TherapistDTO> filteredProjects = projects.stream()
+        List<TherapistDTO> filteredProjects = therapistDTOS.stream()
                 .filter(project -> (selectedStatus == null || project.getStatus() == selectedStatus))
                 .collect(Collectors.toList());
 
         if (filteredProjects.isEmpty()) {
             noProjectsFoundLabel.setVisible(true);
-            System.out.println("No projects found after filtering.");
+            System.out.println("No therapistDTOS found after filtering.");
         } else {
             noProjectsFoundLabel.setVisible(false);
         }
@@ -224,7 +225,7 @@ public class TherapistsViewController extends BaseController implements Initiali
         projectCardContainer.getChildren().clear();
         projectCardContainer.getStyleClass().add("project-card-container");
 
-        for (TherapistDTO project : projects) {
+        for (TherapistDTO therapistDTO : projects) {
             AnchorPane projectCard = new AnchorPane();
             projectCard.getStyleClass().add("project-card");
             projectCard.setPrefHeight(120.0);
@@ -240,7 +241,7 @@ public class TherapistsViewController extends BaseController implements Initiali
             TherapistsViewController.backgroundColor = generateRandomColor();
             projectIcon.setStyle(String.format("-fx-background-color: %s;", TherapistsViewController.backgroundColor));
 
-            String initials = project.getId().split("-00")[0].toUpperCase();
+            String initials = therapistDTO.getFullName().toUpperCase().substring(0, 3);
             Label initialLabel = new Label(initials);
             initialLabel.getStyleClass().add("icon-text");
             projectIcon.getChildren().add(initialLabel);
@@ -249,10 +250,10 @@ public class TherapistsViewController extends BaseController implements Initiali
             projectDetails.setLayoutX(100);
             projectDetails.setLayoutY(35);
 
-            Label nameLabel = new Label(project.getFullName());
+            Label nameLabel = new Label(therapistDTO.getFullName());
             nameLabel.getStyleClass().add("project-name");
 
-            Label idLabel = new Label("#" + project.getId());
+            Label idLabel = new Label("" + therapistDTO.getStatus());
             idLabel.getStyleClass().add("project-id");
 
             projectDetails.getChildren().addAll(nameLabel, idLabel);
@@ -266,7 +267,7 @@ public class TherapistsViewController extends BaseController implements Initiali
 
             projectCard.setOnMouseClicked(e -> {
                 playClickAnimation(projectCard);
-                openProject(project);
+                openProject(therapistDTO);
             });
 
             projectCard.getChildren().addAll(

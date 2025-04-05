@@ -51,8 +51,23 @@ public class TherapistDAOImpl implements TherapistDAO {
 
     @Override
     public List<Therapists> fetchAll() throws SQLException, ClassNotFoundException {
-        return List.of();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        List<Therapists> therapistsList;
+        try {
+            session.beginTransaction();
+            therapistsList = session.createQuery("FROM Therapists", Therapists.class).getResultList();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw new SQLException("Error fetching all therapists", e);
+        } finally {
+            session.close();
+        }
+        return therapistsList;
     }
+
 
     @Override
     public Map<String, String> getAllNames() throws SQLException, ClassNotFoundException {

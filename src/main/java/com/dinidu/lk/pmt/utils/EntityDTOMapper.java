@@ -3,7 +3,8 @@ package com.dinidu.lk.pmt.utils;
 import com.dinidu.lk.pmt.entity.Roles;
 import com.dinidu.lk.pmt.entity.Users;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
-
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.StringProperty;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,19 +22,39 @@ public class EntityDTOMapper {
                     Field dtoField = dtoClass.getDeclaredField(entityField.getName());
                     dtoField.setAccessible(true);
 
-                    // Special handling for the 'role' field
+                    // Handle 'role' field (if applicable)
                     if (entityField.getName().equals("role") && entity instanceof Users) {
                         Roles roleEntity = (Roles) entityField.get(entity);
                         if (roleEntity != null) {
-                            // Convert Roles to UserRole enum
                             UserRole userRole = UserRole.valueOf(roleEntity.getRoleName().toUpperCase().trim());
                             dtoField.set(dto, userRole);
                         } else {
-                            dtoField.set(dto, null); // Handle null role
+                            dtoField.set(dto, null);
                         }
                     } else {
-                        // Default mapping for other fields
-                        dtoField.set(dto, entityField.get(entity));
+                        // Special handling for JavaFX properties (e.g., StringProperty, ObjectProperty)
+                        if (dtoField.getType().equals(StringProperty.class)) {
+                            StringProperty stringProperty = (StringProperty) dtoField.get(dto);
+                            stringProperty.set((String) entityField.get(entity));
+                        } else if (dtoField.getType().equals(ObjectProperty.class)) {
+                            // Handle ObjectProperty with proper type casting
+                            ObjectProperty<Object> objectProperty = (ObjectProperty<Object>) dtoField.get(dto);
+
+                            // Get the type of the ObjectProperty from the field type
+                            Class<?> fieldType = (Class<?>) ((java.lang.reflect.ParameterizedType) dtoField.getGenericType()).getActualTypeArguments()[0];
+
+                            // Safely cast the value to the correct type for ObjectProperty
+                            Object value = entityField.get(entity);
+                            if (value != null) {
+                                // Type-safe casting: cast the value to the correct field type
+                                objectProperty.set(fieldType.cast(value));
+                            } else {
+                                objectProperty.set(null);
+                            }
+                        } else {
+                            // Default mapping for other fields
+                            dtoField.set(dto, entityField.get(entity));
+                        }
                     }
                 } catch (NoSuchFieldException ignored) {
                     // Skip if the field doesn't exist in the DTO
@@ -49,13 +70,6 @@ public class EntityDTOMapper {
     public static <E, D> List<D> mapEntityListToDTOList(List<E> entities, Class<D> dtoClass) {
         return entities.stream()
                 .map(entity -> mapEntityToDTO(entity, dtoClass))
-                .collect(Collectors.toList());
-    }
-
-    // Maps a list of DTOs to a list of entities
-    public static <E, D> List<E> mapDTOListToEntityList(List<D> dtos, Class<E> entityClass) {
-        return dtos.stream()
-                .map(dto -> mapDTOToEntity(dto, entityClass))
                 .collect(Collectors.toList());
     }
 
