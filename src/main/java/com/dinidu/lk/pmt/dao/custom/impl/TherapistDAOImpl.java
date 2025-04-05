@@ -71,7 +71,45 @@ public class TherapistDAOImpl implements TherapistDAO {
 
     @Override
     public boolean delete(String idOrName) throws SQLException, ClassNotFoundException {
-        return false;
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+
+            Therapists therapist = session.get(Therapists.class, idOrName);
+
+            if (therapist == null) {
+                // Try to find by name if ID doesn't match
+                Query<Therapists> query = session.createQuery(
+                        "FROM Therapists WHERE fullName = :name", Therapists.class);
+                query.setParameter("name", idOrName);
+                therapist = query.uniqueResult();
+            }
+
+            if (therapist != null) {
+                session.delete(therapist);
+                transaction.commit();
+                return true;
+            } else {
+                System.err.println("Therapist not found with ID or Name: " + idOrName);
+                return false;
+            }
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("Error deleting therapist: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override

@@ -27,7 +27,7 @@ public class TherapistsBOImpl implements TherapistsBO {
     }
 
     public boolean deleteTherapists(String id) throws SQLException,ClassNotFoundException{
-        return false;
+        return therapistDAO.delete(id);
     }
 
     @Override
