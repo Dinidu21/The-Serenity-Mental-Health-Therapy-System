@@ -24,7 +24,7 @@ public class MyApplication extends Application {
         try {
             primaryStage.initStyle(StageStyle.TRANSPARENT);
 
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/loading-view.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/dashboard-view.fxml")));
             setupDraggable(root, primaryStage);
 
             Scene scene = new Scene(root);

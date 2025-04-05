@@ -8,7 +8,7 @@ import com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistEditViewCo
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ChecklistDTO;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
@@ -426,7 +426,7 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         taskStatus.textProperty().bind(Bindings.convert(programsDTO.statusProperty()));
         taskPriority.textProperty().bind(Bindings.convert(programsDTO.priorityProperty()));
         String projectId = programsDTO.getProjectId().get();
-        List<ProjectDTO> project;
+        List<TherapistDTO> project;
         try {
             project = therapistsBO.getTherapistById(projectId);
         } catch (SQLException | ClassNotFoundException e) {
@@ -435,22 +435,22 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         String userFullNameById = "";
 
         if (!project.isEmpty()) {
-            ProjectDTO projectDTO = project.get(0);
-            System.out.println("Created By: " + projectDTO.getCreatedBy());
-            taskId.setText("Project Name : " + projectDTO.getName());
-            System.out.println("Project name: " + projectDTO.getName());
+            TherapistDTO therapistDTO = project.get(0);
+            System.out.println("Created By: " + therapistDTO.getCreatedBy());
+            taskId.setText("Project Name : " + therapistDTO.getFullName());
+            System.out.println("Project name: " + therapistDTO.getFullName());
             String projectIdWith2DigitsString = project.get(0).getId().split("-")[0];
             projectIdWith2Digits.setText(projectIdWith2DigitsString);
             System.out.println("Project ID: " + projectIdWith2DigitsString);
             Image profilePic;
             try {
-                profilePic = userBO.getUserProfilePicByUserId(projectDTO.getCreatedBy());
+                profilePic = userBO.getUserProfilePicByUserId(therapistDTO.getCreatedBy());
             } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
             projectOwnerImg.setImage(profilePic);
             try {
-                userFullNameById = userBO.getUserFullNameById(projectDTO.getCreatedBy());
+                userFullNameById = userBO.getUserFullNameById(therapistDTO.getCreatedBy());
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

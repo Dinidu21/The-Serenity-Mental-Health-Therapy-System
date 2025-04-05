@@ -65,11 +65,17 @@ public class EntityDTOMapper {
             E entity = entityClass.getDeclaredConstructor().newInstance();
             for (Field dtoField : dto.getClass().getDeclaredFields()) {
                 dtoField.setAccessible(true);
-
                 try {
                     Field entityField = entityClass.getDeclaredField(dtoField.getName());
                     entityField.setAccessible(true);
-                    entityField.set(entity, dtoField.get(dto));
+                    Object dtoValue = dtoField.get(dto);
+                    if (dtoValue instanceof javafx.beans.value.ObservableValue) {
+                        // If it's a JavaFX property (e.g., StringProperty, ObjectProperty), get the value from it
+                        Object realValue = ((javafx.beans.value.ObservableValue<?>) dtoValue).getValue();
+                        entityField.set(entity, realValue);
+                    } else {
+                        entityField.set(entity, dtoValue);
+                    }
                 } catch (NoSuchFieldException ignored) {
                     // Skip if the field doesn't exist in the entity
                 }

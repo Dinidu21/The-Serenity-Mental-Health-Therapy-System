@@ -1,17 +1,20 @@
 package com.dinidu.lk.pmt.entity;
 
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import jakarta.persistence.*;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "therapists")
 public class Therapists {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -22,4 +25,19 @@ public class Therapists {
 
     @Column(name = "address", nullable = false)
     private String address;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private TherapistStatus status;
+
+    @Column(name = "created_by")
+    private Long createdBy;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 }

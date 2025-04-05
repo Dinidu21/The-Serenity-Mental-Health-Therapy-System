@@ -5,7 +5,7 @@ import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
@@ -43,14 +43,10 @@ public class ProjectEditViewController implements Initializable {
     @FXML
     private ComboBox<TherapistStatus> projectStatusCombo;
     @FXML
-    private ComboBox<ProjectPriority> projectPriorityCombo;
-    @FXML
-    private ComboBox<ProjectVisibility> projectVisibilityCombo;
-    @FXML
     private TextField projectDescriptionField;
     @FXML
     private DatePicker endDatePicker;
-    private static ProjectDTO currentProject;
+    private static TherapistDTO currentTherapist;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
@@ -63,27 +59,25 @@ public class ProjectEditViewController implements Initializable {
     QueryDAO queryDAO = new QueryDAOImpl();
 
 
-    public static void setProject(ProjectDTO project) {
-        currentProject = project;
+    public static void setProject(TherapistDTO project) {
+        currentTherapist = project;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         projectStatusCombo.getItems().setAll(TherapistStatus.values());
-        projectPriorityCombo.getItems().setAll(ProjectPriority.values());
-        projectVisibilityCombo.getItems().setAll(ProjectVisibility.values());
 
-        if (currentProject == null) {
-            List<ProjectDTO> projects;
+        if (currentTherapist == null) {
+            List<TherapistDTO> projects;
             try {
                 projects = therapistsBO.getAllTherapists();
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
             if (projects != null && !projects.isEmpty()) {
-                currentProject = projects.get(0);
+                currentTherapist = projects.get(0);
             } else {
-                System.out.println("No projects available.");
+                System.out.println("No Therapist available.");
                 return;
             }
         }
@@ -106,26 +100,16 @@ public class ProjectEditViewController implements Initializable {
     }
 
     private void loadProjectData() {
-        System.out.println("Loading project data...");
+        System.out.println("Loading Therapist data...");
 
-        if (currentProject == null) {
+        if (currentTherapist == null) {
             System.out.println("currentProject is null");
             return;
         }
 
-        projectNameField.setText(currentProject.getName() != null ? currentProject.getName() : "");
-        projectDescriptionField.setText(currentProject.getDescription() != null ? currentProject.getDescription() : "");
-        projectStatusCombo.setValue(currentProject.getStatus());
-        projectPriorityCombo.setValue(currentProject.getPriority());
-        projectVisibilityCombo.setValue(currentProject.getVisibility());
-
-        if (currentProject.getEndDate() != null) {
-            endDatePicker.setValue(new java.sql.Date(currentProject.getEndDate().getTime())
-                    .toLocalDate());
-        } else {
-            System.out.println("endDate is null");
-            endDatePicker.setValue(null);
-        }
+        projectNameField.setText(currentTherapist.getFullName() != null ? currentTherapist.getFullName() : "");
+        projectDescriptionField.setText(currentTherapist.getAddress() != null ? currentTherapist.getAddress() : "");
+        projectStatusCombo.setValue(currentTherapist.getStatus());
     }
 
     @FXML
@@ -133,35 +117,26 @@ public class ProjectEditViewController implements Initializable {
         System.out.println("Saving project...");
 
         if (projectNameField.getText().isEmpty() || projectDescriptionField.getText().isEmpty()) {
-            CustomErrorAlert.showAlert("Error", "Project name and description cannot be empty.");
+            CustomErrorAlert.showAlert("Error", "Therapist name and description cannot be empty.");
             return;
         }
 
-        currentProject.setName(projectNameField.getText());
-        currentProject.setDescription(projectDescriptionField.getText());
-        currentProject.setStatus(projectStatusCombo.getValue());
-        currentProject.setPriority(projectPriorityCombo.getValue());
-        currentProject.setVisibility(projectVisibilityCombo.getValue());
-
-        LocalDate endDate = endDatePicker.getValue();
-        if (endDate != null) {
-            currentProject.setEndDate(java.sql.Date.valueOf(endDate));
-        } else {
-            currentProject.setEndDate(null);
-        }
+        currentTherapist.setFullName(projectNameField.getText());
+        currentTherapist.setAddress(projectDescriptionField.getText());
+        currentTherapist.setStatus(projectStatusCombo.getValue());
 
         try {
-            therapistsBO.updateTherapist(currentProject);
+            therapistsBO.updateTherapist(currentTherapist);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Project saved successfully.");
+        System.out.println("Therapist saved successfully.");
 
         if (updateListener != null) {
-            updateListener.onProjectUpdated(currentProject);
+            updateListener.onProjectUpdated(currentTherapist);
         }
 
-        CustomAlert.showAlert("Success", "Project saved successfully.");
+        CustomAlert.showAlert("Success", "Therapist saved successfully.");
         backToMain();
     }
 
@@ -226,7 +201,7 @@ public class ProjectEditViewController implements Initializable {
         if (confirmed) {
             System.out.println("Deleting project...");
             try {
-                boolean b = therapistsBO.deleteTherapists(currentProject.getId());
+                boolean b = therapistsBO.deleteTherapists(currentTherapist.getId());
                 if(!b){
                     System.out.println("Deletion failed.");
                     CustomErrorAlert.showAlert("Failed","Project deletion failed.");

@@ -4,7 +4,7 @@ import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.utils.Auth;
 import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
@@ -43,10 +43,6 @@ public class CreateTherapistsViewController {
             (TherapistsBO) BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.TherapistsBO);
 
-    public void initialize() {
-
-    }
-
     public void createTherapistsClick(ActionEvent actionEvent) {
         Auth.userAccessLevelCheck();
         String loggedInUsername = SessionUser.getLoggedInUsername();
@@ -64,38 +60,52 @@ public class CreateTherapistsViewController {
         }
 
         if (validateInputFields()) {
-            ProjectDTO projectDTO = new ProjectDTO();
-            projectDTO.setId(emailField.getText() + "-00" + phoneNumberField.getText());
-            projectDTO.setName(TherapistsNameField.getText());
-            projectDTO.setDescription(addressField.getText());
-            projectDTO.setStartDate(new Date());
-            projectDTO.setEndDate(null);
-            projectDTO.setStatus(TherapistStatus.AVAILABLE);
-            projectDTO.setCreatedBy(userIdByUsername);
-            projectDTO.setCreatedAt(new Date());
-            projectDTO.setUpdatedAt(new Date());
+            TherapistDTO therapistDTO = getTherapistDTO(userIdByUsername);
 
             boolean isSaved;
             try {
-                isSaved = projectsBO.insert(projectDTO);
+                isSaved = projectsBO.insert(therapistDTO);
                 if (isSaved) {
-                    System.out.println("Project created successfully!");
-                    CustomAlert.showAlert("Project created", "Project created successfully!");
+                    System.out.println("Therapist created successfully!");
+                    CustomAlert.showAlert("Therapist created", "Therapist created successfully!");
                     TherapistsViewController.bindNavigation(projectCreatePg, "/view/nav-buttons/therapist-view.fxml");
                     clearContent();
                 } else {
-                    System.out.println("Error saving project.");
-                    CustomErrorAlert.showAlert("Error saving project", "Failed to save the project.");
+                    System.out.println("Error saving Therapist.");
+                    CustomErrorAlert.showAlert("Error saving Therapist", "Failed to save the Therapist.");
                 }
             } catch (Exception e) {
-                System.out.println("Error saving project: " + e.getMessage());
-                CustomErrorAlert.showAlert("Error saving project", "Error saving project: " + e.getMessage());
+                System.out.println("Error saving Therapist: " + e.getMessage());
+                CustomErrorAlert.showAlert("Error saving Therapist", "Error saving Therapist: " + e.getMessage());
             }
         } else {
             System.out.println("Please fill all the required fields.");
             CustomErrorAlert.showAlert("Invalid Input", "Please fill all the required fields.");
         }
     }
+
+    private TherapistDTO getTherapistDTO(Long userIdByUsername) {
+        System.out.println("Name from input field: " + TherapistsNameField.getText());
+        TherapistDTO therapistDTO = new TherapistDTO();
+        String name = TherapistsNameField.getText();
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Error: Therapist's name cannot be empty!");
+            return null;
+        }
+        therapistDTO.setFullName(name);
+        therapistDTO.setEmail(emailField.getText());
+        therapistDTO.setPhoneNumber(phoneNumberField.getText());
+        therapistDTO.setAddress(addressField.getText());
+        therapistDTO.setStatus(TherapistStatus.AVAILABLE);
+        therapistDTO.setCreatedBy(userIdByUsername);
+        therapistDTO.setCreatedAt(new Date());
+        therapistDTO.setUpdatedAt(new Date());
+        System.out.println("THIS IS THE THERAPIST DTO BEFORE INSERTING: ");
+        System.out.println("TherapistDTO: " + therapistDTO);
+        System.out.println("Controller: " + this);
+        return therapistDTO;
+    }
+
 
     public void cancelOnClick(ActionEvent actionEvent) {
         if (areFieldsCleared()) {

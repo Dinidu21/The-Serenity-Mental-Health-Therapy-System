@@ -30,7 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -105,9 +105,9 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
 
     @FXML
     private Label projectId;
-    private ProjectDTO project;
+    private TherapistDTO project;
 
-    public void setProjectData(ProjectDTO project) {
+    public void setProjectData(TherapistDTO project) {
         if (project == null || project.getId() == null) {
             return;
         }
@@ -118,34 +118,11 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
 
         this.project = project;
 
-        projectName.textProperty().bind(project.nameProperty());
-        projectDescription.textProperty().bind(project.descriptionProperty());
-        projectStartDate.textProperty().bind(Bindings.createStringBinding(
-                () -> {
-                    if (project.getStartDate() != null) {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        return dateFormat.format(project.getStartDate());
-                    } else {
-                        return "Start date not set";
-                    }
-                },
-                project.startDateProperty()
-        ));
-
-        projectDeadline.textProperty().bind(Bindings.createStringBinding(
-                () -> project.getEndDate() != null ? project.getEndDate().toString() : "End date is not set",
-                project.endDateProperty()));
+        projectName.textProperty().bind(project.fullNameProperty());
+        projectDescription.textProperty().bind(project.addressProperty());
         projectStatus.textProperty().bind(Bindings.convert(project.statusProperty()));
-        projectPriority.textProperty().bind(Bindings.convert(project.priorityProperty()));
-        visibilityLabel.textProperty().bind(Bindings.convert(project.visibilityProperty()));
-
-        projectId.setText("          " + project.getId());
-        System.out.println("This is the project is : " + project.getId());
         projectIdForTasks = project.getId();
         System.out.println("This is the project id for tasks : " + projectIdForTasks);
-
-        projectIdWith2Digits.setText(project.getId().contains("-") ? project.getId().split("-")[0] : project.getId());
-
         String ownerName;
         try {
             ownerName = project.getCreatedBy() != null ? userBO.getUserFullNameById(project.getCreatedBy()) : "Owner not specified";
@@ -223,50 +200,23 @@ public class CreateProjectSuccessViewController implements Initializable, Projec
     private void setupStyleListeners() {
         if (project != null) {
             project.statusProperty().addListener((observable, oldValue, newValue) ->
-                    updateStatusStyle(newValue));
-            project.priorityProperty().addListener((observable, oldValue, newValue) ->
-                    updatePriorityStyle(newValue));
-            project.visibilityProperty().addListener((observable, oldValue, newValue) ->
-                    updateVisibilityStyle(newValue));
-        }
+                    updateStatusStyle(newValue));}
     }
 
     private void updateStatusStyle(TherapistStatus status) {
         projectStatus.getStyleClass().clear();
         switch (status) {
-            case PLANNED -> projectStatus.getStyleClass().add("status-planned");
-            case IN_PROGRESS -> projectStatus.getStyleClass().add("status-in-progress");
-            case COMPLETED -> projectStatus.getStyleClass().add("status-completed");
-            case ON_HOLD -> projectStatus.getStyleClass().add("status-on-hold");
-            case CANCELLED -> projectStatus.getStyleClass().add("status-cancelled");
+            case AVAILABLE -> projectStatus.getStyleClass().add("status-completed");
+            case NOT_AVAILABLE -> projectStatus.getStyleClass().add("status-cancelled");
         }
     }
 
-    private void updatePriorityStyle(ProjectPriority priority) {
-        projectPriority.getStyleClass().clear();
-        switch (priority) {
-            case HIGH -> projectPriority.getStyleClass().add("priority-high");
-            case MEDIUM -> projectPriority.getStyleClass().add("priority-medium");
-            case LOW -> projectPriority.getStyleClass().add("priority-low");
-        }
-    }
-
-    private void updateVisibilityStyle(ProjectVisibility visibility) {
-        visibilityLabel.getStyleClass().clear();
-        switch (visibility) {
-            case PUBLIC -> visibilityLabel.getStyleClass().add("visibility-public");
-            case PRIVATE -> visibilityLabel.getStyleClass().add("visibility-private");
-        }
-    }
-
-    private void updateStyles(ProjectDTO project) {
+    private void updateStyles(TherapistDTO project) {
         updateStatusStyle(project.getStatus());
-        updatePriorityStyle(project.getPriority());
-        updateVisibilityStyle(project.getVisibility());
     }
 
     @Override
-    public void onProjectUpdated(ProjectDTO updatedProject) {
+    public void onProjectUpdated(TherapistDTO updatedProject) {
         updateStyles(updatedProject);
     }
 

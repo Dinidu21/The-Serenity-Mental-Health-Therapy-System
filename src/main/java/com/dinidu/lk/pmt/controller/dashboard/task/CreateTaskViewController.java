@@ -7,7 +7,7 @@ import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.dto.UserDTO;
 import com.dinidu.lk.pmt.utils.*;
@@ -15,7 +15,6 @@ import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.taskTypes.TaskPriority;
 import com.dinidu.lk.pmt.utils.taskTypes.TaskStatus;
-import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,7 +63,7 @@ public class CreateTaskViewController {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        List<ProjectDTO> allProjects;
+        List<TherapistDTO> allProjects;
         try {
             allProjects = therapistsBO.getAllTherapists();
             System.out.println("All projects: " + allProjects);
@@ -80,9 +79,9 @@ public class CreateTaskViewController {
         }
 
         assert allProjects != null;
-        for (ProjectDTO project : allProjects) {
-            System.out.println("Project name: " + project.getName());
-            projectNames.add(project.getName());
+        for (TherapistDTO project : allProjects) {
+            System.out.println("Project name: " + project.getFullName());
+            projectNames.add(project.getFullName());
         }
 
         selectMemberNameComboBox.setItems(memberNames);

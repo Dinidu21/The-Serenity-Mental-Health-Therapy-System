@@ -1,7 +1,11 @@
 package com.dinidu.lk.pmt.bo.custom.Impl;
 
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dao.DAOFactory;
+import com.dinidu.lk.pmt.dao.custom.TherapistDAO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
+import com.dinidu.lk.pmt.entity.Therapists;
+import com.dinidu.lk.pmt.utils.EntityDTOMapper;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -9,8 +13,12 @@ import java.util.Map;
 import java.util.Optional;
 
 public class TherapistsBOImpl implements TherapistsBO {
+    TherapistDAO therapistDAO =
+            (TherapistDAO) DAOFactory.getDaoFactory().
+                    getDAO(DAOFactory.DAOTypes.Therapist);
 
-    public List<ProjectDTO> getAllTherapists() throws SQLException,ClassNotFoundException {
+
+    public List<TherapistDTO> getAllTherapists() throws SQLException,ClassNotFoundException {
         return null;
     }
 
@@ -24,8 +32,11 @@ public class TherapistsBOImpl implements TherapistsBO {
     }
 
     @Override
-    public boolean insert(ProjectDTO projectDTO) {
-        return false;
+    public boolean insert(TherapistDTO therapistDTO)  throws SQLException, ClassNotFoundException {
+        System.out.println("TherapistDTO: " + therapistDTO);
+        System.out.println("Controller: " + this);
+        return therapistDAO.insert(EntityDTOMapper.mapDTOToEntity(therapistDTO,
+                Therapists.class));
     }
 
     @Override
@@ -44,7 +55,7 @@ public class TherapistsBOImpl implements TherapistsBO {
     }
 
     @Override
-    public List<ProjectDTO> getTherapistById(String projectId) throws SQLException, ClassNotFoundException {
+    public List<TherapistDTO> getTherapistById(String projectId) throws SQLException, ClassNotFoundException {
         return List.of();
     }
 
@@ -54,11 +65,11 @@ public class TherapistsBOImpl implements TherapistsBO {
     }
 
     @Override
-    public List<ProjectDTO> searchTherapistByName(String query) throws SQLException, ClassNotFoundException {
+    public List<TherapistDTO> searchTherapistByName(String query) throws SQLException, ClassNotFoundException {
         return List.of();
     }
 
-    public void updateTherapist(ProjectDTO currentProject) throws SQLException,ClassNotFoundException{
+    public void updateTherapist(TherapistDTO currentProject) throws SQLException,ClassNotFoundException{
 
     }
 }

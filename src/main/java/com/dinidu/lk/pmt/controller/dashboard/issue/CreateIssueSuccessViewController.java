@@ -456,18 +456,18 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     }
 
     private void setProjectDetails(String projectId) {
-        List<ProjectDTO> projectDtoList;
+        List<TherapistDTO> therapistDtoList;
         try {
-            projectDtoList = therapistsBO.getTherapistById(projectId);
+            therapistDtoList = therapistsBO.getTherapistById(projectId);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        if (!projectDtoList.isEmpty()) {
-            ProjectDTO projectDto = projectDtoList.get(0);
-            projectName.setText(projectDto.getName());
+        if (!therapistDtoList.isEmpty()) {
+            TherapistDTO therapistDto = therapistDtoList.get(0);
+            projectName.setText(therapistDto.getFullName());
 
-            Long createdBy = projectDto.getCreatedBy();
+            Long createdBy = therapistDto.getCreatedBy();
             String ownerName;
             try {
                 ownerName = userBO.getUserFullNameById(createdBy);

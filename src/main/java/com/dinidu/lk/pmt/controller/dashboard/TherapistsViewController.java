@@ -7,7 +7,7 @@ import com.dinidu.lk.pmt.controller.dashboard.project.CreateProjectSuccessViewCo
 import com.dinidu.lk.pmt.controller.dashboard.project.ProjectEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
@@ -70,7 +70,7 @@ public class TherapistsViewController extends BaseController implements Initiali
     QueryDAO queryDAO = new QueryDAOImpl();
 
 
-    private void openProject(ProjectDTO project) {
+    private void openProject(TherapistDTO project) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/project/project-create-success-view.fxml"));
             Parent root = loader.load();
@@ -133,7 +133,7 @@ public class TherapistsViewController extends BaseController implements Initiali
             if (selectedProjectName != null) {
                 searchBox.setText(selectedProjectName);
                 suggestionList.setVisible(false);
-                List<ProjectDTO> filteredProjects;
+                List<TherapistDTO> filteredProjects;
                 try {
                     filteredProjects = therapistsBO.searchTherapistByName(selectedProjectName);
                 } catch (SQLException | ClassNotFoundException e) {
@@ -181,7 +181,7 @@ public class TherapistsViewController extends BaseController implements Initiali
     }
 
     private void updateProjectView() {
-        List<ProjectDTO> projects;
+        List<TherapistDTO> projects;
         try {
             projects = therapistsBO.getAllTherapists();
         } catch (SQLException | ClassNotFoundException e) {
@@ -202,7 +202,7 @@ public class TherapistsViewController extends BaseController implements Initiali
             return;
         }
 
-        List<ProjectDTO> filteredProjects = projects.stream()
+        List<TherapistDTO> filteredProjects = projects.stream()
                 .filter(project -> (selectedStatus == null || project.getStatus() == selectedStatus))
                 .collect(Collectors.toList());
 
@@ -220,11 +220,11 @@ public class TherapistsViewController extends BaseController implements Initiali
         searchImg.setDisable(true);
     }
 
-    private void displayProjects(List<ProjectDTO> projects) {
+    private void displayProjects(List<TherapistDTO> projects) {
         projectCardContainer.getChildren().clear();
         projectCardContainer.getStyleClass().add("project-card-container");
 
-        for (ProjectDTO project : projects) {
+        for (TherapistDTO project : projects) {
             AnchorPane projectCard = new AnchorPane();
             projectCard.getStyleClass().add("project-card");
             projectCard.setPrefHeight(120.0);
@@ -249,7 +249,7 @@ public class TherapistsViewController extends BaseController implements Initiali
             projectDetails.setLayoutX(100);
             projectDetails.setLayoutY(35);
 
-            Label nameLabel = new Label(project.getName());
+            Label nameLabel = new Label(project.getFullName());
             nameLabel.getStyleClass().add("project-name");
 
             Label idLabel = new Label("#" + project.getId());
@@ -283,7 +283,7 @@ public class TherapistsViewController extends BaseController implements Initiali
     }
 
     private void showSearchSuggestions(String query) {
-        List<ProjectDTO> filteredProjects;
+        List<TherapistDTO> filteredProjects;
         try {
             filteredProjects = therapistsBO.searchTherapistByName(query);
         } catch (SQLException | ClassNotFoundException e) {
@@ -291,8 +291,8 @@ public class TherapistsViewController extends BaseController implements Initiali
         }
         if (!filteredProjects.isEmpty()) {
             suggestionList.getItems().clear();
-            for (ProjectDTO project : filteredProjects) {
-                suggestionList.getItems().add(project.getName());
+            for (TherapistDTO project : filteredProjects) {
+                suggestionList.getItems().add(project.getFullName());
             }
             suggestionList.setVisible(true);
         } else {

@@ -8,7 +8,7 @@ import com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskSuccessViewControll
 import com.dinidu.lk.pmt.controller.dashboard.task.TaskEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.ProgramsDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
@@ -256,7 +256,7 @@ public class TaskViewController extends BaseController implements Initializable 
             Label nameLabel = new Label(task.getName().get());
             nameLabel.getStyleClass().add("task-name");
 
-            List<ProjectDTO> projectById;
+            List<TherapistDTO> projectById;
             try {
                 projectById = therapistsBO.getTherapistById(task.getProjectId().get());
                 if(projectById.isEmpty()){
@@ -266,7 +266,7 @@ public class TaskViewController extends BaseController implements Initializable 
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-            Label idLabel = new Label(projectById.get(0).getName());
+            Label idLabel = new Label(projectById.get(0).getFullName());
             idLabel.getStyleClass().add("project-name");
 
             taskDetails.getChildren().addAll(nameLabel, idLabel);

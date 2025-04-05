@@ -3,7 +3,7 @@ package com.dinidu.lk.pmt.controller.dashboard;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
-import com.dinidu.lk.pmt.dto.ProjectDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.ReportDTO;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
@@ -188,7 +188,7 @@ public class ReportViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<ProjectDTO> allProjects;
+        List<TherapistDTO> allProjects;
         try {
             allProjects = projectBO.getAllTherapists();
         } catch (SQLException | ClassNotFoundException e) {
@@ -196,8 +196,8 @@ public class ReportViewController implements Initializable {
         }
         ObservableList<String> projectNames = FXCollections.observableArrayList();
         assert allProjects != null;
-        for (ProjectDTO project : allProjects) {
-            projectNames.add(project.getName());
+        for (TherapistDTO project : allProjects) {
+            projectNames.add(project.getFullName());
         }
         selectProjectNameComboBox.setItems(projectNames);
         selectReportTypeComboBox.getItems().addAll(ReportType.values());
