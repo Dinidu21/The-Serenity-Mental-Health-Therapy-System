@@ -21,7 +21,7 @@ module com.dinidu.lk.pmt {
     exports com.dinidu.lk.pmt;
     opens com.dinidu.lk.pmt.entity to org.hibernate.orm.core;
     opens com.dinidu.lk.pmt.controller.dashboard to javafx.fxml;
-    opens com.dinidu.lk.pmt.controller.dashboard.project to javafx.fxml;
+    opens com.dinidu.lk.pmt.controller.dashboard.therapist to javafx.fxml;
     opens com.dinidu.lk.pmt.controller.forgetpassword to javafx.fxml;
     opens com.dinidu.lk.pmt.utils to javafx.fxml;
     opens com.dinidu.lk.pmt.controller.dashboard.task to javafx.fxml;

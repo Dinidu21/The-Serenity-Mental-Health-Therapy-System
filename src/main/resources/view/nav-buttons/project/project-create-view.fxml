@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="projectCreatePg" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../../styles/dashboard/project/project-create.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.project.CreateTherapistsViewController">
+<AnchorPane fx:id="projectCreatePg" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../../styles/dashboard/project/project-create.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.therapist.CreateTherapistsViewController">
 
     <VBox prefHeight="704.0" prefWidth="948.0" spacing="20" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER_LEFT" spacing="10">

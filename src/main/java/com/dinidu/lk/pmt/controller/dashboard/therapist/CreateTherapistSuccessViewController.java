@@ -1,4 +1,4 @@
-package com.dinidu.lk.pmt.controller.dashboard.project;
+package com.dinidu.lk.pmt.controller.dashboard.therapist;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
