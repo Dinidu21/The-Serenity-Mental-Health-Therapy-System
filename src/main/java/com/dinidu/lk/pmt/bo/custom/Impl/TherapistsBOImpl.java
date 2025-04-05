@@ -70,7 +70,10 @@ public class TherapistsBOImpl implements TherapistsBO {
 
     @Override
     public List<TherapistDTO> searchTherapistByName(String query) throws SQLException, ClassNotFoundException {
-        return List.of();
+        List<Therapists> therapists = therapistDAO.searchByName(query);
+        System.out.println("Therapists From DB: " + therapists);
+        return EntityDTOMapper.mapEntityListToDTOList(therapists,
+                TherapistDTO.class);
     }
 
     public void updateTherapist(TherapistDTO currentProject) throws SQLException,ClassNotFoundException{

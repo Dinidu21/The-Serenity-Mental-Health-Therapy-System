@@ -5,6 +5,7 @@ import com.dinidu.lk.pmt.dao.custom.TherapistDAO;
 import com.dinidu.lk.pmt.entity.Therapists;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -76,7 +77,22 @@ public class TherapistDAOImpl implements TherapistDAO {
 
     @Override
     public List<Therapists> searchByName(String searchQuery) throws SQLException, ClassNotFoundException {
-        return List.of();
+        Session session = FactoryConfiguration.getInstance().getSession();
+        try {
+            // Using HQL to query the Therapists by name
+            String hql = "FROM Therapists t WHERE t.fullName LIKE :searchQuery";
+            Query<Therapists> query = session.createQuery(hql, Therapists.class);
+
+            // Use LIKE for partial matching
+            query.setParameter("searchQuery", "%" + searchQuery + "%");
+
+            // Execute the query and return the result list
+            return query.list();
+        } catch (Exception e) {
+            throw new SQLException("Error executing search query", e);
+        } finally {
+            session.close();
+        }
     }
 
     @Override
