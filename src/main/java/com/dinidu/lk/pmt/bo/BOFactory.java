@@ -11,17 +11,16 @@ public class BOFactory {
 
 
     public enum BOTypes{
-        USER,TIMESHEET,ProgramsBO,TherapistsBO,PatientBO
+        USER,TIMESHEET, PROGRAM, THERAPIST, PATIENTS
     }
 
     public SuperBO getBO(BOFactory.BOTypes daoTypes){
         return switch (daoTypes) {
             case USER -> new UserBOImpl();
             case TIMESHEET -> new TimesheetBOImpl();
-            case ProgramsBO -> new ProgramsBOImpl();
-            case TherapistsBO -> new TherapistsBOImpl();
-            case PatientBO -> new PatientBOImpl();
-            default -> null;
+            case PROGRAM -> new ProgramsBOImpl();
+            case THERAPIST -> new TherapistsBOImpl();
+            case PATIENTS -> new PatientBOImpl();
         };
     }
 }

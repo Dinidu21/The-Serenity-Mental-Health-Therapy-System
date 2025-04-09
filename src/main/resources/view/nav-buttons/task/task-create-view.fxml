@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -13,64 +12,43 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="taskCreatePage" prefHeight="700.0" prefWidth="1522.0"
-            stylesheets="@../../../styles/dashboard/task/task-create.css" xmlns="http://javafx.com/javafx/17.0.6"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskViewController">
-    <VBox prefHeight="704.0" prefWidth="948.0" spacing="20" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0"
-          AnchorPane.topAnchor="0.0">
+<AnchorPane fx:id="taskCreatePage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../../styles/dashboard/task/task-create.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.CreateProgramsViewController">
+    <VBox prefHeight="704.0" prefWidth="948.0" spacing="20" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label styleClass="main-label" text="Create Task"/>
+            <Label styleClass="main-label" text="Create Program" />
         </HBox>
         <VBox spacing="5" styleClass="description-box">
-            <Label styleClass="para"
-                   text="asks break down projects into smaller, manageable activities that contribute to achieving the overall project goal. Each task represents a specific action or responsibility assigned to team members, such as coding features, designing assets, or conducting research. By organizing work into tasks, team members can focus on individual objectives, monitor progress, and ensure timely completion, ultimately supporting the success of the larger project."
-                   wrapText="true"/>
+            <Label styleClass="para" text="asks break down projects into smaller, manageable activities that contribute to achieving the overall project goal. Each task represents a specific action or responsibility assigned to team members, such as coding features, designing assets, or conducting research. By organizing work into tasks, team members can focus on individual objectives, monitor progress, and ensure timely completion, ultimately supporting the success of the larger project." wrapText="true" />
         </VBox>
         <VBox prefHeight="460.0" prefWidth="774.0" spacing="15">
-            <Label styleClass="section-label" text="General Info"/>
+            <Label styleClass="section-label" text="General Info" />
             <GridPane hgap="20" prefHeight="398.0" prefWidth="908.0" vgap="15">
                 <columnConstraints>
-                    <ColumnConstraints maxWidth="234.800048828125" minWidth="100.0" prefWidth="140.40001220703124"/>
-                    <ColumnConstraints hgrow="ALWAYS" maxWidth="375.7999877929687" minWidth="98.40000915527344"
-                                       prefWidth="375.7999877929687"/>
-                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="103.20001220703125"
-                                       prefWidth="103.20001220703125"/>
-                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="200.0" prefWidth="268.8000244140625"/>
+                    <ColumnConstraints maxWidth="234.800048828125" minWidth="100.0" prefWidth="140.40001220703124" />
+                    <ColumnConstraints hgrow="ALWAYS" maxWidth="375.7999877929687" minWidth="98.40000915527344" prefWidth="375.7999877929687" />
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="103.20001220703125" prefWidth="103.20001220703125" />
+                    <ColumnConstraints maxWidth="511.1999877929688" minWidth="103.20001220703125" prefWidth="156.00004882812505" />
+               <ColumnConstraints maxWidth="511.1999877929688" minWidth="147.99995117187495" prefWidth="147.99995117187495" />
                 </columnConstraints>
-                <Label styleClass="input-label" text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                <TextField fx:id="taskNameField" prefHeight="38.0" prefWidth="364.0" promptText="Enter task name"
-                           styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                <Label prefHeight="20.0" prefWidth="109.0" styleClass="input-label" text="Select Project"
-                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Assign To"
-                       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                <Label styleClass="input-label" text="Description" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                <TextArea fx:id="descriptionIdField" prefHeight="234.0" prefWidth="570.0"
-                          promptText="Enter task description" styleClass="text-area" GridPane.columnIndex="1"
-                          GridPane.columnSpan="2" GridPane.rowIndex="3"/>
-                <ComboBox fx:id="selectMemberNameComboBox" prefHeight="34.0" prefWidth="251.0"
-                          promptText="Select Member" styleClass="combo-box" GridPane.columnIndex="1"
-                          GridPane.rowIndex="2"/>
-                <ComboBox fx:id="selectProjectNameComboBox" prefHeight="38.0" prefWidth="250.0"
-                          promptText="Select Project" styleClass="combo-box" GridPane.columnIndex="1"
-                          GridPane.rowIndex="1"/>
-                <Label layoutX="10.0" layoutY="74.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label"
-                       text="Due Date" GridPane.columnIndex="2"/>
-                <DatePicker fx:id="taskDeadline" prefHeight="38.0" prefWidth="391.0" GridPane.columnIndex="3"/>
+                <Label styleClass="input-label" text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="programNameField" prefHeight="38.0" prefWidth="364.0" promptText="Enter Program name" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label prefHeight="20.0" prefWidth="135.0" styleClass="input-label" text="Select Duration" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label prefHeight="20.0" prefWidth="89.0" styleClass="input-label" text="Fee (LKR)" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextArea fx:id="feeField" prefHeight="234.0" prefWidth="570.0" promptText="Enter Program Fee" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <ComboBox fx:id="selectProgramDurationComboBox" prefHeight="38.0" prefWidth="250.0" promptText="Select Program Duration" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label styleClass="input-label" text="Program Id" GridPane.columnIndex="2" />
+            <TextField fx:id="programIDField" prefHeight="62.0" prefWidth="171.0" promptText="Enter Program ID" styleClass="text-input" GridPane.columnIndex="3" />
                 <rowConstraints>
-                    <RowConstraints maxHeight="39.19998779296875" minHeight="27.9999755859375"
-                                    prefHeight="39.19998779296875"/>
-                    <RowConstraints maxHeight="48.800024414062506" minHeight="37.600012207031256"
-                                    prefHeight="37.600012207031256"/>
-                    <RowConstraints/>
-                    <RowConstraints/>
+                    <RowConstraints maxHeight="39.19998779296875" minHeight="27.9999755859375" prefHeight="39.19998779296875" />
+                    <RowConstraints maxHeight="48.800024414062506" minHeight="37.600012207031256" prefHeight="37.600012207031256" />
+                    <RowConstraints />
+                    <RowConstraints />
                 </rowConstraints>
             </GridPane>
         </VBox>
         <HBox alignment="CENTER_RIGHT" prefWidth="862.0" spacing="10">
-            <Button onAction="#cancelOnClick" styleClass="button-secondary" text="Cancel"/>
-            <Button onAction="#createTaskClick" styleClass="button-primary" text="Create task"/>
+            <Button onAction="#cancelOnClick" styleClass="button-secondary" text="Cancel" />
+            <Button onAction="#createTaskClick" styleClass="button-primary" text="Create Program" />
         </HBox>
     </VBox>
 </AnchorPane>

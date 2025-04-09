@@ -12,21 +12,15 @@ public class DAOFactory {
     }
 
     public enum DAOTypes{
-        USER,TASKS, Therapist,ISSUES,QUERY,TIMESHEET,REPORTS,CHECKLISTS,ATTACHMENTS,TEAM_ASSIGNMENTS
+        USER,TASKS, Therapist,QUERY, TIMESHEET, PROGRAMS
     }
 
     public SuperDAO getDAO(DAOTypes daoTypes){
         return switch (daoTypes) {
             case USER -> new UserDAOImpl();
             case QUERY -> new QueryDAOImpl();
-           case Therapist -> new TherapistDAOImpl();
- /*           case TASKS -> new TasksDAOImpl();
-            case ISSUES -> new IssueDAOImpl();
-            case REPORTS -> new ReportDAOImpl();
-            case TIMESHEET -> new TimeSheetDAOImpl();
-            case CHECKLISTS -> new CheckListDAOImpl();
-            case ATTACHMENTS -> new AttachmentDAOImpl();
-            case TEAM_ASSIGNMENTS -> new TeamAssignmentDAOImpl();*/
+            case Therapist -> new TherapistDAOImpl();
+            case PROGRAMS -> new ProgramsDAOImpl();
             default -> null;
         };
     }

@@ -2,13 +2,11 @@ package com.dinidu.lk.pmt.controller.dashboard.task;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
-import com.dinidu.lk.pmt.bo.custom.TeamAssignmentBO;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ProgramsDTO;
-import com.dinidu.lk.pmt.dto.TeamAssignmentDTO;
+import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.dto.UserDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
@@ -31,10 +29,8 @@ import lombok.Setter;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -61,24 +57,24 @@ public class TaskEditViewController implements Initializable {
     private TextField TaskDescriptionField;
     @FXML
     private DatePicker endDatePicker;
-    private static ProgramsDTO currentTask;
+    private static TherapyProgramsDTO currentTask;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
     TherapistsBO projectBO =
             (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
     ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ProgramsBO);
+                    getBO(BOFactory.BOTypes.PROGRAM);
 //    TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
 //            BOFactory.getInstance().
 //                    getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
 
     QueryDAO queryDAO= new QueryDAOImpl();
 
-    public static void setTask(ProgramsDTO task) {
+    public static void setTask(TherapyProgramsDTO task) {
         currentTask = task;
     }
 
@@ -129,35 +125,6 @@ public class TaskEditViewController implements Initializable {
             currentTask.nameProperty().set(TaskNameField.getText());
             isModified = true;
         }
-
-        if (!TaskDescriptionField.getText().isEmpty() &&
-                !TaskDescriptionField.getText().equals(currentTask.descriptionProperty().get())) {
-            currentTask.descriptionProperty().set(TaskDescriptionField.getText());
-            isModified = true;
-        }
-
-        TaskStatus newStatus = TaskStatusCombo.getValue();
-        if (newStatus != null && !newStatus.equals(currentTask.statusProperty().get())) {
-            currentTask.statusProperty().set(newStatus);
-            isModified = true;
-        }
-
-        TaskPriority newPriority = TaskPriorityCombo.getValue();
-        if (newPriority != null && !newPriority.equals(currentTask.priorityProperty().get())) {
-            currentTask.priorityProperty().set(newPriority);
-            isModified = true;
-        }
-
-        LocalDate endDate = endDatePicker.getValue();
-        if (endDate != null) {
-            Date currentEndDate = currentTask.dueDateProperty().get();
-            Date newEndDate = java.sql.Date.valueOf(endDate);
-            if (currentEndDate == null || !currentEndDate.equals(newEndDate)) {
-                currentTask.dueDateProperty().set(newEndDate);
-                isModified = true;
-            }
-        }
-
         return isModified;
     }
 
@@ -222,13 +189,7 @@ public class TaskEditViewController implements Initializable {
         }*/
     }
 
-    private TeamAssignmentDTO createTeamAssignment(Long userId) {
-        TeamAssignmentDTO newAssignment = new TeamAssignmentDTO();
-        newAssignment.setTaskId(currentTask.idProperty().get());
-        newAssignment.setUserId(userId);
-        newAssignment.setAssignedAt(new Timestamp(System.currentTimeMillis()));
-        return newAssignment;
-    }
+
 
 
     @Override
@@ -250,7 +211,7 @@ public class TaskEditViewController implements Initializable {
         TaskPriorityCombo.getItems().setAll(TaskPriority.values());
 
         if (currentTask == null) {
-            List<ProgramsDTO> tasks;
+            List<TherapyProgramsDTO> tasks;
             try {
                 tasks = programsBO.getAllPrograms();
             } catch (SQLException | ClassNotFoundException e) {
@@ -289,22 +250,7 @@ public class TaskEditViewController implements Initializable {
         }
 
         TaskNameField.setText(currentTask.nameProperty().get() != null ? currentTask.nameProperty().get() : "");
-        TaskDescriptionField.setText(currentTask.descriptionProperty().get() != null ? currentTask.descriptionProperty().get() : "");
-        TaskStatusCombo.setValue(currentTask.statusProperty().get());
-        TaskPriorityCombo.setValue(currentTask.priorityProperty().get());
-        String userFullNameById;
-        try {
-            userFullNameById = userBO.getUserFullNameById(currentTask.getAssignedTo().get());
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        newMembersComboBox.setValue(userFullNameById);
 
-        if (currentTask.getDueDate() != null && currentTask.getDueDate().get() != null) {
-            endDatePicker.setValue(new java.sql.Date(currentTask.getDueDate().get().getTime()).toLocalDate());
-        } else {
-            endDatePicker.setValue(LocalDate.now());
-        }
     }
 
     private void validateFields() {
@@ -369,7 +315,7 @@ public class TaskEditViewController implements Initializable {
 
         if (confirmed) {
             System.out.println("Deleting task...");
-            try {
+  /*          try {
                 boolean b = programsBO.deleteProgram(currentTask.getName().get());
                 if (!b) {
                     System.out.println("Task deletion failed.");
@@ -377,7 +323,7 @@ public class TaskEditViewController implements Initializable {
                 }
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
-            }
+            }*/
             System.out.println("Task deleted successfully.");
             CustomAlert.showAlert("Success", "Task deleted successfully.");
 

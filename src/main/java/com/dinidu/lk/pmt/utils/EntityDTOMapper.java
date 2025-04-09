@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EntityDTOMapper {
-
-    // Maps a single entity to a DTO
+    // Maps an entity to a DTO
     public static <E, D> D mapEntityToDTO(E entity, Class<D> dtoClass) {
         try {
             D dto = dtoClass.getDeclaredConstructor().newInstance();
@@ -39,14 +38,9 @@ public class EntityDTOMapper {
                         } else if (dtoField.getType().equals(ObjectProperty.class)) {
                             // Handle ObjectProperty with proper type casting
                             ObjectProperty<Object> objectProperty = (ObjectProperty<Object>) dtoField.get(dto);
-
-                            // Get the type of the ObjectProperty from the field type
                             Class<?> fieldType = (Class<?>) ((java.lang.reflect.ParameterizedType) dtoField.getGenericType()).getActualTypeArguments()[0];
-
-                            // Safely cast the value to the correct type for ObjectProperty
                             Object value = entityField.get(entity);
                             if (value != null) {
-                                // Type-safe casting: cast the value to the correct field type
                                 objectProperty.set(fieldType.cast(value));
                             } else {
                                 objectProperty.set(null);
@@ -66,14 +60,7 @@ public class EntityDTOMapper {
         }
     }
 
-    // Maps a list of entities to a list of DTOs
-    public static <E, D> List<D> mapEntityListToDTOList(List<E> entities, Class<D> dtoClass) {
-        return entities.stream()
-                .map(entity -> mapEntityToDTO(entity, dtoClass))
-                .collect(Collectors.toList());
-    }
-
-    // Maps a single DTO to an entity
+    // Maps a DTO to an entity
     public static <D, E> E mapDTOToEntity(D dto, Class<E> entityClass) {
         try {
             E entity = entityClass.getDeclaredConstructor().newInstance();
@@ -83,8 +70,10 @@ public class EntityDTOMapper {
                     Field entityField = entityClass.getDeclaredField(dtoField.getName());
                     entityField.setAccessible(true);
                     Object dtoValue = dtoField.get(dto);
+
+                    // Special handling for JavaFX properties (e.g., StringProperty, ObjectProperty)
                     if (dtoValue instanceof javafx.beans.value.ObservableValue) {
-                        // If it's a JavaFX property (e.g., StringProperty, ObjectProperty), get the value from it
+                        // Extract the real value from the ObservableValue (like StringProperty)
                         Object realValue = ((javafx.beans.value.ObservableValue<?>) dtoValue).getValue();
                         entityField.set(entity, realValue);
                     } else {
@@ -98,5 +87,12 @@ public class EntityDTOMapper {
         } catch (Exception e) {
             throw new RuntimeException("Error mapping DTO to entity", e);
         }
+    }
+
+    // Maps a list of entities to a list of DTOs
+    public static <E, D> List<D> mapEntityListToDTOList(List<E> entities, Class<D> dtoClass) {
+        return entities.stream()
+                .map(entity -> mapEntityToDTO(entity, dtoClass))
+                .collect(Collectors.toList());
     }
 }

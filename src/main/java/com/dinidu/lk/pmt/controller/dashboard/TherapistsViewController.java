@@ -65,7 +65,7 @@ public class TherapistsViewController extends BaseController implements Initiali
 
     static TherapistsBO therapistsBO =
             (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 

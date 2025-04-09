@@ -8,7 +8,7 @@ import com.dinidu.lk.pmt.controller.DashboardViewController;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ProgramsDTO;
+import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.dto.TeamAssignmentDTO;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.listeners.ProjectDeletionHandler;
@@ -39,6 +39,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -80,6 +82,8 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
     public ImageView teamMember3Img;
     public ImageView teamMember4Img;
     String projectIdForTasks;
+    @Setter
+    @Getter
     @FXML
     private Label projectId;
     private TherapistDTO therapistDTO;
@@ -89,13 +93,13 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
                     getBO(BOFactory.BOTypes.USER);
     TherapistsBO projectsBO =
             (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
     ProgramsBO tasksBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ProgramsBO);
+                    getBO(BOFactory.BOTypes.PROGRAM);
 
     public void setProjectData(TherapistDTO therapistDto) {
         if (therapistDto == null || therapistDto.getId() == null) {
@@ -171,7 +175,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
 
     public List<TeamAssignmentDTO> getTeamAssignmentsForProject(String projectId) {
         List<TeamAssignmentDTO> assignments = new ArrayList<>();
-        List<ProgramsDTO> tasks ;
+        List<TherapyProgramsDTO> tasks ;
         try {
             tasks = tasksBO.getProgramByTherapistId(projectId);
         } catch (SQLException | ClassNotFoundException e) {
@@ -258,7 +262,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
     private void loadUnresolvedTasks() {
         tasksContainer.getChildren().clear();
         System.out.println("Loading unresolved tasks for therapistDto: " + projectIdForTasks);
-        List<ProgramsDTO> unresolvedTasks = null;
+        List<TherapyProgramsDTO> unresolvedTasks = null;
 /*        try {
             unresolvedTasks = tasksBO.getProgramsCurrentTherapistByStatus(projectIdForTasks, TaskStatus.NOT_STARTED);
             System.out.println("Unresolved tasks: " + unresolvedTasks);
@@ -280,7 +284,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         }*/
     }
 
-    private HBox createTaskItem(ProgramsDTO task) {
+    private HBox createTaskItem(TherapyProgramsDTO task) {
         HBox taskItem = new HBox();
         taskItem.getStyleClass().add("task-item");
         taskItem.setAlignment(Pos.CENTER_LEFT);
@@ -289,8 +293,6 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         Region priorityIndicator = new Region();
         priorityIndicator.getStyleClass().add("priority-indicator");
 
-        String priorityClass = "priority-task-" + task.getPriority().toString().toLowerCase();
-        priorityIndicator.getStyleClass().add(priorityClass);
 
         System.out.println("Applied priority classes to Task: " + priorityIndicator.getStyleClass());
 
@@ -299,13 +301,13 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         taskName.getStyleClass().add("task-name");
 
         String PROJECT_ID = null;
-        try {
+/*        try {
             PROJECT_ID = projectsBO.getTherapistIdByTaskId(task.idProperty().get());
         } catch (SQLException e) {
             System.out.println("Error fetching therapistDto ID: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         System.out.println("Project ID: " + PROJECT_ID);
         Label taskId = new Label(PROJECT_ID);
@@ -320,7 +322,7 @@ public class CreateTherapistSuccessViewController implements Initializable, Proj
         return taskItem;
     }
 
-    private void handleTaskClick(ProgramsDTO task) {
+    private void handleTaskClick(TherapyProgramsDTO task) {
         System.out.println("Task clicked: " + task.getName());
     }
 

@@ -67,10 +67,10 @@ public class IssuesViewController extends BaseController implements Initializabl
 
     TherapistsBO therapistsBO =
             (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
     ProgramsBO programsBO =
             (ProgramsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ProgramsBO);
+                    getBO(BOFactory.BOTypes.PROGRAM);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 

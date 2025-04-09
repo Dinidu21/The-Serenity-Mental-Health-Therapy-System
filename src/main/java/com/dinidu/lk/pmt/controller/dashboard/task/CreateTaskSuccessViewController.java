@@ -3,13 +3,11 @@ package com.dinidu.lk.pmt.controller.dashboard.task;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.*;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
-import com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistCreateViewController;
-import com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.ChecklistDTO;
 import com.dinidu.lk.pmt.dto.TherapistDTO;
-import com.dinidu.lk.pmt.dto.ProgramsDTO;
+import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistStatus;
@@ -22,7 +20,6 @@ import com.dinidu.lk.pmt.utils.taskTypes.TaskPriority;
 import com.dinidu.lk.pmt.utils.taskTypes.TaskStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
-import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -42,7 +39,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -84,8 +80,8 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
     private Label taskName;
     @FXML
     private Label taskId;
-    private ProgramsDTO programsDTO;
-    static ProgramsDTO current_Task;
+    private TherapyProgramsDTO therapyProgramsDTO;
+    static TherapyProgramsDTO current_Task;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
@@ -95,24 +91,20 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
 
     TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ProgramsBO);
-
-/*
-    ChecklistBO checklistBO = (ChecklistBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHECKLISTS);
-*/
+                    getBO(BOFactory.BOTypes.PROGRAM);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         noChecklistLabel.setVisible(false);
-        ProgramsDTO activeTask = CreateTaskSuccessViewController.current_Task;
+        TherapyProgramsDTO activeTask = CreateTaskSuccessViewController.current_Task;
         if (activeTask != null) {
-            this.programsDTO = activeTask;
-            setTaskData(programsDTO);
-            System.out.println("Active task is set, taskDTO is: " + programsDTO);
+            this.therapyProgramsDTO = activeTask;
+            setTaskData(therapyProgramsDTO);
+            System.out.println("Active task is set, taskDTO is: " + therapyProgramsDTO);
         } else {
             System.out.println("No active task is set, taskDTO remains null");
         }
@@ -126,266 +118,21 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         sortBy.setValue(null);
         filterStatus.setValue(null);
 
-        sortBy.valueProperty().addListener((observable, oldValue, newValue) -> {
-            updateResetButtonVisibility();
-            loadChecklists();
-        });
 
-        filterStatus.valueProperty().addListener((observable, oldValue, newValue) -> {
-            updateResetButtonVisibility();
-            loadChecklists();
-        });
 
-        checklistSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-            updateResetButtonVisibility();
-            loadChecklists();
-        });
+        if (therapyProgramsDTO == null) {
+            System.out.println("Error: taskDTO is null");
+        }
 
-        if (programsDTO == null) {
+    }
+
+    public void setTaskData(TherapyProgramsDTO therapyProgramsDTO) {
+        if (therapyProgramsDTO == null) {
             System.out.println("Error: taskDTO is null");
             return;
         }
 
-        applyInitialStyles();
-    }
-
-    private void applyInitialStyles() {
-/*        List<ChecklistDTO> checklists;
-        try {
-            checklists = checklistBO.getChecklistsByTaskId(tasksDTO.getId());
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        assert checklists != null;
-        for (ChecklistDTO checklist : checklists) {
-            AnchorPane checklistPane = createChecklistItemPane(checklist);
-            checklistContainer.getChildren().add(checklistPane);
-        }*/
-    }
-
-    private AnchorPane createChecklistItemPane(ChecklistDTO checklist) {
-        AnchorPane itemPane = new AnchorPane();
-        itemPane.setPrefHeight(80);
-        itemPane.setPrefWidth(538);
-        itemPane.getStyleClass().add("checklist-item");
-
-        Label nameLabel = new Label();
-        nameLabel.textProperty().bind(checklist.nameProperty());
-        nameLabel.setLayoutX(15);
-        nameLabel.setLayoutY(10);
-        nameLabel.getStyleClass().add("checklist-name");
-        nameLabel.setMaxWidth(350);
-
-        Label descLabel = new Label();
-        descLabel.textProperty().bind(checklist.descriptionProperty());
-        descLabel.setLayoutX(15);
-        descLabel.setLayoutY(35);
-        descLabel.getStyleClass().add("checklist-description");
-
-        Label statusLabel = new Label();
-        statusLabel.textProperty().bind(checklist.statusProperty().asString());
-        statusLabel.setLayoutX(400);
-        statusLabel.setLayoutY(10);
-        statusLabel.getStyleClass().add("checklist-status");
-
-        Label priorityLabel = new Label();
-        priorityLabel.textProperty().bind(checklist.priorityProperty().asString());
-        priorityLabel.setLayoutX(400);
-        priorityLabel.setLayoutY(35);
-        priorityLabel.getStyleClass().add("checklist-priority");
-
-        ChecklistStatus currentStatus = checklist.statusProperty().get();
-        if (currentStatus != null) {
-            String statusStyle = "status-" + currentStatus.name().toLowerCase().replace("_", "-") + "-checklist";
-            statusLabel.getStyleClass().add(statusStyle);
-        }
-
-        ChecklistPriority currentPriority = checklist.priorityProperty().get();
-        if (currentPriority != null) {
-            String priorityStyle = "priority-" + currentPriority.name().toLowerCase().replace("_", "-") + "-checklist";
-            priorityLabel.getStyleClass().add(priorityStyle);
-        }
-
-        checklist.statusProperty().addListener((observable, oldValue, newValue) -> {
-            statusLabel.getStyleClass().removeIf(style ->
-                    style.startsWith("status-") && style.endsWith("-checklist"));
-            if (newValue != null) {
-                String newStyle = "status-" + newValue.name().toLowerCase().replace("_", "-") + "-checklist";
-                statusLabel.getStyleClass().add(newStyle);
-            }
-        });
-
-        checklist.priorityProperty().addListener((observable, oldValue, newValue) -> {
-            priorityLabel.getStyleClass().removeIf(style ->
-                    style.startsWith("priority-") && style.endsWith("-checklist"));
-            if (newValue != null) {
-                String newStyle = "priority-" + newValue.name().toLowerCase().replace("_", "-") + "-checklist";
-                priorityLabel.getStyleClass().add(newStyle);
-            }
-        });
-
-        itemPane.getChildren().addAll(nameLabel, descLabel, statusLabel, priorityLabel);
-        itemPane.setOnMouseClicked(event -> openChecklistEditModal(checklist));
-
-        return itemPane;
-    }
-
-    public void openChecklistEditModal(ChecklistDTO checklist) {
-        try {
-            String fxmlPath = "/view/nav-buttons/task/checklist/checklist-edit-view.fxml";
-
-            Stage modalStage = new Stage();
-            modalStage.initStyle(StageStyle.TRANSPARENT);
-            modalStage.initModality(Modality.WINDOW_MODAL);
-            modalStage.initOwner((Stage) taskCreatedSuccessPage.getScene().getWindow());
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            ChecklistEditViewController controller = loader.getController();
-
-            controller.setChecklistData(checklist);
-            System.out.println("Current Checklist in Success Page: " + checklist.toString());
-            controller.setDeletionHandler(this);
-            controller.setUpdateListener(this);
-
-            root.setOnMousePressed(event -> {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            });
-
-            root.setOnMouseDragged(event -> {
-                modalStage.setX(event.getScreenX() - xOffset);
-                modalStage.setY(event.getScreenY() - yOffset);
-            });
-
-            Scene scene = new Scene(root);
-            scene.setFill(null);
-            modalStage.setScene(scene);
-            modalStage.centerOnScreen();
-            modalStage.show();
-
-        } catch (Exception e) {
-            System.out.println("Error while loading checklist edit modal: " + e.getMessage());
-            e.printStackTrace();
-            CustomErrorAlert.showAlert("Error", "Error while loading checklist edit modal.");
-        }
-    }
-
-    private void updateResetButtonVisibility() {
-        boolean hasFilters = sortBy.getValue() != null ||
-                filterStatus.getValue() != null ||
-                !checklistSearch.getText().isEmpty();
-        resetFilterBtn.setVisible(hasFilters);
-    }
-
-    private void loadChecklists() {
-/*        ChecklistStatus statusFilter = filterStatus.getValue();
-        ChecklistPriority priorityFilter = sortBy.getValue();
-        String searchQuery = checklistSearch.getText().toLowerCase().trim();
-
-        List<ChecklistDTO> checklists;
-        try {
-            checklists = checklistBO.getChecklistsByTaskId(tasksDTO.getId());
-            System.out.println("Fetched checklists: " + checklists);
-        } catch (SQLException e) {
-            System.out.println("Error fetching checklists: " + e.getMessage());
-            CustomErrorAlert.showAlert("Error", "Failed to fetch checklists.");
-            return;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (checklists.isEmpty()) {
-            showNoChecklists();
-            return;
-        }
-
-        List<ChecklistDTO> filteredChecklists = checklists.stream()
-                .filter(checklist -> statusFilter == null || checklist.statusProperty().get().equals(statusFilter))
-                .filter(checklist -> priorityFilter == null || checklist.priorityProperty().get().equals(priorityFilter))
-                .filter(checklist -> searchQuery.isEmpty() ||
-                        checklist.nameProperty().get().toLowerCase().contains(searchQuery) ||
-                        checklist.descriptionProperty().get().toLowerCase().contains(searchQuery))
-                .collect(Collectors.toList());
-
-        if (filteredChecklists.isEmpty()) {
-            showNoChecklists();
-        } else {
-            updateChecklistDisplay(filteredChecklists);
-        }*/
-    }
-
-    private void updateChecklistDisplay(List<ChecklistDTO> checklists) {
-        checklistContainer.getChildren().clear();
-        if (checklists.isEmpty()) {
-            showNoChecklists();
-            return;
-        }
-
-        noChecklistLabel.setVisible(false);
-        for (ChecklistDTO checklist : checklists) {
-            AnchorPane checklistItem = createChecklistItemPane(checklist);
-            checklistContainer.getChildren().add(checklistItem);
-        }
-    }
-
-    private void showNoChecklists() {
-        checklistContainer.getChildren().clear();
-        noChecklistLabel.setVisible(true);
-        if (!checklistContainer.getChildren().contains(noChecklistLabel)) {
-            checklistContainer.getChildren().add(noChecklistLabel);
-        }
-    }
-
-    public void resetClick() {
-        sortBy.setValue(null); 
-        filterStatus.setValue(null);
-        checklistSearch.clear();
-        loadChecklists();
-    }
-
-    public void updateTaskView(ProgramsDTO programsDTO) {
-        setTaskData(programsDTO);
-        loadChecklists();
-    }
-
-    @Override
-    public void onChecklistDeleted() {
-        if(CreateTaskSuccessViewController.current_Task == null){
-            System.out.println("Error: current_Task is null");
-        }
-        System.out.println("Task: " + CreateTaskSuccessViewController.current_Task);
-        updateTaskView(CreateTaskSuccessViewController.current_Task);
-    }
-
-    @Override
-    public void onChecklistUpdated(ChecklistDTO updatedChecklist) {
-        setTaskData(programsDTO);
-        loadChecklists();
-    }
-
-    public void createCheckList() {
-        ChecklistCreateViewController.setTaskId(programsDTO.getId());
-        TherapistsViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/task/checklist/checklist-create-view.fxml");
-
-        ProgramsDTO updatedProgramsDTO = CreateTaskSuccessViewController.current_Task;
-        updateTaskView(updatedProgramsDTO);
-        if(updatedProgramsDTO == null){
-            System.out.println("Error: updatedTaskDTO is null");
-        }else {
-            System.out.println("Task: " + updatedProgramsDTO);
-        }
-    }
-
-    public void setTaskData(ProgramsDTO programsDTO) {
-        if (programsDTO == null) {
-            System.out.println("Error: taskDTO is null");
-            return;
-        }
-
-        System.out.println("Now in set Task data method : " + programsDTO);
+/*        System.out.println("Now in set Task data method : " + programsDTO);
         System.out.println("Here is the start date: " + programsDTO.getCreatedAt().get());
 
         if (programsDTO.getId() == null) {
@@ -399,39 +146,17 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         taskName.textProperty().bind(programsDTO.nameProperty());
         taskDescription.textProperty().bind(programsDTO.descriptionProperty());
 
-        taskStartDate.textProperty().bind(Bindings.createStringBinding(
-                () -> {
-                    if (programsDTO.getCreatedAt() != null && programsDTO.getCreatedAt().get() != null) {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        return dateFormat.format(programsDTO.getCreatedAt().get());
-                    } else {
-                        return "Start date not set";
-                    }
-                },
-                programsDTO.createdAtProperty()
-        ));
-
-        taskDeadline.textProperty().bind(Bindings.createStringBinding(
-                () -> {
-                    if (programsDTO.getDueDate() != null && programsDTO.getDueDate().get() != null) {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        return dateFormat.format(programsDTO.getDueDate().get());
-                    } else {
-                        return "End date is not set";
-                    }
-                },
-                programsDTO.dueDateProperty()
-        ));
 
         taskStatus.textProperty().bind(Bindings.convert(programsDTO.statusProperty()));
         taskPriority.textProperty().bind(Bindings.convert(programsDTO.priorityProperty()));
-        String projectId = programsDTO.getProjectId().get();
-        List<TherapistDTO> project;
-        try {
+        String projectId = programsDTO.getProjectId().get();*/
+        
+        List<TherapistDTO> project = List.of();
+/*        try {
             project = therapistsBO.getTherapistById(projectId);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         String userFullNameById = "";
 
         if (!project.isEmpty()) {
@@ -460,13 +185,13 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         }
 
         projectOwnerName.setText(" " + userFullNameById);
-        List<ProgramsDTO> tasks;
-        try {
-            tasks = programsBO.getProgramByTherapistId(programsDTO.projectIdProperty().get());
+        List<TherapyProgramsDTO> tasks;
+/*        try {
+            tasks = programsBO.getProgramByTherapistId(programsDTO).getId().get());
 
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
         ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
         int teamMemberCount = 0;
@@ -506,14 +231,8 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         }*/
 
         teamCount.setText("" + teamMemberCount);
-        setupStyleListeners();
-        updateStyles(programsDTO);
     }
 
-    private void setupStyleListeners() {
-        programsDTO.statusProperty().addListener((observable, oldValue, newValue) -> updateStatusStyle(newValue));
-        programsDTO.priorityProperty().addListener((observable, oldValue, newValue) -> updatePriorityStyle(newValue));
-    }
 
     private void updateStatusStyle(TaskStatus status) {
         taskStatus.getStyleClass().clear();
@@ -533,13 +252,8 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         }
     }
 
-    private void updateStyles(ProgramsDTO programsDTO) {
-        updateStatusStyle(programsDTO.getStatus());
-        updatePriorityStyle(programsDTO.getPriority());
-    }
-
     @Override
-    public void onTaskUpdated(ProgramsDTO updatedTask) {
+    public void onTaskUpdated(TherapyProgramsDTO updatedTask) {
         setTaskData(updatedTask);
     }
 
@@ -645,5 +359,19 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
             moreIcon.setVisible(false);
             createCheckListBtn.setVisible(false);
         }
+    }
+
+    @Override
+    public void onChecklistDeleted() {
+
+    }
+
+    @Override
+    public void onChecklistUpdated(ChecklistDTO updatedChecklist) {
+
+    }
+
+    public void updateTaskView(TherapyProgramsDTO task) {
+
     }
 }

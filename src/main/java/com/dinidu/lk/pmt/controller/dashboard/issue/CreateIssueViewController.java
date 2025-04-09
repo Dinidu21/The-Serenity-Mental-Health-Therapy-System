@@ -49,7 +49,7 @@ public class CreateIssueViewController implements Initializable {
                     getBO(BOFactory.BOTypes.USER);
     PatientBO patientBO = (PatientBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PatientBO);
+                    getBO(BOFactory.BOTypes.PATIENTS);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

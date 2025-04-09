@@ -55,7 +55,7 @@ public class TherapistEditViewController implements Initializable {
 
     TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 

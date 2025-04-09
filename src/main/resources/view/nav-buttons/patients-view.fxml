@@ -11,49 +11,35 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="issuesPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/project.css"
-            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.dinidu.lk.pmt.controller.dashboard.IssuesViewController">
+<AnchorPane fx:id="issuesPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/project.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.IssuesViewController">
     <children>
-        <Label layoutX="376.0" layoutY="20.0" styleClass="main-label" text="Issues"/>
+        <Label layoutX="376.0" layoutY="20.0" styleClass="main-label" text="Patients" />
 
-        <TextField fx:id="searchBox" layoutX="555.0" layoutY="16.0" onAction="#searchIssuesOnClick" prefHeight="50.0"
-                   prefWidth="541.0" promptText="      Search Issues by name" styleClass="search-field"/>
+        <TextField fx:id="searchBox" layoutX="555.0" layoutY="16.0" onAction="#searchIssuesOnClick" prefHeight="50.0" prefWidth="541.0" promptText="      Search Patients by name" styleClass="search-field" />
 
-        <ListView fx:id="suggestionList" layoutX="557.0" layoutY="66.0" prefHeight="110.0" prefWidth="542.0"
-                  styleClass="suggestion-list" visible="false"/>
+        <ListView fx:id="suggestionList" layoutX="557.0" layoutY="66.0" prefHeight="110.0" prefWidth="542.0" styleClass="suggestion-list" visible="false" />
 
-        <Button fx:id="createIssuesBtn" layoutX="1325.0" layoutY="21.0" mnemonicParsing="false"
-                onAction="#createIssuesOnClick" styleClass="button" text="Create Issues"/>
+        <Button fx:id="createIssuesBtn" layoutX="1325.0" layoutY="21.0" mnemonicParsing="false" onAction="#createIssuesOnClick" styleClass="button" text="Create Patients" />
 
-        <ImageView fx:id="searchImg" fitHeight="56.0" fitWidth="42.0" layoutX="564.0" layoutY="20.0" pickOnBounds="true"
-                   preserveRatio="true">
-            <Image url="@../../asserts/icons/search.png"/>
+        <ImageView fx:id="searchImg" fitHeight="56.0" fitWidth="42.0" layoutX="564.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../asserts/icons/search.png" />
         </ImageView>
 
-        <Label fx:id="noIssuesLabel" layoutX="349.0" layoutY="220.0" styleClass="mini-label"
-               text="Everything looks good so far. Is there an issue you’d like to report?"/>
+        <Label fx:id="noIssuesLabel" layoutX="306.0" layoutY="220.0" prefHeight="23.0" prefWidth="635.0" styleClass="mini-label" text="Everything looks good so far. Is there an patients you’d like to report?" />
 
-        <Label fx:id="createLabel" layoutX="923.0" layoutY="220.0" onMouseClicked="#startCreateLabelOnClick"
-               styleClass="start-create-label" text="Start creating one." textFill="#3157d4"/>
+        <Label fx:id="createLabel" layoutX="923.0" layoutY="220.0" onMouseClicked="#startCreateLabelOnClick" styleClass="start-create-label" text="Start creating one." textFill="#3157d4" />
 
-        <ScrollPane fx:id="scrollPane" layoutX="160.0" layoutY="250.0" prefHeight="442.0" prefWidth="1331.0"
-                    styleClass="scroll-pane">
+        <ScrollPane fx:id="scrollPane" layoutX="160.0" layoutY="250.0" prefHeight="442.0" prefWidth="1331.0" styleClass="scroll-pane">
             <content>
-                <VBox fx:id="projectIssuesContainer" spacing="10.0" styleClass="project-card-container"/>
+                <VBox fx:id="projectIssuesContainer" spacing="10.0" styleClass="project-card-container" />
             </content>
         </ScrollPane>
 
-        <ComboBox fx:id="sortByStatus" layoutX="1123.0" layoutY="134.0" prefHeight="46.0" prefWidth="160.0"
-                  promptText="Sort By Status" styleClass="combo-box"/>
+        <ComboBox fx:id="sortByStatus" layoutX="1123.0" layoutY="134.0" prefHeight="46.0" prefWidth="160.0" promptText="Sort By Status" styleClass="combo-box" />
 
-        <ComboBox fx:id="priorityDropdown" layoutX="1299.0" layoutY="135.0" prefHeight="46.0" prefWidth="188.0"
-                  promptText="Sort By Priority" styleClass="combo-box"/>
-        <Label fx:id="noIssuesFoundLabel" layoutX="625.0" layoutY="170.0" style="-fx-visible: false;"
-               styleClass="main-label" text="No Issues found"/>
-        <Button fx:id="resetBTN" layoutX="1112.0" layoutY="21.0" mnemonicParsing="false" onAction="#resetBtnClick"
-                prefHeight="39.0" prefWidth="80.0" styleClass="button" text=" Reset" visible="false"/>
-        <ComboBox fx:id="sortByProjectName" layoutX="922.0" layoutY="134.0" prefHeight="46.0" prefWidth="197.0"
-                  promptText="Sort By Project Name" styleClass="combo-box"/>
+        <ComboBox fx:id="priorityDropdown" layoutX="1299.0" layoutY="135.0" prefHeight="46.0" prefWidth="188.0" promptText="Sort By Priority" styleClass="combo-box" />
+        <Label fx:id="noIssuesFoundLabel" layoutX="625.0" layoutY="170.0" style="-fx-visible: false;" styleClass="main-label" text="No patients found" />
+        <Button fx:id="resetBTN" layoutX="1112.0" layoutY="21.0" mnemonicParsing="false" onAction="#resetBtnClick" prefHeight="39.0" prefWidth="80.0" styleClass="button" text=" Reset" visible="false" />
+        <ComboBox fx:id="sortByProjectName" layoutX="922.0" layoutY="134.0" prefHeight="46.0" prefWidth="197.0" promptText="Sort By Project Name" styleClass="combo-box" />
     </children>
 </AnchorPane>

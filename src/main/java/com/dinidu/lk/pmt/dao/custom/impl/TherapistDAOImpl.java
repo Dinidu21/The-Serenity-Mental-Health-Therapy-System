@@ -2,6 +2,8 @@ package com.dinidu.lk.pmt.dao.custom.impl;
 
 import com.dinidu.lk.pmt.config.FactoryConfiguration;
 import com.dinidu.lk.pmt.dao.custom.TherapistDAO;
+import com.dinidu.lk.pmt.dto.PatientsDTO;
+import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.entity.Therapists;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import org.hibernate.Session;
@@ -159,5 +161,65 @@ public class TherapistDAOImpl implements TherapistDAO {
     @Override
     public Long getIdByName(String taskName) throws SQLException, ClassNotFoundException {
         return 0L;
+    }
+
+    @Override
+    public boolean deleteProgram(String s) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public void searchProgramByTherapistName(String projectName) throws SQLException, ClassNotFoundException {
+
+    }
+
+    @Override
+    public String getProgramNameById(Long taskId) throws SQLException, ClassNotFoundException {
+        return "";
+    }
+
+    @Override
+    public List<PatientsDTO> searchPatientsByName(String query) throws SQLException, ClassNotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public String getTherapistNameById(String projectId) throws SQLException, ClassNotFoundException {
+        return "";
+    }
+
+    @Override
+    public List<PatientsDTO> searchProgramsByPatientName(String selectedIssueName) throws SQLException, ClassNotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public List<PatientsDTO> getAllPatients() throws SQLException, ClassNotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public void updateProgram(TherapyProgramsDTO currentTask) throws SQLException, ClassNotFoundException {
+
+    }
+
+    @Override
+    public List<TherapyProgramsDTO> getAllPrograms() throws SQLException, ClassNotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public boolean insertProgram(TherapyProgramsDTO therapyProgramsDTO) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public List<TherapyProgramsDTO> getProgramByTherapistId(String s) throws SQLException, ClassNotFoundException {
+        return List.of();
+    }
+
+    @Override
+    public List<TherapyProgramsDTO> searchProgramsByName(String query) throws SQLException, ClassNotFoundException {
+        return List.of();
     }
 }

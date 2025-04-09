@@ -62,7 +62,7 @@ public class IssueEditViewController implements Initializable {
                     getBO(BOFactory.BOTypes.USER);
     PatientBO issuesBO =
             (PatientBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PatientBO);
+                    getBO(BOFactory.BOTypes.PATIENTS);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 

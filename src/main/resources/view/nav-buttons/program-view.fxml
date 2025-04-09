@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
@@ -11,50 +10,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="tasksPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/task_view.css"
-            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.dinidu.lk.pmt.controller.dashboard.TaskViewController">
+<AnchorPane fx:id="tasksPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/task_view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.ProgramsViewController">
     <children>
-        <Label layoutX="376.0" layoutY="20.0" styleClass="main-label"
-               stylesheets="@../../styles/dashboard/task_view.css" text="Tasks"/>
+        <Label layoutX="376.0" layoutY="20.0" styleClass="main-label" stylesheets="@../../styles/dashboard/task_view.css" text="Programs" />
 
-        <TextField fx:id="searchBox" layoutX="598.0" layoutY="16.0" onAction="#searchTaskOnClick" prefHeight="50.0"
-                   prefWidth="541.0" promptText="      Search tasks by name" styleClass="search-field"/>
+        <TextField fx:id="searchBox" layoutX="598.0" layoutY="16.0" onAction="#searchTaskOnClick" prefHeight="50.0" prefWidth="541.0" promptText="      Search tasks by name" styleClass="search-field" />
 
-        <ListView fx:id="suggestionList" layoutX="596.0" layoutY="66.0" prefHeight="110.0" prefWidth="542.0"
-                  styleClass="suggestion-list" visible="false"/>
+        <ListView fx:id="suggestionList" layoutX="596.0" layoutY="66.0" prefHeight="110.0" prefWidth="542.0" styleClass="suggestion-list" visible="false" />
 
-        <Button fx:id="createTaskBtn" layoutX="1325.0" layoutY="21.0" mnemonicParsing="false"
-                onAction="#createTaskOnClick" styleClass="button" text="Create Task"/>
+        <Button fx:id="createProgramsBtn" layoutX="1325.0" layoutY="21.0" mnemonicParsing="false" onAction="#createProgramsOnClick" styleClass="button" text="Create Program" />
 
-        <ImageView fx:id="searchImg" fitHeight="56.0" fitWidth="42.0" layoutX="604.0" layoutY="20.0" pickOnBounds="true"
-                   preserveRatio="true">
-            <Image url="@../../asserts/icons/search.png"/>
+        <ImageView fx:id="searchImg" fitHeight="56.0" fitWidth="42.0" layoutX="604.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../../asserts/icons/search.png" />
         </ImageView>
 
-        <Label fx:id="noTaskLabel" layoutX="587.0" layoutY="277.0" prefHeight="39.0" prefWidth="261.0"
-               styleClass="mini-label" stylesheets="@../../styles/dashboard/task_view.css"
-               text="There are no tasks assign yet."/>
+        <Label fx:id="noTaskLabel" layoutX="587.0" layoutY="277.0" prefHeight="39.0" prefWidth="261.0" styleClass="mini-label" stylesheets="@../../styles/dashboard/task_view.css" text="There are no tasks assign yet." />
 
-        <Label fx:id="createLabel" layoutX="816.0" layoutY="281.0" onMouseClicked="#startCreateLabelOnClick"
-               prefHeight="32.0" prefWidth="160.0" styleClass="start-create-label" text="Start creating one."
-               textFill="#3157d4"/>
+        <Label fx:id="createLabel" layoutX="816.0" layoutY="281.0" onMouseClicked="#startCreateLabelOnClick" prefHeight="32.0" prefWidth="160.0" styleClass="start-create-label" text="Start creating one." textFill="#3157d4" />
 
-        <ScrollPane fx:id="scrollPane" layoutX="160.0" layoutY="250.0" prefHeight="442.0" prefWidth="1331.0"
-                    styleClass="scroll-pane">
+        <ScrollPane fx:id="scrollPane" layoutX="160.0" layoutY="250.0" prefHeight="442.0" prefWidth="1331.0" styleClass="scroll-pane">
             <content>
-                <VBox fx:id="taskCardContainer" spacing="10.0" styleClass="project-card-container"/>
+                <VBox fx:id="taskCardContainer" spacing="10.0" styleClass="project-card-container" />
             </content>
         </ScrollPane>
-
-        <ComboBox fx:id="sortByStatus" layoutX="1179.0" layoutY="135.0" prefHeight="36.0" prefWidth="160.0"
-                  promptText="Sort By Status" styleClass="combo-box"/>
-
-        <ComboBox fx:id="priorityDropdown" layoutX="1353.0" layoutY="135.0" prefHeight="36.0" prefWidth="134.0"
-                  promptText="Sort By" styleClass="combo-box"/>
-        <Label fx:id="noTasksFoundLabel" layoutX="709.0" layoutY="366.0" style="-fx-visible: false;"
-               styleClass="main-label" text="No tasks found"/>
-        <Button fx:id="resetBTN" layoutX="1072.0" layoutY="138.0" mnemonicParsing="false" onAction="#resetBtnClick"
-                prefHeight="39.0" prefWidth="95.0" styleClass="button" text=" Reset"/>
+        <Label fx:id="noTasksFoundLabel" layoutX="709.0" layoutY="366.0" style="-fx-visible: false;" styleClass="main-label" text="No Programs found" />
     </children>
 </AnchorPane>

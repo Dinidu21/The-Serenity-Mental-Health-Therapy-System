@@ -8,12 +8,8 @@ import com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskSuccessViewControll
 import com.dinidu.lk.pmt.controller.dashboard.task.TaskEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.TherapistDTO;
-import com.dinidu.lk.pmt.dto.ProgramsDTO;
+import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
-import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
-import com.dinidu.lk.pmt.utils.taskTypes.TaskPriority;
-import com.dinidu.lk.pmt.utils.taskTypes.TaskStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -34,52 +30,32 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
-
-
-public class TaskViewController extends BaseController implements Initializable {
+public class ProgramsViewController extends BaseController implements Initializable {
     public TextField searchBox;
     public ListView<String> suggestionList;
-    public Button createTaskBtn;
+    public Button createProgramsBtn;
     public ImageView searchImg;
     public Label noTaskLabel;
     public Label createLabel;
     public ScrollPane scrollPane;
     public VBox taskCardContainer;
-    public ComboBox<TaskStatus> sortByStatus;
-    public ComboBox<TaskPriority> priorityDropdown;
     public AnchorPane tasksPage;
     public Label noTasksFoundLabel;
-    public Button resetBTN;
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
     TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ProgramsBO);
+                    getBO(BOFactory.BOTypes.PROGRAM);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        resetBTN.setVisible(false);
         noTasksFoundLabel.setVisible(false);
-        sortByStatus.getItems().addAll(TaskStatus.values());
-        priorityDropdown.getItems().addAll(TaskPriority.values());
-
-        sortByStatus.setOnAction(event -> {
-            updateTaskView();
-            resetBTN.setVisible(true);
-        });
-
-        priorityDropdown.setOnAction(event -> {
-            updateTaskView();
-            resetBTN.setVisible(true);
-        });
-
         updateTaskView();
 
         searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -111,7 +87,7 @@ public class TaskViewController extends BaseController implements Initializable 
             if (selectedTaskName != null) {
                 searchBox.setText(selectedTaskName);
                 suggestionList.setVisible(false);
-                List<ProgramsDTO> filteredTasks;
+                List<TherapyProgramsDTO> filteredTasks;
                 try {
                     filteredTasks = programsBO.searchProgramsByName(selectedTaskName);
                 } catch (SQLException | ClassNotFoundException e) {
@@ -144,13 +120,13 @@ public class TaskViewController extends BaseController implements Initializable 
         System.out.println("User role: " + userRoleByUsername);
         if (userRoleByUsername != UserRole.ADMIN && userRoleByUsername != UserRole.RECEPTIONIST) {
             System.out.println("Access denied: Only Admin, Project Manager, or Product Owner can create Tasks.");
-            createTaskBtn.setDisable(true);
+            createProgramsBtn.setDisable(true);
             createLabel.setVisible(false);
         }
     }
 
     private void updateTaskView() {
-        List<ProgramsDTO> tasks;
+        List<TherapyProgramsDTO> tasks;
         try {
             tasks = programsBO.getAllPrograms();
         } catch (SQLException | ClassNotFoundException e) {
@@ -158,7 +134,7 @@ public class TaskViewController extends BaseController implements Initializable 
         }
         System.out.println("dto size:" + tasks.size());
 
-        for (ProgramsDTO task : tasks) {
+        for (TherapyProgramsDTO task : tasks) {
             System.out.println(task);
         }
 
@@ -171,29 +147,14 @@ public class TaskViewController extends BaseController implements Initializable 
             return;
         }
 
-        TaskStatus selectedStatus = sortByStatus.getValue();
-        TaskPriority selectedPriority = priorityDropdown.getValue();
-
         noTaskLabel.setVisible(false);
         createLabel.setVisible(false);
         noTasksFoundLabel.setVisible(false);
         taskCardContainer.setVisible(true);
-
-
-        List<ProgramsDTO> filteredTasks = tasks.stream().filter(task -> (selectedStatus == null || task.getStatus() == selectedStatus) && (selectedPriority == null || task.getPriority() == selectedPriority)).collect(Collectors.toList());
-
-        if (filteredTasks.isEmpty()) {
-            noTasksFoundLabel.setVisible(true);
-            System.out.println("No tasks found after filtering.");
-        } else {
-            noTasksFoundLabel.setVisible(false);
-        }
-
-        displayTasks(filteredTasks);
     }
 
     private void showSearchSuggestions(String query) {
-        List<ProgramsDTO> filteredTasks;
+        List<TherapyProgramsDTO> filteredTasks;
         try {
             filteredTasks = programsBO.searchProgramsByName(query);
         } catch (SQLException | ClassNotFoundException e) {
@@ -201,8 +162,9 @@ public class TaskViewController extends BaseController implements Initializable 
         }
         if (!filteredTasks.isEmpty()) {
             suggestionList.getItems().clear();
-            for (ProgramsDTO task : filteredTasks) {
-                suggestionList.getItems().add(task.getName().get());
+            for (TherapyProgramsDTO task : filteredTasks) {
+                System.out.println("Task name: " + task.getName());
+                suggestionList.getItems().add(task.getName());
             }
             suggestionList.setVisible(true);
         } else {
@@ -210,11 +172,11 @@ public class TaskViewController extends BaseController implements Initializable 
         }
     }
 
-    private void displayTasks(List<ProgramsDTO> tasks) {
+    private void displayTasks(List<TherapyProgramsDTO> tasks) {
         taskCardContainer.getChildren().clear();
         taskCardContainer.getStyleClass().add("task-card-container");
 
-        for (ProgramsDTO task : tasks) {
+        for (TherapyProgramsDTO task : tasks) {
             AnchorPane taskCard = new AnchorPane();
             taskCard.getStyleClass().add("task-card");
             taskCard.setPrefHeight(120.0);
@@ -229,20 +191,7 @@ public class TaskViewController extends BaseController implements Initializable 
 
             TherapistsViewController.backgroundColor = TherapistsViewController.generateRandomColor();
             taskIcon.setStyle(String.format("-fx-background-color: %s;", TherapistsViewController.backgroundColor));
-            String taskName = task.getName().get();
-            String[] nameParts = taskName.split(" ");
-            StringBuilder initials = new StringBuilder();
-
-            for (String part : nameParts) {
-                if (!part.isEmpty()) {
-                    initials.append(part.charAt(0));
-                }
-            }
-
-            String initialsString = initials.toString().toUpperCase();
-            if (initialsString.length() > 3) {
-                initialsString = initialsString.substring(0, 3);
-            }
+            String initialsString = getString(task);
 
             System.out.println("Initials: " + initialsString);
             Label initialLabel = new Label(initialsString);
@@ -253,12 +202,12 @@ public class TaskViewController extends BaseController implements Initializable 
             taskDetails.setLayoutX(100);
             taskDetails.setLayoutY(35);
 
-            Label nameLabel = new Label(task.getName().get());
+            Label nameLabel = new Label(task.getName());
             nameLabel.getStyleClass().add("task-name");
 
-            List<TherapistDTO> projectById;
+/*            List<TherapistDTO> projectById;
             try {
-                projectById = therapistsBO.getTherapistById(task.getProjectId().get());
+                projectById = therapistsBO.getTherapistById(task.getId().get());
                 if(projectById.isEmpty()){
                     System.out.println("Project not found");
                     CustomErrorAlert.showAlert("Not Found", "Project not found");
@@ -269,7 +218,7 @@ public class TaskViewController extends BaseController implements Initializable 
             Label idLabel = new Label(projectById.get(0).getFullName());
             idLabel.getStyleClass().add("project-name");
 
-            taskDetails.getChildren().addAll(nameLabel, idLabel);
+            taskDetails.getChildren().addAll(nameLabel, idLabel);*/
 
             HBox actionButtons = new HBox(10);
             actionButtons.setLayoutX(800);
@@ -293,7 +242,7 @@ public class TaskViewController extends BaseController implements Initializable 
         }
     }
 
-    private void openTask(ProgramsDTO task) {
+    private void openTask(TherapyProgramsDTO task) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/task/task-create-success-view.fxml"));
             Parent root = loader.load();
@@ -315,23 +264,33 @@ public class TaskViewController extends BaseController implements Initializable 
         }
     }
 
+    private static String getString(TherapyProgramsDTO task) {
+        String taskName = task.getName();
+        String[] nameParts = taskName.split(" ");
+        StringBuilder initials = new StringBuilder();
+
+        for (String part : nameParts) {
+            if (!part.isEmpty()) {
+                initials.append(part.charAt(0));
+            }
+        }
+
+        String initialsString = initials.toString().toUpperCase();
+        if (initialsString.length() > 3) {
+            initialsString = initialsString.substring(0, 3);
+        }
+        return initialsString;
+    }
+
     public void startCreateLabelOnClick(MouseEvent mouseEvent) {
         TherapistsViewController.bindNavigation(tasksPage, "/view/nav-buttons/task/task-create-view.fxml");
     }
 
-    public void createTaskOnClick(ActionEvent actionEvent) {
+    public void createProgramsOnClick(ActionEvent actionEvent) {
         TherapistsViewController.bindNavigation(tasksPage, "/view/nav-buttons/task/task-create-view.fxml");
     }
 
     public void searchTaskOnClick(ActionEvent actionEvent) {
         searchImg.setDisable(true);
-    }
-
-    public void resetBtnClick(ActionEvent actionEvent) {
-        sortByStatus.getSelectionModel().clearSelection();
-        priorityDropdown.getSelectionModel().clearSelection();
-        TherapistsViewController.bindNavigation(tasksPage, "/view/nav-buttons/program-view.fxml");
-        searchBox.clear();
-        updateTaskView();
     }
 }

@@ -54,7 +54,7 @@ public class ReportViewController implements Initializable {
                     getBO(BOFactory.BOTypes.USER);
     TherapistsBO projectBO =
             (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 //    ReportsBO reportBO =
 //            (ReportsBO) BOFactory.getInstance().
 //                    getBO(BOFactory.BOTypes.REPORTS);

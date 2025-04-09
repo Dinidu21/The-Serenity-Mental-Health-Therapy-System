@@ -1,6 +1,7 @@
 package com.dinidu.lk.pmt.entity;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 
 @Entity
 @Table(name = "therapy_programs")
@@ -8,14 +9,19 @@ public class TherapyPrograms {
 
     @Id
     @Column(name = "program_id", nullable = false)
-    private String programId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long programId;
 
-    @Column(name = "program_name", nullable = false)
+    @Setter
+    @Column(name = "program_name")
     private String programName;
 
+    @Setter
     @Column(name = "duration", nullable = false)
     private String duration;
 
+    @Setter
     @Column(name = "fee", nullable = false)
     private String fee;
+
 }

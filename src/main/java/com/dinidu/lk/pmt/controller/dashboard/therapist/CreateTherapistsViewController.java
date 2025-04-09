@@ -41,7 +41,7 @@ public class CreateTherapistsViewController {
 
     TherapistsBO projectsBO =
             (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     public void createTherapistsClick(ActionEvent actionEvent) {
         Auth.userAccessLevelCheck();

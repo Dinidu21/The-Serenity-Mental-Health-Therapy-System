@@ -93,11 +93,11 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
     TherapistsBO therapistsBO = (TherapistsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TherapistsBO);
+                    getBO(BOFactory.BOTypes.THERAPIST);
 
     ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.ProgramsBO);
+                    getBO(BOFactory.BOTypes.PROGRAM);
 /*
     TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
             BOFactory.getInstance().
@@ -520,7 +520,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
     public List<TeamAssignmentDTO> getTeamAssignmentsForProject(String projectId) {
         List<TeamAssignmentDTO> assignments = new ArrayList<>();
-        List<ProgramsDTO> tasks ;
+        List<TherapyProgramsDTO> tasks ;
         try {
             tasks = programsBO.getProgramByTherapistId(projectId);
         } catch (SQLException | ClassNotFoundException e) {
