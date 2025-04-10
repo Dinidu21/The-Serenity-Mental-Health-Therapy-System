@@ -83,22 +83,18 @@ public class ProgramsViewController extends BaseController implements Initializa
         });
 
         suggestionList.setOnMouseClicked(event -> {
-            String selectedTaskName = suggestionList.getSelectionModel().getSelectedItem();
-            if (selectedTaskName != null) {
-                searchBox.setText(selectedTaskName);
+            String selectedProgramName = suggestionList.getSelectionModel().getSelectedItem();
+            if (selectedProgramName != null) {
+                searchBox.setText(selectedProgramName);
                 suggestionList.setVisible(false);
-                List<TherapyProgramsDTO> filteredTasks;
+                List<TherapyProgramsDTO> filteredProgram;
                 try {
-                    filteredTasks = programsBO.searchProgramsByName(selectedTaskName);
+                    filteredProgram = programsBO.searchProgramsByName(selectedProgramName);
                 } catch (SQLException | ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-                if (filteredTasks.isEmpty()) {
-                    noTasksFoundLabel.setVisible(true);
-                } else {
-                    noTasksFoundLabel.setVisible(false);
-                }
-                displayTasks(filteredTasks);
+                noTasksFoundLabel.setVisible(filteredProgram.isEmpty());
+                displayPrograms(filteredProgram);
             }
         });
 
@@ -126,23 +122,27 @@ public class ProgramsViewController extends BaseController implements Initializa
     }
 
     private void updateTaskView() {
-        List<TherapyProgramsDTO> tasks;
+        List<TherapyProgramsDTO> dtos;
         try {
-            tasks = programsBO.getAllPrograms();
+            dtos = programsBO.getAllPrograms();
+            System.out.println("Therapy Programs fetched: " + dtos);
+            for (TherapyProgramsDTO dto : dtos) {
+                System.out.println("Therapy Program: " + dto.getName());
+            }
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("dto size:" + tasks.size());
+        System.out.println("dto size:" + dtos.size());
 
-        for (TherapyProgramsDTO task : tasks) {
+        for (TherapyProgramsDTO task : dtos) {
             System.out.println(task);
         }
 
-        if (tasks.isEmpty()) {
+        if (dtos.isEmpty()) {
             createLabel.setVisible(true);
             scrollPane.setVisible(false);
 
-            System.out.println("No tasks found.");
+            System.out.println("No dtos found.");
             taskCardContainer.setVisible(false);
             return;
         }
@@ -151,6 +151,7 @@ public class ProgramsViewController extends BaseController implements Initializa
         createLabel.setVisible(false);
         noTasksFoundLabel.setVisible(false);
         taskCardContainer.setVisible(true);
+        displayPrograms(dtos);
     }
 
     private void showSearchSuggestions(String query) {
@@ -172,11 +173,11 @@ public class ProgramsViewController extends BaseController implements Initializa
         }
     }
 
-    private void displayTasks(List<TherapyProgramsDTO> tasks) {
+    private void displayPrograms(List<TherapyProgramsDTO> programsDTOS) {
         taskCardContainer.getChildren().clear();
         taskCardContainer.getStyleClass().add("task-card-container");
 
-        for (TherapyProgramsDTO task : tasks) {
+        for (TherapyProgramsDTO task : programsDTOS) {
             AnchorPane taskCard = new AnchorPane();
             taskCard.getStyleClass().add("task-card");
             taskCard.setPrefHeight(120.0);
@@ -205,20 +206,11 @@ public class ProgramsViewController extends BaseController implements Initializa
             Label nameLabel = new Label(task.getName());
             nameLabel.getStyleClass().add("task-name");
 
-/*            List<TherapistDTO> projectById;
-            try {
-                projectById = therapistsBO.getTherapistById(task.getId().get());
-                if(projectById.isEmpty()){
-                    System.out.println("Project not found");
-                    CustomErrorAlert.showAlert("Not Found", "Project not found");
-                }
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            Label idLabel = new Label(projectById.get(0).getFullName());
+            Label idLabel = new Label("Duration: " + task.getDuration()); // 👈 correct
             idLabel.getStyleClass().add("project-name");
 
-            taskDetails.getChildren().addAll(nameLabel, idLabel);*/
+            taskDetails.getChildren().addAll(nameLabel, idLabel);
+
 
             HBox actionButtons = new HBox(10);
             actionButtons.setLayoutX(800);

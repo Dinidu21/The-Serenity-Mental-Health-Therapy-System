@@ -1,16 +1,14 @@
 package com.dinidu.lk.pmt.bo.custom.Impl;
 
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
-import com.dinidu.lk.pmt.config.FactoryConfiguration;
 import com.dinidu.lk.pmt.dao.DAOFactory;
 import com.dinidu.lk.pmt.dao.custom.ProgramsDAO;
 import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.entity.TherapyPrograms;
-import com.dinidu.lk.pmt.utils.EntityDTOMapper;
-import org.hibernate.query.Query;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramsBOImpl implements ProgramsBO {
@@ -60,8 +58,23 @@ public class ProgramsBOImpl implements ProgramsBO {
 
     @Override
     public List<TherapyProgramsDTO> getAllPrograms() throws SQLException, ClassNotFoundException {
-        return List.of();
+        List<TherapyPrograms> therapyPrograms = programsDAO.fetchAll();
+        System.out.println("Fetched all programs: " + therapyPrograms);
+
+        List<TherapyProgramsDTO> therapyProgramsDTOList = new ArrayList<>();
+
+        for (TherapyPrograms program : therapyPrograms) {
+            TherapyProgramsDTO dto = new TherapyProgramsDTO();
+            dto.setId(program.getProgramId());
+            dto.setName(program.getProgramName());
+            dto.setFee(program.getFee());
+            dto.setDuration(program.getDuration());
+            therapyProgramsDTOList.add(dto);
+        }
+        System.out.println("Converted TherapyPrograms to TherapyProgramsDTO: " + therapyProgramsDTOList);
+        return therapyProgramsDTOList;
     }
+
 
     @Override
     public boolean insertProgram(TherapyProgramsDTO thearpyTherapyProgramsDTO) throws SQLException, ClassNotFoundException {
@@ -85,41 +98,25 @@ public class ProgramsBOImpl implements ProgramsBO {
 
     @Override
     public List<TherapyProgramsDTO> searchProgramsByName(String query) throws SQLException, ClassNotFoundException {
-        return List.of();
+        List<TherapyPrograms> therapyPrograms = programsDAO.searchByName(query);
+        System.out.println("Fetched programs by name: " + therapyPrograms);
+
+        List<TherapyProgramsDTO> therapyProgramsDTOList = new ArrayList<>();
+
+        for (TherapyPrograms program : therapyPrograms) {
+            TherapyProgramsDTO dto = new TherapyProgramsDTO();
+            dto.setId(program.getProgramId());
+            dto.setName(program.getProgramName());
+            dto.setFee(program.getFee());
+            dto.setDuration(program.getDuration());
+            therapyProgramsDTOList.add(dto);
+        }
+        System.out.println("Converted TherapyPrograms to TherapyProgramsDTO: " + therapyProgramsDTOList);
+        return therapyProgramsDTOList;
     }
 
     @Override
     public long getLastProgramID() throws SQLException, ClassNotFoundException {
-        org.hibernate.Session session = null;
-        try {
-            // Obtain the Hibernate session
-            session = FactoryConfiguration.getInstance().getSession();
-
-            // Query to fetch the latest Program ID
-            String hql = "SELECT p.programId FROM TherapyPrograms p ORDER BY p.id DESC";
-            Query query = session.createQuery(hql);
-            query.setMaxResults(1); // Get only the latest record
-
-            // Execute the query and get the result
-            Object lastProgramID = query.uniqueResult();
-
-            // Handle null case and cast to long
-            if (lastProgramID == null) {
-                System.out.println("No Program ID found, returning 0");
-                return 0L; // Return 0 if no records exist (or throw an exception if preferred)
-            }
-
-            // Assuming programId is Long in the entity, safely convert to primitive long
-            System.out.println("Last Program ID is: " + lastProgramID);
-            return ((Long) lastProgramID).longValue(); // Safely unbox Long to long
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SQLException("Error fetching last Program ID from database.", e);
-        } finally {
-            if (session != null) {
-                session.close(); // Close session after use
-            }
-        }
+       return programsDAO.getLastProgramID();
     }
 }

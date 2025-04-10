@@ -20,6 +20,5 @@ public interface ProgramsBO extends SuperBO {
     boolean insertProgram(TherapyProgramsDTO therapyProgramsDTO) throws SQLException,ClassNotFoundException;
     List<TherapyProgramsDTO> getProgramByTherapistId(String s) throws SQLException,ClassNotFoundException;
     List<TherapyProgramsDTO> searchProgramsByName(String query) throws SQLException,ClassNotFoundException;
-
     long getLastProgramID()throws SQLException,ClassNotFoundException;
 }

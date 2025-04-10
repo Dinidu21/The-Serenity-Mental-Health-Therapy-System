@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class TherapyProgramsDTO {
     private LongProperty id = new SimpleLongProperty();
-    private StringProperty projectId = new SimpleStringProperty();
+    private StringProperty programId = new SimpleStringProperty();
     private StringProperty name = new SimpleStringProperty();
     private StringProperty fee = new SimpleStringProperty();
     private StringProperty duration = new SimpleStringProperty();
