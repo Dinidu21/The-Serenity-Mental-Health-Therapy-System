@@ -119,4 +119,30 @@ public class ProgramsBOImpl implements ProgramsBO {
     public long getLastProgramID() throws SQLException, ClassNotFoundException {
        return programsDAO.getLastProgramID();
     }
+
+    @Override
+    public List<TherapyProgramsDTO> getProgramById(long proId) throws SQLException, ClassNotFoundException {
+        TherapyPrograms programById = programsDAO.getProgramById(proId);
+        System.out.println("Fetched program by ID: " + programById);
+        List<TherapyProgramsDTO> therapyProgramsDTOList = new ArrayList<>();
+        if (programById != null) {
+            TherapyProgramsDTO dto = new TherapyProgramsDTO(
+                    programById.getProgramId(),
+                    programById.getProgramName(),
+                    programById.getDuration(),
+                    programById.getFee()
+            );
+            therapyProgramsDTOList.add(dto);
+        }
+
+        System.out.println("Converted TherapyPrograms to TherapyProgramsDTO: " + therapyProgramsDTOList);
+
+        if (therapyProgramsDTOList.isEmpty()) {
+            System.out.println("No program found with ID: " + proId);
+        } else {
+            System.out.println("Program found: " + therapyProgramsDTOList.get(0));
+        }
+        return therapyProgramsDTOList;
+    }
+
 }

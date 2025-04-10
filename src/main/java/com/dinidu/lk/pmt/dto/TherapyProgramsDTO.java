@@ -15,6 +15,12 @@ public class TherapyProgramsDTO {
     private StringProperty fee = new SimpleStringProperty();
     private StringProperty duration = new SimpleStringProperty();
 
+    public TherapyProgramsDTO(Long programId, String programName, String duration, String fee) {
+        this.programId.set(String.valueOf(programId));
+        this.name.set(programName);
+        this.duration.set(duration);
+        this.fee.set(fee);
+    }
 
     public LongProperty idProperty() {
         return id;

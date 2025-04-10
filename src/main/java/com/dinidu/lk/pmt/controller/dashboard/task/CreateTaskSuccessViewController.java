@@ -5,21 +5,17 @@ import com.dinidu.lk.pmt.bo.custom.*;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ChecklistDTO;
-import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistStatus;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
-import com.dinidu.lk.pmt.utils.listeners.ChecklistDeletionHandler;
-import com.dinidu.lk.pmt.utils.listeners.ChecklistUpdateListener;
 import com.dinidu.lk.pmt.utils.listeners.TaskDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.TaskUpdateListener;
-import com.dinidu.lk.pmt.utils.taskTypes.TaskPriority;
-import com.dinidu.lk.pmt.utils.taskTypes.TaskStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
+import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,12 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CreateTaskSuccessViewController implements Initializable, TaskDeletionHandler, TaskUpdateListener, ChecklistDeletionHandler, ChecklistUpdateListener {
-    public Label taskDescription;
-    public Label taskStartDate;
-    public Label taskDeadline;
-    public Label taskStatus;
-    public Label taskPriority;
+public class CreateTaskSuccessViewController implements Initializable, TaskDeletionHandler, TaskUpdateListener {
     public Button resetFilterBtn;
     public VBox checklistContainer;
     public ComboBox<ChecklistPriority> sortBy;
@@ -56,13 +47,15 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
     public Button createCheckListBtn;
     public TextField checklistSearch;
     public Label noChecklistLabel;
+    public Label ProgramFee;
+    public Label ProgramDuration;
+    public AnchorPane checklistViewPane;
     private double xOffset = 0;
     private double yOffset = 0;
     public ImageView moreIcon;
     public AnchorPane taskIcon;
     public AnchorPane sideBar;
     public AnchorPane mainBar;
-    public Label newIssue;
     public AnchorPane taskCreatedSuccessPage;
     public Label projectOwnerName;
     public Label teamCount;
@@ -70,17 +63,17 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
     public Label teamMember2;
     public Label teamMember3;
     public Label teamMember4;
-    public Label projectIdWith2Digits;
+    public Label ProgramIdWith2Digits;
     public ImageView projectOwnerImg;
     public ImageView teamMember1Img;
     public ImageView teamMember2Img;
     public ImageView teamMember3Img;
     public ImageView teamMember4Img;
     @FXML
-    private Label taskName;
+    private Label ProgramName;
     @FXML
-    private Label taskId;
-    private TherapyProgramsDTO therapyProgramsDTO;
+    private Label ProgramId;
+    private TherapyProgramsDTO tasksDTO;
     static TherapyProgramsDTO current_Task;
 
     UserBO userBO= (UserBO)
@@ -102,9 +95,9 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         noChecklistLabel.setVisible(false);
         TherapyProgramsDTO activeTask = CreateTaskSuccessViewController.current_Task;
         if (activeTask != null) {
-            this.therapyProgramsDTO = activeTask;
-            setTaskData(therapyProgramsDTO);
-            System.out.println("Active task is set, taskDTO is: " + therapyProgramsDTO);
+            this.tasksDTO = activeTask;
+            setTaskData(tasksDTO);
+            System.out.println("Active task is set, taskDTO is: " + tasksDTO);
         } else {
             System.out.println("No active task is set, taskDTO remains null");
         }
@@ -112,15 +105,11 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         resetFilterBtn.setVisible(false);
         colorSetter();
         userAccessControl();
-        sortBy.getItems().setAll(ChecklistPriority.values());
-        filterStatus.getItems().setAll(ChecklistStatus.values());
 
         sortBy.setValue(null);
         filterStatus.setValue(null);
 
-
-
-        if (therapyProgramsDTO == null) {
+        if (tasksDTO == null) {
             System.out.println("Error: taskDTO is null");
         }
 
@@ -132,126 +121,54 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
             return;
         }
 
-/*        System.out.println("Now in set Task data method : " + programsDTO);
-        System.out.println("Here is the start date: " + programsDTO.getCreatedAt().get());
+        System.out.println("Now in set Task data method : " + therapyProgramsDTO);
 
-        if (programsDTO.getId() == null) {
+        if (therapyProgramsDTO.getProgramId() == null) {
             return;
         }
 
-        this.programsDTO = programsDTO;
-        current_Task = programsDTO;
+        this.tasksDTO = therapyProgramsDTO;
+        current_Task = therapyProgramsDTO;
         System.out.println("Static current task: " + current_Task);
 
-        taskName.textProperty().bind(programsDTO.nameProperty());
-        taskDescription.textProperty().bind(programsDTO.descriptionProperty());
+        ProgramName.textProperty().bind(therapyProgramsDTO.nameProperty());
+        ProgramFee.textProperty().bind(therapyProgramsDTO.feeProperty());
+        ProgramDuration.textProperty().bind(therapyProgramsDTO.durationProperty());
+        ProgramId.textProperty().bind(therapyProgramsDTO.getProgramId());
+
+        System.out.println("\nInitializing task data: " + therapyProgramsDTO);
+        System.out.println("Program ID: " + therapyProgramsDTO.getProgramId());
+        System.out.println("Program Fee: " + therapyProgramsDTO.getFee());
+        System.out.println("Program Duration: " + therapyProgramsDTO.getDuration());
+        System.out.println("Program Name: " + therapyProgramsDTO.getName() +"\n");
 
 
-        taskStatus.textProperty().bind(Bindings.convert(programsDTO.statusProperty()));
-        taskPriority.textProperty().bind(Bindings.convert(programsDTO.priorityProperty()));
-        String projectId = programsDTO.getProjectId().get();*/
-        
-        List<TherapistDTO> project = List.of();
-/*        try {
-            project = therapistsBO.getTherapistById(projectId);
+        long id = therapyProgramsDTO.getId();
+        System.out.println("Program ID: " + id);
+        if (id == 0 || id == -1) {
+            System.out.println("Program ID is null");
+            return;
+        }
+
+        List<TherapyProgramsDTO> therapyProgramsDTOS;
+        try {
+            therapyProgramsDTOS = programsBO.getProgramById(id);
+            System.out.println("\nFetched program by ID In Controller: " + therapyProgramsDTOS);
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }*/
+        }
         String userFullNameById = "";
 
-        if (!project.isEmpty()) {
-            TherapistDTO therapistDTO = project.get(0);
-            System.out.println("Created By: " + therapistDTO.getCreatedBy());
-            taskId.setText("Project Name : " + therapistDTO.getFullName());
-            System.out.println("Project name: " + therapistDTO.getFullName());
-            String projectIdWith2DigitsString = project.get(0).getId().split("-")[0];
-            projectIdWith2Digits.setText(projectIdWith2DigitsString);
-            System.out.println("Project ID: " + projectIdWith2DigitsString);
-            Image profilePic;
-            try {
-                profilePic = userBO.getUserProfilePicByUserId(therapistDTO.getCreatedBy());
-            } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            projectOwnerImg.setImage(profilePic);
-            try {
-                userFullNameById = userBO.getUserFullNameById(therapistDTO.getCreatedBy());
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            System.out.println(userFullNameById);
+        if (!therapyProgramsDTOS.isEmpty()) {
+            TherapyProgramsDTO projectDTO = therapyProgramsDTOS.get(0);
+            System.out.println("Project DTO: " + projectDTO);
+            ProgramId.textProperty().bind(projectDTO.getProgramId());
+            ProgramIdWith2Digits.textProperty().bind(projectDTO.getProgramId());
         } else {
             System.out.println("No project found with the given ID.");
         }
-
         projectOwnerName.setText(" " + userFullNameById);
-        List<TherapyProgramsDTO> tasks;
-/*        try {
-            tasks = programsBO.getProgramByTherapistId(programsDTO).getId().get());
-
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }*/
-        Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
-        ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
-        int teamMemberCount = 0;
-
- /*       for (ProgramsDTO task : tasks) {
-            if (teamMemberCount >= 4) break;
-            List<TeamAssignmentDTO> assignments;
-            try {
-                assignments = teamAssignmentBO.getAssignmentsByTaskId(task.getId().get());
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            for (TeamAssignmentDTO assignment : assignments) {
-                if (teamMemberCount >= 4) break;
-                Long assignedTo = assignment.getUserId();
-
-                if (assignedTo != null) {
-                    String memberName;
-                    try {
-                        memberName = userBO.getUserFullNameById(assignedTo);
-                    } catch (SQLException | ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Image memberProfilePic;
-                    try {
-                        memberProfilePic = userBO.getUserProfilePicByUserId(assignedTo);
-                    } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    teamMemberLabels[teamMemberCount].setText(memberName);
-                    teamMemberImages[teamMemberCount].setImage(memberProfilePic);
-                    teamMemberCount++;
-                }
-            }
-        }*/
-
-        teamCount.setText("" + teamMemberCount);
     }
-
-
-    private void updateStatusStyle(TaskStatus status) {
-        taskStatus.getStyleClass().clear();
-        switch (status) {
-            case NOT_STARTED -> taskStatus.getStyleClass().add("status-planned");
-            case IN_PROGRESS -> taskStatus.getStyleClass().add("status-in-progress");
-            case COMPLETED -> taskStatus.getStyleClass().add("status-completed");
-        }
-    }
-
-    private void updatePriorityStyle(TaskPriority priority) {
-        taskPriority.getStyleClass().clear();
-        switch (priority) {
-            case HIGH -> taskPriority.getStyleClass().add("priority-high");
-            case MEDIUM -> taskPriority.getStyleClass().add("priority-medium");
-            case LOW -> taskPriority.getStyleClass().add("priority-low");
-        }
-    }
-
     @Override
     public void onTaskUpdated(TherapyProgramsDTO updatedTask) {
         setTaskData(updatedTask);
@@ -323,17 +240,13 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
             CustomErrorAlert.showAlert("Error", "Failed to load the task view.");
         }
     }
-
-    public void newIssueClick() {
-        TherapistsViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/issue/issue-create-view.fxml");
-    }
-
+    
     private void colorSetter() {
         if (TherapistsViewController.backgroundColor == null) {
             System.out.println("Project background color is null");
         }
         taskIcon.setStyle("-fx-background-color: " + TherapistsViewController.backgroundColor + ";");
-        projectIdWith2Digits.setStyle("-fx-text-fill: " + TherapistsViewController.backgroundColor + ";");
+        ProgramIdWith2Digits.setStyle("-fx-text-fill: " + TherapistsViewController.backgroundColor + ";");
     }
 
     private void userAccessControl() {
@@ -361,17 +274,19 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
         }
     }
 
-    @Override
-    public void onChecklistDeleted() {
-
+    public void updateTaskView(TherapyProgramsDTO therapyProgramsDTO) {
+        System.out.println("Updating task view with new data: " + therapyProgramsDTO);
+        if (therapyProgramsDTO == null) {
+            System.out.println("Error: therapyProgramsDTO is null");
+            return;
+        }
+        setTaskData(therapyProgramsDTO);
     }
 
-    @Override
-    public void onChecklistUpdated(ChecklistDTO updatedChecklist) {
-
+    public void createCheckList(ActionEvent actionEvent) {
     }
 
-    public void updateTaskView(TherapyProgramsDTO task) {
+    public void resetClick(ActionEvent actionEvent) {
 
     }
 }

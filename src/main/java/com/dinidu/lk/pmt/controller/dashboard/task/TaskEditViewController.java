@@ -195,7 +195,7 @@ public class TaskEditViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        List<UserDTO> allActiveMembers;
+/*        List<UserDTO> allActiveMembers;
         try {
             allActiveMembers = queryDAO.getAllActiveMembersNames();
         } catch (SQLException | ClassNotFoundException e) {
@@ -208,7 +208,7 @@ public class TaskEditViewController implements Initializable {
 
         newMembersComboBox.setItems(memberNames);
         TaskStatusCombo.getItems().setAll(TaskStatus.values());
-        TaskPriorityCombo.getItems().setAll(TaskPriority.values());
+        TaskPriorityCombo.getItems().setAll(TaskPriority.values());*/
 
         if (currentTask == null) {
             List<TherapyProgramsDTO> tasks;

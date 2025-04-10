@@ -21,4 +21,5 @@ public interface ProgramsBO extends SuperBO {
     List<TherapyProgramsDTO> getProgramByTherapistId(String s) throws SQLException,ClassNotFoundException;
     List<TherapyProgramsDTO> searchProgramsByName(String query) throws SQLException,ClassNotFoundException;
     long getLastProgramID()throws SQLException,ClassNotFoundException;
+    List<TherapyProgramsDTO> getProgramById(long proId) throws SQLException,ClassNotFoundException;
 }

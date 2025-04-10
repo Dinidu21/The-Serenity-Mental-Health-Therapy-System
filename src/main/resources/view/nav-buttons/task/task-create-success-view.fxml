@@ -14,181 +14,122 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="taskCreatedSuccessPage" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;"
-            stylesheets="@../../../styles/dashboard/task/task-create-success-view.css"
-            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskSuccessViewController">
+<AnchorPane fx:id="taskCreatedSuccessPage" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" stylesheets="@../../../styles/dashboard/task/task-create-success-view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskSuccessViewController">
     <children>
-        <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="159.0" prefWidth="1066.0"
-                    styleClass="card-container">
+        <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="159.0" prefWidth="1066.0" styleClass="card-container">
             <children>
-                <Label fx:id="taskName" layoutX="35.0" layoutY="14.0" prefHeight="103.0" prefWidth="662.0"
-                       styleClass="main-label">
+                <Label fx:id="ProgramName" layoutX="35.0" layoutY="14.0" prefHeight="103.0" prefWidth="662.0" styleClass="main-label" text="Program Name">
                     <font>
-                        <Font size="46.0"/>
-                    </font>
-                </Label>
-                <Label fx:id="newIssue" layoutX="895.0" layoutY="54.0" onMouseClicked="#newIssueClick" prefHeight="28.0"
-                       prefWidth="80.0" style="-fx-text-fill: #295fb1; -fx-cursor: hand;" styleClass="new-issue-label"
-                       text="New Issue">
-                    <font>
-                        <Font name="Poppins Regular" size="16.0"/>
+                        <Font size="46.0" />
                     </font>
                 </Label>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="sideBar" layoutX="1138.0" layoutY="37.0" prefHeight="641.0" prefWidth="378.0"
-                    styleClass="card-container">
+        <AnchorPane fx:id="sideBar" layoutX="1138.0" layoutY="37.0" prefHeight="641.0" prefWidth="378.0" styleClass="card-container">
             <children>
-                <AnchorPane fx:id="taskIcon" layoutX="91.0" layoutY="168.0" prefHeight="38.0" prefWidth="178.0"
-                            style="-fx-background-radius: 9; -fx-background-color: lightgray;"/>
-                <Label fx:id="taskId" layoutX="26.0" layoutY="232.0" prefHeight="58.0" prefWidth="298.0"
-                       style="-fx-wrap-text: true;" styleClass="mini-label-project-name" text="s">
+                <AnchorPane fx:id="taskIcon" layoutX="91.0" layoutY="168.0" prefHeight="38.0" prefWidth="178.0" style="-fx-background-radius: 9; -fx-background-color: lightgray;" />
+                <Label fx:id="ProgramId" layoutX="116.0" layoutY="232.0" prefHeight="58.0" prefWidth="218.0" style="-fx-wrap-text: true;" styleClass="mini-label-project-name" text="Full Program ID">
                     <font>
-                        <Font name="Poppins Regular" size="16.0"/>
+                        <Font name="Poppins Regular" size="16.0" />
                     </font>
                 </Label>
-                <ImageView fx:id="moreIcon" fitHeight="22.0" fitWidth="29.0" layoutX="313.0" layoutY="13.0"
-                           onMouseClicked="#moreIconOnclick" pickOnBounds="true" preserveRatio="true"
-                           style="-fx-cursor: hand;">
+                <ImageView fx:id="moreIcon" fitHeight="22.0" fitWidth="29.0" layoutX="313.0" layoutY="13.0" onMouseClicked="#moreIconOnclick" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                     <image>
-                        <Image url="@../../../asserts/icons/more.png"/>
+                        <Image url="@../../../asserts/icons/more.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="26.0" layoutY="309.0" styleClass="mini-label" text="About"/>
-                <AnchorPane layoutX="91.0" layoutY="23.0" prefHeight="158.0" prefWidth="178.0"
-                            style="-fx-background-color: #2d3436; -fx-background-radius: 9;">
+                <Label layoutX="26.0" layoutY="309.0" prefHeight="38.0" prefWidth="49.0" styleClass="mini-label" text="Fee :" />
+                <AnchorPane layoutX="91.0" layoutY="23.0" prefHeight="158.0" prefWidth="178.0" style="-fx-background-color: #2d3436; -fx-background-radius: 9;">
                     <children>
-                        <Label fx:id="projectIdWith2Digits" layoutX="-1.0" layoutY="-1.0" prefHeight="158.0"
-                               prefWidth="178.0" styleClass="project-name-label"/>
+                        <Label fx:id="ProgramIdWith2Digits" layoutX="-1.0" layoutY="-1.0" prefHeight="158.0" prefWidth="178.0" styleClass="project-name-label" />
                     </children>
                 </AnchorPane>
-                <Label fx:id="taskDescription" layoutX="26.0" layoutY="337.0" prefHeight="51.0" prefWidth="310.0"
-                       style="-fx-wrap-text: true;" styleClass="project-description-label"/>
-                <Label fx:id="taskStartDate" layoutX="99.0" layoutY="390.0" prefHeight="38.0" prefWidth="218.0"
-                       styleClass="project-start-date-label">
+                <Label fx:id="ProgramFee" layoutX="26.0" layoutY="337.0" prefHeight="51.0" prefWidth="310.0" style="-fx-wrap-text: true;" styleClass="mini-label-project-name" />
+                <Label fx:id="ProgramDuration" layoutX="116.0" layoutY="374.0" prefHeight="47.0" prefWidth="218.0" styleClass="mini-label-project-name" text="Duration">
                     <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </padding>
+               <font>
+                  <Font size="25.0" />
+               </font>
                 </Label>
-                <Label layoutX="26.0" layoutY="399.0" styleClass="mini-label" text="Start On  : "/>
-                <Label fx:id="taskDeadline" layoutX="99.0" layoutY="435.0" prefHeight="38.0" prefWidth="218.0"
-                       styleClass="project-end-date-label">
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                    </padding>
-                </Label>
-                <Label layoutX="26.0" layoutY="444.0" styleClass="mini-label" text="Deadline :"/>
-                <Label fx:id="taskStatus" layoutX="99.0" layoutY="474.0" prefHeight="38.0" prefWidth="218.0"
-                       text="Label">
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                    </padding>
-                </Label>
-                <Label layoutX="26.0" layoutY="483.0" styleClass="mini-label" text="Status     :"/>
-                <Label layoutX="26.0" layoutY="521.0" styleClass="mini-label" text="Priority   :"/>
-                <Label fx:id="taskPriority" layoutX="99.0" layoutY="512.0" prefHeight="38.0" prefWidth="218.0"
-                       text="Label">
-                    <padding>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
-                    </padding>
-                </Label>
+            <Label layoutX="26.0" layoutY="388.0" styleClass="mini-label" text="Duration :" />
+            <Label layoutX="23.0" layoutY="251.0" styleClass="mini-label" text="Program ID:" />
             </children>
         </AnchorPane>
         <AnchorPane layoutX="718.0" layoutY="210.0" prefHeight="466.0" prefWidth="404.0" styleClass="card-container">
             <children>
-                <Label layoutX="14.0" layoutY="14.0" styleClass="mini-label" text="Team"/>
-                <Label fx:id="teamCount" layoutX="62.0" layoutY="14.0" prefHeight="22.0" prefWidth="38.0" text="0"
-                       textFill="#615e5e">
+                <Label layoutX="14.0" layoutY="14.0" styleClass="mini-label" text="Team" />
+                <Label fx:id="teamCount" layoutX="62.0" layoutY="14.0" prefHeight="22.0" prefWidth="38.0" text="0" textFill="#615e5e">
                     <font>
-                        <Font name="Poppins Bold" size="15.0"/>
+                        <Font name="Poppins Bold" size="15.0" />
                     </font>
                 </Label>
-                <Label layoutX="14.0" layoutY="68.0" prefHeight="19.0" prefWidth="151.0" styleClass="sub-label"
-                       text="P R O J E C T   O W N E R"/>
-                <Label layoutX="18.0" layoutY="147.0" prefHeight="18.0" prefWidth="142.0" styleClass="sub-label"
-                       text="T E A M"/>
-                <Label fx:id="projectOwnerName" layoutX="18.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0"
-                       styleClass="team-label">
+                <Label layoutX="14.0" layoutY="68.0" prefHeight="19.0" prefWidth="151.0" styleClass="sub-label" text="P R O J E C T   O W N E R" />
+                <Label layoutX="18.0" layoutY="147.0" prefHeight="18.0" prefWidth="142.0" styleClass="sub-label" text="T E A M" />
+                <Label fx:id="projectOwnerName" layoutX="18.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                     <graphic>
-                        <ImageView fx:id="projectOwnerImg" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                   preserveRatio="true"/>
+                        <ImageView fx:id="projectOwnerImg" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                     </graphic>
                 </Label>
                 <VBox layoutX="20.0" layoutY="175.0" prefHeight="199.0" prefWidth="342.0">
                     <children>
                         <Label fx:id="teamMember1" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember1Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember1Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="teamMember2" layoutX="10.0" layoutY="10.0" prefHeight="42.0" prefWidth="342.0"
-                               styleClass="team-label">
+                        <Label fx:id="teamMember2" layoutX="10.0" layoutY="10.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember2Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember2Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="teamMember3" layoutX="10.0" layoutY="52.0" prefHeight="42.0" prefWidth="342.0"
-                               styleClass="team-label">
+                        <Label fx:id="teamMember3" layoutX="10.0" layoutY="52.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember3Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember3Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
-                        <Label fx:id="teamMember4" layoutX="10.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0"
-                               styleClass="team-label">
+                        <Label fx:id="teamMember4" layoutX="10.0" layoutY="95.0" prefHeight="42.0" prefWidth="342.0" styleClass="team-label">
                             <graphic>
-                                <ImageView fx:id="teamMember4Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true"
-                                           preserveRatio="true"/>
+                                <ImageView fx:id="teamMember4Img" fitHeight="42.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true" />
                             </graphic>
                             <VBox.margin>
-                                <Insets bottom="10.0"/>
+                                <Insets bottom="10.0" />
                             </VBox.margin>
                         </Label>
                     </children>
                 </VBox>
             </children>
         </AnchorPane>
-        <AnchorPane fx:id="checklistViewPane" layoutX="58.0" layoutY="210.0" prefHeight="466.0" prefWidth="631.0"
-                    styleClass="card-container">
+        <AnchorPane fx:id="checklistViewPane" layoutX="58.0" layoutY="210.0" prefHeight="466.0" prefWidth="631.0" styleClass="card-container">
             <children>
                 <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" spacing="15">
-                    <Label styleClass="main-label" text="Checklist"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <TextField fx:id="checklistSearch" prefHeight="38.0" prefWidth="254.0" promptText="Search items"
-                               styleClass="search-field"/>
-                    <Button fx:id="createCheckListBtn" onAction="#createCheckList" prefHeight="41.0" prefWidth="163.0"
-                            styleClass="button" text="Create Checklist"/>
+                    <Label styleClass="main-label" text="Checklist" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="checklistSearch" prefHeight="38.0" prefWidth="254.0" promptText="Search items" styleClass="search-field" />
+                    <Button fx:id="createCheckListBtn" onAction="#createCheckList" prefHeight="41.0" prefWidth="163.0" styleClass="button" text="Create Checklist" />
                 </HBox>
                 <HBox layoutX="20.0" layoutY="80.0" prefHeight="47.0" prefWidth="561.0" spacing="10">
-                    <ComboBox fx:id="filterStatus" prefHeight="47.0" prefWidth="183.0" promptText="Sort By Status"
-                              styleClass="combo-box"/>
-                    <ComboBox fx:id="sortBy" prefHeight="47.0" prefWidth="176.0" promptText="Sort By Priority"
-                              styleClass="combo-box"/>
-                    <Region prefHeight="47.0" prefWidth="64.0" HBox.hgrow="ALWAYS"/>
-                    <Button fx:id="resetFilterBtn" onAction="#resetClick" prefHeight="42.0" prefWidth="96.0"
-                            styleClass="button" text="Reset"/>
+                    <ComboBox fx:id="filterStatus" prefHeight="47.0" prefWidth="183.0" promptText="Sort By Status" styleClass="combo-box" />
+                    <ComboBox fx:id="sortBy" prefHeight="47.0" prefWidth="176.0" promptText="Sort By Priority" styleClass="combo-box" />
+                    <Region prefHeight="47.0" prefWidth="64.0" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="resetFilterBtn" onAction="#resetClick" prefHeight="42.0" prefWidth="96.0" styleClass="button" text="Reset" />
                 </HBox>
-                <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="130.0" prefHeight="293.0" prefWidth="582.0"
-                            styleClass="scroll-pane">
+                <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="130.0" prefHeight="293.0" prefWidth="582.0" styleClass="scroll-pane">
                     <content>
-                        <VBox fx:id="checklistContainer" prefHeight="286.0" prefWidth="578.0" spacing="10"
-                              styleClass="project-card-container">
-                            <Label fx:id="noChecklistLabel" alignment="CENTER" prefHeight="62.0" prefWidth="538.0"
-                                   styleClass="no-checklist-label" text="No checklist items available.">
+                        <VBox fx:id="checklistContainer" prefHeight="286.0" prefWidth="578.0" spacing="10" styleClass="project-card-container">
+                            <Label fx:id="noChecklistLabel" alignment="CENTER" prefHeight="62.0" prefWidth="538.0" styleClass="no-checklist-label" text="No checklist items available.">
                                 <VBox.margin>
-                                    <Insets/>
+                                    <Insets />
                                 </VBox.margin>
                             </Label>
                         </VBox>

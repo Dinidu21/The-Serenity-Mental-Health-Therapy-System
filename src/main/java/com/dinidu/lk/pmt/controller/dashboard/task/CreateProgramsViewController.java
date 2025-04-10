@@ -7,20 +7,16 @@ import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
-import com.dinidu.lk.pmt.dto.UserDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class CreateProgramsViewController {
 
@@ -38,32 +34,6 @@ public class CreateProgramsViewController {
     QueryDAO queryDAO = new QueryDAOImpl();
 
     public void initialize() {
-        List<UserDTO> allActiveMembers;
-        try {
-            allActiveMembers = queryDAO.getAllActiveMembersNames();
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        List<TherapistDTO> allProjects;
-        try {
-            allProjects = therapistsBO.getAllTherapists();
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        ObservableList<String> memberNames = FXCollections.observableArrayList();
-        ObservableList<String> projectNames = FXCollections.observableArrayList();
-
-        for (UserDTO member : allActiveMembers) {
-            memberNames.add(member.getFullName());
-        }
-
-        assert allProjects != null;
-        for (TherapistDTO therapistDTO : allProjects) {
-            projectNames.add(therapistDTO.getFullName());
-        }
-
         setProgramIDForUI();
         selectProgramDurationComboBox.setItems(FXCollections.observableArrayList("1 weeks", "2 weeks", "3 weeks", "1 Month", "2 Months", "3 Months", "4 Months", "5 Months", "6 Months"));
     }

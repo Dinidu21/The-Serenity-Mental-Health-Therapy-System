@@ -147,4 +147,30 @@ public class ProgramsDAOImpl implements ProgramsDAO {
             }
         }
     }
+
+    @Override
+    public TherapyPrograms getProgramById(long proId) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        TherapyPrograms program = null;
+
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            session.beginTransaction();
+
+            String hql = "FROM TherapyPrograms WHERE programId = :id";
+            Query<TherapyPrograms> query = session.createQuery(hql, TherapyPrograms.class);
+            query.setParameter("id", proId);
+
+            program = query.uniqueResult();
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+
+        return program;
+    }
 }
