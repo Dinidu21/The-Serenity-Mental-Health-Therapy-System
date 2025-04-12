@@ -1,8 +1,12 @@
 package com.dinidu.lk.pmt.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "patients")
 public class Patients {
     @Id
