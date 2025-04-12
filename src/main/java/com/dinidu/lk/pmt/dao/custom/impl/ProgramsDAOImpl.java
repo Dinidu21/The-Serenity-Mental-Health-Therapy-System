@@ -4,6 +4,7 @@ import com.dinidu.lk.pmt.config.FactoryConfiguration;
 import com.dinidu.lk.pmt.dao.custom.ProgramsDAO;
 import com.dinidu.lk.pmt.entity.TherapyPrograms;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
+import javafx.beans.property.StringProperty;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -21,7 +22,30 @@ public class ProgramsDAOImpl implements ProgramsDAO {
 
     @Override
     public boolean update(TherapyPrograms dto) throws SQLException, ClassNotFoundException {
-        return false;
+        org.hibernate.Session session = null;
+        org.hibernate.Transaction transaction = null;
+        try {
+            if (dto == null || dto.getProgramId() == null) {
+                CustomErrorAlert.showAlert("Error", "TherapyPrograms object or its ID is null.");
+                return false;
+            }
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            session.merge(dto);
+            transaction.commit();
+            System.out.println("TherapyPrograms updated successfully: " + dto.getProgramName());
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw new SQLException("Error updating TherapyPrograms in database.", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
@@ -43,7 +67,7 @@ public class ProgramsDAOImpl implements ProgramsDAO {
             throw new SQLException("Error inserting program into the database.");
         } finally {
             if (session != null) {
-                session.close();  // Close session after use
+                session.close();
             }
         }
     }
@@ -173,4 +197,29 @@ public class ProgramsDAOImpl implements ProgramsDAO {
 
         return program;
     }
+
+    @Override
+    public TherapyPrograms getById(Long programId) throws SQLException, ClassNotFoundException {
+        org.hibernate.Session session = null;
+        try {
+            // Obtain the Hibernate session
+            session = FactoryConfiguration.getInstance().getSession();
+
+            // Fetch the entity by ID
+            TherapyPrograms entity = session.get(TherapyPrograms.class, programId);
+
+            // Optional: Log result
+            System.out.println("Fetched TherapyPrograms: " + entity);
+            return entity;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error fetching TherapyPrograms with ID " + programId, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
 }

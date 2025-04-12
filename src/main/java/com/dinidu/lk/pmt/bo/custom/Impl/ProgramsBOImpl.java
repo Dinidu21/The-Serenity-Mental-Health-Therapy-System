@@ -53,9 +53,27 @@ public class ProgramsBOImpl implements ProgramsBO {
 
     @Override
     public void updateProgram(TherapyProgramsDTO currentTask) throws SQLException, ClassNotFoundException {
+        System.out.println("Updating program: " + currentTask);
+        System.out.println("Program ID: " + currentTask.getProgramId());
+        System.out.println("Program Name: " + currentTask.getName());
+        System.out.println("Program Fee: " + currentTask.getFee());
+        System.out.println("Program Duration: " + currentTask.getDuration());
 
+        // Retrieve the existing entity by programId
+
+        TherapyPrograms entity = programsDAO.getById(currentTask.getId());
+        if (entity == null) {
+            throw new SQLException("TherapyPrograms with ID " + currentTask.getProgramId() + " not found.");
+        }
+
+        // Update the entity's fields with DTO values
+        entity.setProgramName(currentTask.getName());
+        entity.setFee(currentTask.getFee());
+        entity.setDuration(currentTask.getDuration());
+
+        System.out.println("TherapyPrograms object updated: " + entity);
+        programsDAO.update(entity);
     }
-
     @Override
     public List<TherapyProgramsDTO> getAllPrograms() throws SQLException, ClassNotFoundException {
         List<TherapyPrograms> therapyPrograms = programsDAO.fetchAll();

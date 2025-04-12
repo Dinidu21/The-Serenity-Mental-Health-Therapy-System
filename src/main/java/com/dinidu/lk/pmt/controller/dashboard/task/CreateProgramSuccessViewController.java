@@ -14,7 +14,6 @@ import com.dinidu.lk.pmt.utils.listeners.TaskDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.TaskUpdateListener;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,7 +30,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -39,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CreateTaskSuccessViewController implements Initializable, TaskDeletionHandler, TaskUpdateListener {
+public class CreateProgramSuccessViewController implements Initializable, TaskDeletionHandler, TaskUpdateListener {
     public Button resetFilterBtn;
     public VBox checklistContainer;
     public ComboBox<ChecklistPriority> sortBy;
@@ -93,7 +91,7 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         noChecklistLabel.setVisible(false);
-        TherapyProgramsDTO activeTask = CreateTaskSuccessViewController.current_Task;
+        TherapyProgramsDTO activeTask = CreateProgramSuccessViewController.current_Task;
         if (activeTask != null) {
             this.tasksDTO = activeTask;
             setTaskData(tasksDTO);
@@ -187,7 +185,7 @@ public class CreateTaskSuccessViewController implements Initializable, TaskDelet
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            TaskEditViewController controller = loader.getController();
+            ProgramEditViewController controller = loader.getController();
 
             controller.setDeletionHandler(this);
 

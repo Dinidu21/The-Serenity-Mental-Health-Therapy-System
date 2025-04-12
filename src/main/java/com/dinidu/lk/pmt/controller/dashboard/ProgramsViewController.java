@@ -4,8 +4,8 @@ import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.controller.BaseController;
-import com.dinidu.lk.pmt.controller.dashboard.task.CreateTaskSuccessViewController;
-import com.dinidu.lk.pmt.controller.dashboard.task.TaskEditViewController;
+import com.dinidu.lk.pmt.controller.dashboard.task.CreateProgramSuccessViewController;
+import com.dinidu.lk.pmt.controller.dashboard.task.ProgramEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
@@ -239,14 +239,14 @@ public class ProgramsViewController extends BaseController implements Initializa
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/task/task-create-success-view.fxml"));
             Parent root = loader.load();
 
-            CreateTaskSuccessViewController controller = loader.getController();
+            CreateProgramSuccessViewController controller = loader.getController();
             controller.updateTaskView(task);
 
-            TaskEditViewController.setTask(task);
+            ProgramEditViewController.setTask(task);
 
             FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/nav-buttons/task/task-edit-view.fxml"));
             Parent editRoot = editLoader.load();
-            TaskEditViewController editController = editLoader.getController();
+            ProgramEditViewController editController = editLoader.getController();
 
             editController.setUpdateListener(controller);
 
