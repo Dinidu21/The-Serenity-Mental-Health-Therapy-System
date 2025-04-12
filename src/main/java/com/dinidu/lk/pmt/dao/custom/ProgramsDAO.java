@@ -12,4 +12,5 @@ public interface ProgramsDAO extends CrudDAO<TherapyPrograms> {
     long getLastProgramID() throws SQLException, ClassNotFoundException;
     TherapyPrograms getProgramById(long proId) throws SQLException, ClassNotFoundException;
     TherapyPrograms getById(Long programId) throws SQLException, ClassNotFoundException;
+    boolean deleteProgram(long id) throws SQLException, ClassNotFoundException;
 }

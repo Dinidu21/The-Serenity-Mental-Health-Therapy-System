@@ -222,4 +222,32 @@ public class ProgramsDAOImpl implements ProgramsDAO {
         }
     }
 
+    @Override
+    public boolean deleteProgram(long id) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            TherapyPrograms entity = session.get(TherapyPrograms.class, id);
+            if (entity == null) {
+                System.out.println("TherapyPrograms with ID " + id + " not found.");
+                return false;
+            }
+            session.remove(entity);
+            transaction.commit();
+            System.out.println("TherapyPrograms with ID " + id + " deleted successfully.");
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw new SQLException("Error deleting TherapyPrograms with ID " + id, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

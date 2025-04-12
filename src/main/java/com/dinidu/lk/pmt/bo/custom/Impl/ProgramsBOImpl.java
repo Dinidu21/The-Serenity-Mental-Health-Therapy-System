@@ -17,8 +17,21 @@ public class ProgramsBOImpl implements ProgramsBO {
                     getDAO(DAOFactory.DAOTypes.PROGRAMS);
 
     @Override
-    public boolean deleteProgram(String s) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean deleteProgram(long id) throws SQLException, ClassNotFoundException {
+        System.out.println("Deleting program with ID: " + id);
+        TherapyPrograms therapyPrograms = programsDAO.getById(id);
+        if (therapyPrograms != null) {
+            boolean b = programsDAO.deleteProgram(id);
+            if (!b) {
+                System.out.println("Failed to delete program with ID: " + id);
+                return false;
+            }
+            System.out.println("Program deleted successfully.");
+            return true;
+        } else {
+            System.out.println("Program not found with ID: " + id);
+            return false;
+        }
     }
 
     @Override

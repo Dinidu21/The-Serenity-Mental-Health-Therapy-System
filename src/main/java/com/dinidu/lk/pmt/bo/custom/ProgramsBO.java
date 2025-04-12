@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ProgramsBO extends SuperBO {
-    boolean deleteProgram(String s) throws SQLException,ClassNotFoundException;
+    boolean deleteProgram(long id) throws SQLException,ClassNotFoundException;
     void searchProgramByTherapistName(String projectName) throws SQLException,ClassNotFoundException;
     String getProgramNameById(Long taskId) throws SQLException,ClassNotFoundException;
     List<PatientsDTO> searchPatientsByName(String query) throws SQLException,ClassNotFoundException;

@@ -255,15 +255,15 @@ public class ProgramEditViewController implements Initializable {
 
         if (confirmed) {
             System.out.println("Deleting task...");
-  /*          try {
-                boolean b = programsBO.deleteProgram(currentTask.getName().get());
+            try {
+                boolean b = programsBO.deleteProgram(currentTask.getId());
                 if (!b) {
                     System.out.println("Task deletion failed.");
                     CustomErrorAlert.showAlert("Error", "Task deletion failed.");
                 }
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
-            }*/
+            }
             System.out.println("Task deleted successfully.");
             CustomAlert.showAlert("Success", "Task deleted successfully.");
 
