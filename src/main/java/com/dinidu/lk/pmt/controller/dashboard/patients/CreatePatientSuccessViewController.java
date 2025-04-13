@@ -1,4 +1,4 @@
-package com.dinidu.lk.pmt.controller.dashboard.issue;
+package com.dinidu.lk.pmt.controller.dashboard.patients;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.*;
@@ -10,13 +10,10 @@ import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
-import com.dinidu.lk.pmt.utils.issuesTypes.IssuePriority;
-import com.dinidu.lk.pmt.utils.issuesTypes.IssueStatus;
 import com.dinidu.lk.pmt.utils.listeners.IssueDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.IssueUpdateListener;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
 import javafx.animation.FadeTransition;
-import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -42,16 +39,14 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class CreateIssueSuccessViewController implements Initializable, IssueUpdateListener, IssueDeletionHandler {
+public class CreatePatientSuccessViewController implements Initializable, IssueUpdateListener, IssueDeletionHandler {
     public Label projectName;
     public Label assigneeName;
     public Label taskName;
@@ -181,7 +176,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            IssueEditViewController controller = loader.getController();
+            PatientEditViewController controller = loader.getController();
             controller.setDeletionHandler(this);
             controller.setUpdateListener(this);
 

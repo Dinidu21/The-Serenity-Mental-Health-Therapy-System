@@ -1,4 +1,4 @@
-package com.dinidu.lk.pmt.controller.dashboard.issue;
+package com.dinidu.lk.pmt.controller.dashboard.patients;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.PatientBO;
@@ -13,7 +13,6 @@ import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.listeners.IssueDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.IssueUpdateListener;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
-import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,7 +26,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class IssueEditViewController implements Initializable {
+public class PatientEditViewController implements Initializable {
     public Button saveIssueBtn;
     public Button cancelProjectBtn;
     public Button deleteIssueBtn;

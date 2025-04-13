@@ -3,8 +3,8 @@ package com.dinidu.lk.pmt.controller.dashboard;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.PatientBO;
 import com.dinidu.lk.pmt.controller.BaseController;
-import com.dinidu.lk.pmt.controller.dashboard.issue.IssueEditViewController;
-import com.dinidu.lk.pmt.controller.dashboard.issue.CreateIssueSuccessViewController;
+import com.dinidu.lk.pmt.controller.dashboard.patients.PatientEditViewController;
+import com.dinidu.lk.pmt.controller.dashboard.patients.CreatePatientSuccessViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.PatientsDTO;
@@ -74,15 +74,15 @@ public class PatientsViewController extends BaseController implements Initializa
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/issue/issue-create-success-view.fxml"));
             Parent root = loader.load();
 
-            CreateIssueSuccessViewController controller = loader.getController();
+            CreatePatientSuccessViewController controller = loader.getController();
             controller.setIssuesData(patientsDTO);
 
-            IssueEditViewController.setIssue(patientsDTO);
+            PatientEditViewController.setIssue(patientsDTO);
 
             FXMLLoader editLoader = new FXMLLoader(getClass().getResource("/view/nav-buttons/issue/issue-edit-view.fxml"));
             Parent editRoot = editLoader.load();
 
-            IssueEditViewController editController = editLoader.getController();
+            PatientEditViewController editController = editLoader.getController();
             if (editController != null) {
                 editController.setUpdateListener(controller);
             } else {

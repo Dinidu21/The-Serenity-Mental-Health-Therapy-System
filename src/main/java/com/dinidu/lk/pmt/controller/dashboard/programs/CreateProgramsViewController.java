@@ -1,4 +1,4 @@
-package com.dinidu.lk.pmt.controller.dashboard.task;
+package com.dinidu.lk.pmt.controller.dashboard.programs;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;

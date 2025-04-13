@@ -1,4 +1,4 @@
-package com.dinidu.lk.pmt.controller.dashboard.issue;
+package com.dinidu.lk.pmt.controller.dashboard.patients;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.PatientBO;
@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class CreateIssueViewController implements Initializable {
+public class CreatePatientViewController implements Initializable {
 
     @FXML
     public AnchorPane issuesCreatePg;

@@ -1,4 +1,4 @@
-package com.dinidu.lk.pmt.controller.dashboard.task.checklist;
+package com.dinidu.lk.pmt.controller.dashboard.programs.checklist;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.UserBO;

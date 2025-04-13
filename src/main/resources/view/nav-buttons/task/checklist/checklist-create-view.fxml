@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="taskChecklistCreatePage" prefHeight="700.0" prefWidth="1522.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistCreateViewController">
+<AnchorPane fx:id="taskChecklistCreatePage" prefHeight="700.0" prefWidth="1522.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.checklist.ChecklistCreateViewController">
     <VBox prefHeight="680.0" prefWidth="948.0" spacing="15" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label styleClass="main-label" text="Create CheckList" />

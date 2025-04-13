@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="TaskEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.checklist.ChecklistEditViewController">
+<AnchorPane fx:id="TaskEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.checklist.ChecklistEditViewController">
     <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" spacing="30.0" styleClass="content-container">
         <HBox alignment="CENTER_LEFT" spacing="20.0">
 

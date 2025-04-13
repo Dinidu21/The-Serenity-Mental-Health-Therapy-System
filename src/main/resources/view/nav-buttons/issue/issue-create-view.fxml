@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="issuesCreatePg" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../../styles/dashboard/task/task-create.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.issue.CreateIssueViewController">
+<AnchorPane fx:id="issuesCreatePg" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../../styles/dashboard/task/task-create.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.patients.CreatePatientViewController">
     <VBox prefHeight="704.0" prefWidth="948.0" spacing="20" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <Label styleClass="main-label" text="Create Patients" />

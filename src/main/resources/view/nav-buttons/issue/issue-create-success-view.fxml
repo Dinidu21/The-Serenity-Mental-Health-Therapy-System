@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="issueSuccessPage" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" stylesheets="@../../../styles/dashboard/project/project-create-success-view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.issue.CreateIssueSuccessViewController">
+<AnchorPane fx:id="issueSuccessPage" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" stylesheets="@../../../styles/dashboard/project/project-create-success-view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.patients.CreatePatientSuccessViewController">
     <children>
         <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="127.0" prefWidth="1055.0" styleClass="card-container">
             <children>

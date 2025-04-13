@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="taskCreatedSuccessPage" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" stylesheets="@../../../styles/dashboard/task/task-create-success-view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.task.CreateProgramSuccessViewController">
+<AnchorPane fx:id="taskCreatedSuccessPage" prefHeight="700.0" prefWidth="1522.0" style="-fx-background-color: white;" stylesheets="@../../../styles/dashboard/task/task-create-success-view.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.CreateProgramSuccessViewController">
     <children>
         <AnchorPane fx:id="mainBar" layoutX="56.0" layoutY="37.0" prefHeight="159.0" prefWidth="1066.0" styleClass="card-container">
             <children>

@@ -24,10 +24,10 @@ module com.dinidu.lk.pmt {
     opens com.dinidu.lk.pmt.controller.dashboard.therapist to javafx.fxml;
     opens com.dinidu.lk.pmt.controller.forgetpassword to javafx.fxml;
     opens com.dinidu.lk.pmt.utils to javafx.fxml;
-    opens com.dinidu.lk.pmt.controller.dashboard.task to javafx.fxml;
+    opens com.dinidu.lk.pmt.controller.dashboard.programs to javafx.fxml;
     opens com.dinidu.lk.pmt.controller.dashboard.report to javafx.fxml;
-    opens com.dinidu.lk.pmt.controller.dashboard.issue to javafx.fxml;
-    opens com.dinidu.lk.pmt.controller.dashboard.task.checklist to javafx.fxml;
+    opens com.dinidu.lk.pmt.controller.dashboard.patients to javafx.fxml;
+    opens com.dinidu.lk.pmt.controller.dashboard.programs.checklist to javafx.fxml;
     opens com.dinidu.lk.pmt.utils.listeners to javafx.fxml;
     opens com.dinidu.lk.pmt.utils.customAlerts to javafx.fxml;
     opens com.dinidu.lk.pmt.controller.dashboard.timesheet to javafx.fxml;

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="projectEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@../../../styles/dashboard/project/project-edit.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.issue.IssueEditViewController">
+<AnchorPane fx:id="projectEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root" stylesheets="@../../../styles/dashboard/project/project-edit.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.patients.PatientEditViewController">
     <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" spacing="30.0" styleClass="content-container">
         <HBox alignment="CENTER_LEFT" spacing="20.0">
 
