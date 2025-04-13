@@ -116,4 +116,24 @@ public class PatientBOImpl implements PatientBO {
     public List<String> getProgramByTherapist(String selectedProject) throws SQLException, ClassNotFoundException {
         return List.of();
     }
+
+    @Override
+    public List<PatientsDTO> searchPatientsByName(String query) throws SQLException, ClassNotFoundException {
+        List<Patients> patientsList = patientsDAO.searchByName(query);
+        List<PatientsDTO> patientsDTOList = new ArrayList<>();
+        for (Patients patients : patientsList) {
+            PatientsDTO patientsDTO = new PatientsDTO(
+                    patients.getId(),
+                    patients.getFullName(),
+                    patients.getEmail(),
+                    patients.getAddress(),
+                    patients.getPhoneNumber(),
+                    patients.getMedicalHistory(),
+                    patients.getRegistrationDate()
+            );
+            patientsDTOList.add(patientsDTO);
+            System.out.println("Patient found: " + patientsDTO.getFullName());
+        }
+        return patientsDTOList;
+    }
 }

@@ -11,6 +11,7 @@ import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.utils.SessionUser;
+import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.issuesTypes.IssuePriority;
 import com.dinidu.lk.pmt.utils.issuesTypes.IssueStatus;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
@@ -66,12 +67,6 @@ public class PatientsViewController extends BaseController implements Initializa
     @FXML
     private ListView<String> suggestionList;
 
-    TherapistsBO therapistsBO =
-            (TherapistsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.THERAPIST);
-    ProgramsBO programsBO =
-            (ProgramsBO) BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.PROGRAM);
     PatientBO patientBO =
             (PatientBO) BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.PATIENTS);
@@ -121,12 +116,13 @@ public class PatientsViewController extends BaseController implements Initializa
                 updateIssuesView();
             }
         });
+
         searchBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 String projectName = searchBox.getText().trim();
                 if (!projectName.isEmpty()) {
                     try {
-                        programsBO.searchProgramByTherapistName(projectName);
+                        patientBO.searchPatientsByName(projectName);
                     } catch (SQLException e) {
                         System.out.println(e.getMessage());
                     } catch (ClassNotFoundException e) {
@@ -143,7 +139,7 @@ public class PatientsViewController extends BaseController implements Initializa
                 suggestionList.setVisible(false);
                 List<PatientsDTO> filteredIssues = null;
                 try {
-                    filteredIssues = programsBO.searchProgramsByPatientName(selectedIssueName);
+                    filteredIssues = patientBO.searchPatientsByName(selectedIssueName);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -215,15 +211,6 @@ public class PatientsViewController extends BaseController implements Initializa
         displayIssues(patientsDTOS);
     }
 
-    public void resetBtnClick() {
-        sortByStatus.getSelectionModel().clearSelection();
-        priorityDropdown.getSelectionModel().clearSelection();
-        sortByProjectName.getSelectionModel().clearSelection();
-        TherapistsViewController.bindNavigation(issuesPage, "/view/nav-buttons/patients-view.fxml");
-        searchBox.clear();
-        updateIssuesView();
-    }
-
     public void searchIssuesOnClick() {
         searchImg.setDisable(true);
     }
@@ -259,26 +246,8 @@ public class PatientsViewController extends BaseController implements Initializa
 
             Label nameLabel = new Label(issue.getFullName());
             nameLabel.getStyleClass().add("project-name");
-            
-            String projName = null;
-            try {
-                 projName = programsBO.getTherapistNameById(issue.getFullName());
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
 
-            String taskName = "";
-            try {
-                taskName = programsBO.getProgramNameById(issue.getId());
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            Label idLabel = new Label("#" + projName + " | "+taskName);
+            Label idLabel = new Label("#" + issue.getId());
             idLabel.getStyleClass().add("project-id");
 
             projectDetails.getChildren().addAll(nameLabel, idLabel);
@@ -311,17 +280,22 @@ public class PatientsViewController extends BaseController implements Initializa
     private void showSearchSuggestions(String query) {
         List<PatientsDTO> filteredIssues = null;
         try {
-            filteredIssues = programsBO.searchPatientsByName(query);
+            filteredIssues = patientBO.searchPatientsByName(query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        assert filteredIssues != null;
+
+        if (filteredIssues == null) {
+            System.out.println("Failed to fetch patients.");
+            return;
+        }
+
         if (!filteredIssues.isEmpty()) {
             suggestionList.getItems().clear();
             for (PatientsDTO issue : filteredIssues) {
-                suggestionList.getItems().add(issue.getAddress());
+                suggestionList.getItems().add(issue.getFullName());
             }
             suggestionList.setVisible(true);
         } else {
@@ -353,6 +327,15 @@ public class PatientsViewController extends BaseController implements Initializa
             scaleUp.play();
         });
         scaleDown.play();
+    }
+
+    public void resetBtnClick() {
+        sortByStatus.getSelectionModel().clearSelection();
+        priorityDropdown.getSelectionModel().clearSelection();
+        sortByProjectName.getSelectionModel().clearSelection();
+        TherapistsViewController.bindNavigation(issuesPage, "/view/nav-buttons/patients-view.fxml");
+        searchBox.clear();
+        updateIssuesView();
     }
 
     public static void addHoverEffect(Node node) {

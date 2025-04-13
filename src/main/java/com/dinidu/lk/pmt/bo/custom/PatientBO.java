@@ -20,4 +20,6 @@ public interface PatientBO extends SuperBO {
     boolean createPatient(PatientsDTO patientsDTO) throws SQLException, ClassNotFoundException;
     Long getUserIdByName(String memberName) throws SQLException, ClassNotFoundException;
     List<String> getProgramByTherapist(String selectedProject) throws SQLException, ClassNotFoundException;
+
+    List<PatientsDTO> searchPatientsByName(String query) throws SQLException, ClassNotFoundException;
 }
