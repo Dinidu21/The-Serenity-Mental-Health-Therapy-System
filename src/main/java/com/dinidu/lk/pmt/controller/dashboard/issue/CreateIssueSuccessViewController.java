@@ -119,18 +119,12 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         currentIssueId = patientsDTO.getId();
         System.out.println("current Patient Id: " + currentIssueId);
 
-        PatientName.textProperty().bind(
-                Bindings.concat(patientsDTO.getFullName()));
-        PatientFName.textProperty().bind(
-                Bindings.concat(patientsDTO.getFullName()));
-        PatientAddress.textProperty().bind(
-                Bindings.concat(patientsDTO.getAddress()));
-        PatientMobile.textProperty().bind(
-                Bindings.concat(patientsDTO.getPhoneNumber()));
-        PatientRegDate.textProperty().bind(
-                Bindings.concat(patientsDTO.getRegistrationDate()));
-        PatientEmail.textProperty().bind(
-                Bindings.concat(patientsDTO.getEmail()));
+        PatientName.setText(patientsDTO.getFullName());
+        PatientFName.setText(patientsDTO.getFullName());
+        PatientAddress.setText(patientsDTO.getAddress());
+        PatientMobile.setText(patientsDTO.getPhoneNumber());
+        PatientRegDate.setText(patientsDTO.getRegistrationDate() != null ? patientsDTO.getRegistrationDate().toString() : "");
+        PatientEmail.setText(patientsDTO.getEmail());
 
         setupStyleListeners();
         updateStyles(patientsDTO);
@@ -138,7 +132,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
     @Override
     public void onIssueUpdated(PatientsDTO updatedIssue) {
-        updateStyles(updatedIssue);
+        setIssuesData(updatedIssue);
     }
 
     private void userAccessControl() {
@@ -189,6 +183,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
             IssueEditViewController controller = loader.getController();
             controller.setDeletionHandler(this);
+            controller.setUpdateListener(this);
 
             root.setOnMousePressed(event -> {
                 xOffset = event.getSceneX();

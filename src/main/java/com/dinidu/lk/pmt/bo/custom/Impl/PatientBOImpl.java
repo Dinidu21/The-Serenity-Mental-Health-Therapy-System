@@ -28,7 +28,31 @@ public class PatientBOImpl implements PatientBO {
 
     @Override
     public boolean updatePatient(PatientsDTO currentIssue) throws SQLException, ClassNotFoundException {
-        return false;
+        System.out.println("\nUpdating Patients with full name: " + currentIssue.getFullName());
+        System.out.println("Updating Patients with email: " + currentIssue.getEmail());
+        System.out.println("Updating Patients with address: " + currentIssue.getAddress());
+        System.out.println("Updating Patients with phone number: " + currentIssue.getPhoneNumber());
+        System.out.println("Updating Patients with medical history: " + currentIssue.getMedicalHistory());
+        System.out.println("Updating Patients with registration date: " + currentIssue.getRegistrationDate());
+
+        Patients patients = new Patients();
+        patients.setId(currentIssue.getId());
+        patients.setFullName(currentIssue.getFullName());
+        patients.setEmail(currentIssue.getEmail());
+        patients.setAddress(currentIssue.getAddress());
+        patients.setPhoneNumber(currentIssue.getPhoneNumber());
+        patients.setMedicalHistory(currentIssue.getMedicalHistory());
+        patients.setRegistrationDate(currentIssue.getRegistrationDate());
+
+        boolean isUpdated = patientsDAO.update(patients);
+        if (isUpdated) {
+            System.out.println("Patients updated successfully.");
+            return true;
+        } else {
+            System.out.println("Failed to update Patients.");
+            CustomErrorAlert.showAlert("ERROR", "Failed to update Patients.");
+            return false;
+        }
     }
 
     @Override

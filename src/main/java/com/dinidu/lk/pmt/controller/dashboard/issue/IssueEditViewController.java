@@ -10,13 +10,10 @@ import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
-import com.dinidu.lk.pmt.utils.issuesTypes.IssuePriority;
-import com.dinidu.lk.pmt.utils.issuesTypes.IssueStatus;
 import com.dinidu.lk.pmt.utils.listeners.IssueDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.IssueUpdateListener;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,10 +23,7 @@ import javafx.stage.Stage;
 import lombok.Setter;
 
 import java.net.URL;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,10 +31,10 @@ public class IssueEditViewController implements Initializable {
     public Button saveIssueBtn;
     public Button cancelProjectBtn;
     public Button deleteIssueBtn;
-    public ComboBox<String> selectTaskNameComboBox;
-    public ComboBox<String> selectMemberNameComboBox;
-    public ComboBox<String> selectProjectNameComboBox;
-    public DatePicker dueDate;
+    public TextField PatientEmail;
+    public TextField PatientNumber;
+    public TextField PatientAddress;
+    public TextField PatientName;
     @Setter
     private IssueDeletionHandler deletionHandler;
     @Setter
@@ -49,17 +43,12 @@ public class IssueEditViewController implements Initializable {
     private Label backToMain;
     @FXML
     private AnchorPane projectEdit;
-    @FXML
-    private ComboBox<IssueStatus> issueStatusComboBox;
-    @FXML
-    private ComboBox<IssuePriority> issuePriorityComboBox;
-    @FXML
-    private TextField issueDescriptionField;
     private static PatientsDTO currentIssue;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.USER);
+
     PatientBO issuesBO =
             (PatientBO) BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.PATIENTS);
@@ -73,60 +62,17 @@ public class IssueEditViewController implements Initializable {
 
     @FXML
     public void saveIssue() {
-        System.out.println("Saving Issue...");
+        System.out.println("Saving Issue Method in EditViewController");
 
-        if (issueDescriptionField.getText().isEmpty()) {
-            CustomErrorAlert.showAlert("Error", "Issue description cannot be empty.");
-            return;
-        }
-
-/*        currentIssue.setDescription(issueDescriptionField.getText());
-        currentIssue.setStatus(issueStatusComboBox.getValue());
-        currentIssue.setPriority(issuePriorityComboBox.getValue());
-
-        try {
-            currentIssue.setProjectId(issuesBO.getTherapistsIdByName(selectProjectNameComboBox.getValue()));
-        } catch (SQLException e) {
-            System.out.println("Error retrieving project ID: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            String selectedTaskName = selectTaskNameComboBox.getValue();
-            if (selectedTaskName != null) {
-                Long taskId = issuesBO.getProgramIdByName(selectedTaskName);
-                if (taskId != null) {
-                    currentIssue.setTaskId(taskId);
-                } else {
-                    CustomErrorAlert.showAlert("Error", "Selected task does not exist.");
-                    return;
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Error retrieving task ID: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            currentIssue.setAssignedTo(userBO.getUserIdByFullName(selectMemberNameComboBox.getValue()));
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (dueDate.getValue() != null) {
-            currentIssue.setDueDate(Date.valueOf(dueDate.getValue()));
-        } else {
-            currentIssue.setDueDate(null);
-        }
-
-        currentIssue.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        currentIssue.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        currentIssue.setFullName(PatientName.getText());
+        currentIssue.setEmail(PatientEmail.getText());
+        currentIssue.setPhoneNumber(PatientNumber.getText());
+        currentIssue.setAddress(PatientAddress.getText());
+        currentIssue.setId(currentIssue.getId());
+        validateFields();
 
         try {
             boolean issueUpdated = issuesBO.updatePatient(currentIssue);
-
             if (issueUpdated) {
                 System.out.println("Issue saved successfully.");
 
@@ -147,17 +93,11 @@ public class IssueEditViewController implements Initializable {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeProjectComboBox();
-        initializeTaskComboBox();
-        initializeMemberComboBox();
-        issueStatusComboBox.getItems().setAll(IssueStatus.values());
-        issuePriorityComboBox.getItems().setAll(IssuePriority.values());
-
         if (currentIssue == null) {
             List<PatientsDTO> issues = null;
 
@@ -177,114 +117,29 @@ public class IssueEditViewController implements Initializable {
             }
         }
         loadIssueData();
-
-        dueDate.setDayCellFactory(picker -> new DateCell() {
-            @Override
-            public void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (date != null && (date.isBefore(LocalDate.now()) || date.isEqual(LocalDate.now()))) {
-                    setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;");
-                }
-            }
-        });
-
-        issueDescriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
     }
-
-    private void initializeProjectComboBox() {
-        ObservableList<String> projectNames = FXCollections.observableArrayList();
-        try {
-            List<String> projects = issuesBO.getActiveTherapistsNames();  // Assuming getActiveProjectNames is refactored to return List<String>
-            projectNames.addAll(projects);
-            selectProjectNameComboBox.setItems(projectNames);
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
-
-    private void initializeTaskComboBox() {
-        selectProjectNameComboBox.setOnAction(event -> {
-            String selectedProject = selectProjectNameComboBox.getValue();
-            if (selectedProject != null) {
-                ObservableList<String> taskNames = FXCollections.observableArrayList();
-                try {
-                    List<String> tasks = issuesBO.getProgramsByTherapist(selectedProject);  // Assuming getTasksByProject is refactored to return List<String>
-                    taskNames.addAll(tasks);
-                    selectTaskNameComboBox.setItems(taskNames);
-                } catch (SQLException | ClassNotFoundException e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-            }
-        });
-    }
-
-    private void initializeMemberComboBox() {
-        ObservableList<String> memberNames = FXCollections.observableArrayList();
-        try {
-            List<String> members = issuesBO.getActivePatients();  // This now returns a List<String>
-            memberNames.addAll(members);  // Add all member names to the ObservableList
-            selectMemberNameComboBox.setItems(memberNames);
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
 
     private void loadIssueData() {
-        System.out.println("Loading Issue data...");
+        System.out.println("Loading Patient data...");
 
         if (currentIssue == null) {
-            System.out.println("currentIssue is null");
+            System.out.println("Patient is null");
             return;
         }
 
-/*        issueDescriptionField.setText(currentIssue.getDescription() != null ? currentIssue.getDescription() : "");
-        issueStatusComboBox.setValue(currentIssue.getStatus());
-        issuePriorityComboBox.setValue(currentIssue.getPriority());
-
-        try {
-            String projectId = currentIssue.getProjectId();
-            if (projectId != null) {
-                String projectName = issuesBO.getTherapistNameById(projectId);
-                selectProjectNameComboBox.setValue(projectName);
-            }
-
-            long taskId = currentIssue.getTaskId();
-            if (taskId != 0) {
-                String taskName = issuesBO.getProgramNameById(taskId);
-                selectTaskNameComboBox.setValue(taskName);
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error retrieving project or task data: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        long assignedTo = currentIssue.getAssignedTo();
-        if (assignedTo != 0) {
-            String assigneeName;
-            try {
-                assigneeName = userBO.getUserFullNameById(assignedTo);
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            selectMemberNameComboBox.setValue(assigneeName);
-        }
-
-        if (currentIssue.getDueDate() != null) {
-            dueDate.setValue(currentIssue.getDueDate().toLocalDate());
-        } else {
-            dueDate.setValue(null);
-        }*/
+        System.out.println("Patient : " + currentIssue);
+        PatientName.setText(currentIssue.getFullName());
+        PatientAddress.setText(currentIssue.getAddress());
+        PatientNumber.setText(currentIssue.getPhoneNumber());
+        PatientEmail.setText(currentIssue.getEmail());
     }
 
-
     private void validateFields() {
-        boolean isValid = !issueDescriptionField.getText().isEmpty();
-        saveIssueBtn.setDisable(!isValid);
+        boolean isValid = PatientName.getText().trim().isEmpty() ||
+                PatientEmail.getText().trim().isEmpty() ||
+                PatientNumber.getText().trim().isEmpty() ||
+                PatientAddress.getText().trim().isEmpty();
+        saveIssueBtn.setDisable(isValid);
     }
 
     @FXML
@@ -363,33 +218,28 @@ public class IssueEditViewController implements Initializable {
     }
 
     @FXML
-    public void editStatus(ActionEvent actionEvent) {
-        System.out.println("Editing project status...");
-    }
-
-    @FXML
-    public void editPriority(ActionEvent actionEvent) {
-        System.out.println("Editing project priority...");
-    }
-
-    @FXML
     public void editIssueDesc(ActionEvent actionEvent) {
         System.out.println("Editing project description...");
     }
 
-    public void editTaskName(ActionEvent actionEvent) {
-        System.out.println("Editing task name...");
+    public void nameTyping(ActionEvent actionEvent) {
+        PatientName.textProperty().addListener((observable, oldValue, newValue) -> {
+            boolean isValid = newValue.trim().isEmpty();
+            saveIssueBtn.setDisable(isValid);
+        });
     }
 
-    public void editMember(ActionEvent actionEvent) {
-        System.out.println("Editing member...");
+    public void emailTyping(ActionEvent actionEvent) {
+        PatientEmail.textProperty().addListener((observable, oldValue, newValue) -> {
+            boolean isValid = newValue.trim().isEmpty();
+            saveIssueBtn.setDisable(isValid);
+        });
     }
 
-    public void editProjectName(ActionEvent actionEvent) {
-        System.out.println("Editing project name...");
-    }
-
-    public void setDueDate(ActionEvent actionEvent) {
-        System.out.println("Setting due date...");
+    public void mobileNumber(ActionEvent actionEvent) {
+        PatientNumber.textProperty().addListener((observable, oldValue, newValue) -> {
+            boolean isValid = newValue.trim().isEmpty();
+            saveIssueBtn.setDisable(isValid);
+        });
     }
 }

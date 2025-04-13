@@ -20,7 +20,31 @@ public class PatientsDAOImpl implements PatientsDAO {
 
     @Override
     public boolean update(Patients dto) throws SQLException, ClassNotFoundException {
-        return false;
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            if (dto == null) {
+                throw new SQLException("Patients object is null.");
+            }
+
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            session.update(dto);
+            transaction.commit();
+            System.out.println("Patients updated successfully: " + dto.getFullName());
+            return true;
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw new SQLException("Error updating Patients in database.", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
