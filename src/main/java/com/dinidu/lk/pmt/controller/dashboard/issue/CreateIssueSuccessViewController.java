@@ -380,32 +380,6 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         attachmentContainer.getChildren().add(attachmentRow);
     }
 
-    private void loadExistingAttachments() {
-        Task<List<IssueAttachmentDTO>> loadTask = new Task<>() {
-            @Override
-            protected List<IssueAttachmentDTO> call() throws Exception {
-//                return issueAttachmentBO.getAttachments(currentIssueId);
-                return null;
-            }
-        };
-
-/*        loadTask.setOnSucceeded(e -> {
-            List<IssueAttachmentDTO> attachments = loadTask.getValue();
-            if (attachments.isEmpty()) {
-                noAttachments.setVisible(true);
-                noAttachments.setText("No attachments found for this issue.");
-                System.out.println("No attachments found for this issue.");
-            }
-            for (IssueAttachmentDTO attachment : attachments) {
-                addAttachmentRow(attachment);
-                System.out.println("=================CREATE ISSUE SUCCESS VIEW CONTROLLER=================");
-                System.out.println("Here is the load Existing Attachments method: Here is Id "+ attachment.getId());
-            }
-        });*/
-
-        new Thread(loadTask).start();
-    }
-
     private void downloadFile(IssueAttachmentDTO attachment) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialFileName(attachment.getFileName());
@@ -504,93 +478,6 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         }
 
         return String.format("%.2f %s", size, units[unitIndex]);
-    }
-
-    private void setProjectDetails(String projectId) {
-        List<TherapistDTO> therapistDtoList;
-        try {
-            therapistDtoList = therapistsBO.getTherapistById(projectId);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (!therapistDtoList.isEmpty()) {
-            TherapistDTO therapistDto = therapistDtoList.get(0);
-            projectName.setText(therapistDto.getFullName());
-
-            Long createdBy = therapistDto.getCreatedBy();
-            String ownerName;
-            try {
-                ownerName = userBO.getUserFullNameById(createdBy);
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            projectOwnerName.setText(" " + ownerName);
-            Image profilePic ;
-            try {
-                profilePic = userBO.getUserProfilePicByUserId(createdBy);
-            } catch (SQLException | ClassNotFoundException | FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            projectOwnerImg.setImage(profilePic);
-        } else {
-            System.out.println("No project found with the given ID.");
-            projectName.setText("No project found");
-        }
-    }
-
-    private void setAssigneeName(Long assignedTo) {
-        if (assignedTo != null) {
-            String assigneeFullName;
-            try {
-                assigneeFullName = userBO.getUserFullNameById(assignedTo);
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            assigneeName.setText(assigneeFullName);
-        } else {
-            assigneeName.setText("No assignee");
-        }
-    }
-
-    private void setTaskName(Long taskId) {
-        if (taskId != null) {
-            String taskNameValue = null;
-            try {
-                taskNameValue = programsBO.getProgramNameById(taskId);
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            taskName.setText(taskNameValue);
-        } else {
-            taskName.setText("No task assigned");
-        }
-    }
-
-    public List<TeamAssignmentDTO> getTeamAssignmentsForProject(String projectId) {
-        List<TeamAssignmentDTO> assignments = new ArrayList<>();
-        List<TherapyProgramsDTO> tasks ;
-        try {
-            tasks = programsBO.getProgramByTherapistId(projectId);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-/*
-        for (ProgramsDTO task : tasks) {
-            List<TeamAssignmentDTO> taskAssignments ;
-            try {
-                taskAssignments = teamAssignmentBO.getAssignmentsByTaskId(task.getId().get());
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            assignments.addAll(taskAssignments);
-        }
-*/
-
-        return assignments;
     }
 
     private boolean isFileSizeValid(File file) {
