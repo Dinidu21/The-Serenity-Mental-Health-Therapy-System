@@ -190,4 +190,11 @@ public class ReportTaskViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    public void XLSXonClick(MouseEvent mouseEvent) {
+    }
+
+    public void CSVonClick(MouseEvent mouseEvent) {
+
+    }
 }
