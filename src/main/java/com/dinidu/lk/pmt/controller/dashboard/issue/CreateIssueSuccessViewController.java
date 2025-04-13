@@ -52,17 +52,19 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class CreateIssueSuccessViewController implements Initializable, IssueUpdateListener, IssueDeletionHandler {
-    public Label issueStatus;
-    public Label issuePriority;
     public Label projectName;
     public Label assigneeName;
     public Label taskName;
-    public Label issueDueDate;
-    public Label issueDes;
     public VBox dragDropArea;
     public Button uploadButton;
     public VBox attachmentContainer;
     public Label noAttachments;
+    public Label PatientName;
+    public Label PatientFName;
+    public Label PatientAddress;
+    public Label PatientMobile;
+    public Label PatientRegDate;
+    public Label PatientEmail;
     private double xOffset = 0;
     private double yOffset = 0;
     public ImageView moreIcon;
@@ -98,21 +100,10 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     ProgramsBO programsBO = (ProgramsBO)
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.PROGRAM);
-/*
-    TeamAssignmentBO teamAssignmentBO = (TeamAssignmentBO)
+    PatientBO patientBO = (PatientBO)
             BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.TEAM_ASSIGNMENTS);
-*/
-//    IssueAttachmentBO issueAttachmentBO = (IssueAttachmentBO)
-//            BOFactory.getInstance().
-//                    getBO(BOFactory.BOTypes.ATTACHMENTS);
+                    getBO(BOFactory.BOTypes.PATIENTS);
 
-    private boolean isFileSizeValid(File file) {
-        if (file == null || !file.exists()) {
-            return false;
-        }
-        return file.length() <= MAX_FILE_SIZE;
-    }
 
 
     @Override
@@ -121,9 +112,140 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         userAccessControl();
         setupDragAndDrop();
         setupUploadButton();
-//        loadExistingAttachments();
     }
 
+    public void setIssuesData(PatientsDTO patientsDTO) {
+        this.patientsDTO = patientsDTO;
+        currentIssueId = patientsDTO.getId();
+        System.out.println("current Patient Id: " + currentIssueId);
+
+        PatientName.textProperty().bind(
+                Bindings.concat(patientsDTO.getFullName()));
+        PatientFName.textProperty().bind(
+                Bindings.concat(patientsDTO.getFullName()));
+        PatientAddress.textProperty().bind(
+                Bindings.concat(patientsDTO.getAddress()));
+        PatientMobile.textProperty().bind(
+                Bindings.concat(patientsDTO.getPhoneNumber()));
+        PatientRegDate.textProperty().bind(
+                Bindings.concat(patientsDTO.getRegistrationDate()));
+        PatientEmail.textProperty().bind(
+                Bindings.concat(patientsDTO.getEmail()));
+
+        setupStyleListeners();
+        updateStyles(patientsDTO);
+    }
+
+    @Override
+    public void onIssueUpdated(PatientsDTO updatedIssue) {
+        updateStyles(updatedIssue);
+    }
+
+    private void userAccessControl() {
+        if (TherapistsViewController.backgroundColor == null) {
+            System.out.println("Project background color is null");
+        }
+
+        String username = SessionUser.getLoggedInUsername();
+        try {
+            currentUserId = userBO.getUserIdByUsername(username);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (username == null) {
+            System.out.println("User not logged in. username: " + null);
+        }
+        UserRole userRoleByUsername;
+        try {
+            userRoleByUsername = queryDAO.getUserRoleByUsername(username);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (userRoleByUsername == null) {
+            System.out.println("User not logged in. userRoleByUsername: " + null);
+        }
+        System.out.println("User role: " + userRoleByUsername);
+        if (userRoleByUsername != UserRole.ADMIN &&
+                userRoleByUsername != UserRole.RECEPTIONIST) {
+            System.out.println("Access denied: Only Admin, Project Manager, or Product Owner can edit projects.");
+            moreIcon.setVisible(false);
+        }
+    }
+
+    public void moreIconOnclick(MouseEvent mouseEvent) {
+        try {
+            String iconPath = "/asserts/icons/PN.png";
+            String fxmlPath = "/view/nav-buttons/issue/issue-edit-view.fxml";
+
+            Stage modalStage = new Stage();
+            modalStage.initStyle(StageStyle.TRANSPARENT);
+            modalStage.initModality(Modality.WINDOW_MODAL);
+            modalStage.initOwner((Stage) issueSuccessPage.getScene().getWindow());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            IssueEditViewController controller = loader.getController();
+            controller.setDeletionHandler(this);
+
+            root.setOnMousePressed(event -> {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            });
+
+            root.setOnMouseDragged(event -> {
+                modalStage.setX(event.getScreenX() - xOffset);
+                modalStage.setY(event.getScreenY() - yOffset);
+            });
+
+            Scene scene = new Scene(root);
+            scene.setFill(null);
+            scene.setFill(null);
+
+            modalStage.setScene(scene);
+            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath))));
+            modalStage.centerOnScreen();
+            modalStage.show();
+
+        } catch (Exception e) {
+            System.out.println("Error while loading modal: " + e.getMessage());
+            e.printStackTrace();
+            CustomErrorAlert.showAlert("Error", "Error while loading modal.");
+        }
+    }
+
+    @Override
+    public void onIssueDeleted() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/patients-view.fxml"));
+            AnchorPane newContent = loader.load();
+
+            AnchorPane parentPane = (AnchorPane) issueSuccessPage.getParent();
+
+            parentPane.getChildren().clear();
+
+            newContent.prefWidthProperty().bind(parentPane.widthProperty());
+            newContent.prefHeightProperty().bind(parentPane.heightProperty());
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(750), newContent);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+
+            parentPane.getChildren().add(newContent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            CustomErrorAlert.showAlert("Error", "Failed to load the issue view.");
+        }
+    }
+
+
+    /*========================*/
     private void setupDragAndDrop() {
         dragDropArea.setOnDragOver(event -> {
             if (event.getDragboard().hasFiles()) {
@@ -384,77 +506,6 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         return String.format("%.2f %s", size, units[unitIndex]);
     }
 
-    public void setIssuesData(PatientsDTO patientsDTO) {
-        this.patientsDTO = patientsDTO;
-        currentIssueId = patientsDTO.getId();
-        System.out.println("currentIssueId: " + currentIssueId);
-
-/*        issueDes.textProperty().bind(patientsDTO.descriptionProperty());
-        issueStatus.textProperty().bind(patientsDTO.statusProperty().asString());
-        issuePriority.textProperty().bind(patientsDTO.priorityProperty().asString());
-        issueDueDate.textProperty().bind(Bindings.createStringBinding(() -> {
-            Date dueDate = patientsDTO.getDueDate();
-            if (dueDate == null) {
-                return "Due date is not set";
-            }
-            return dueDate.toString();
-        }, patientsDTO.dueDateProperty()));
-
-        setProjectDetails(patientsDTO.getProjectId());
-        setAssigneeName(patientsDTO.getAssignedTo());
-        setTaskName(patientsDTO.getTaskId());*/
-//        setTeamDetails();
-
-        setupStyleListeners();
-        updateStyles(patientsDTO);
-    }
-
-//    private void setTeamDetails() {
-//        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(patientsDTO.getProjectId());
-//        Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
-//        ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
-//        int teamMemberCount = 0;
-//
-//        for (TeamAssignmentDTO assignment : teamAssignments) {
-//            if (teamMemberCount >= 4) break;
-//
-//            Long assignedUserId = assignment.getUserId();
-//            if (assignedUserId != null) {
-//                String memberName;
-//                try {
-//                    memberName = userBO.getUserFullNameById(assignedUserId);
-//                    System.out.println("===================CreateIssueSuccessViewController: " + memberName);
-//
-//                } catch (SQLException | ClassNotFoundException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//                Image memberProfilePic ;
-//                try {
-//                    memberProfilePic = userBO.getUserProfilePicByUserId(assignedUserId);
-//                } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//                if(memberProfilePic == null){
-//                    try {
-//                        memberProfilePic = new Image(new FileInputStream("src/main/resources/asserts/icons/noPic.png"));
-//                    } catch (FileNotFoundException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//
-//                teamMemberLabels[teamMemberCount].setText(memberName);
-//                teamMemberImages[teamMemberCount].setImage(memberProfilePic);
-//                teamMemberCount++;
-//            }else{
-//                System.out.println("User ID is null");
-//            }
-//        }
-//
-//        teamCount.setText("" + teamMemberCount);
-//    }
-
     private void setProjectDetails(String projectId) {
         List<TherapistDTO> therapistDtoList;
         try {
@@ -542,138 +593,18 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         return assignments;
     }
 
+    private boolean isFileSizeValid(File file) {
+        if (file == null || !file.exists()) {
+            return false;
+        }
+        return file.length() <= MAX_FILE_SIZE;
+    }
+
     private void setupStyleListeners() {
-    }
 
-    private void updateStatusStyle(IssueStatus status) {
-        issueStatus.getStyleClass().clear();
-        switch (status) {
-            case OPEN -> issueStatus.getStyleClass().add("status-planned");
-            case IN_PROGRESS -> issueStatus.getStyleClass().add("status-in-progress");
-            case RESOLVED -> issueStatus.getStyleClass().add("status-completed");
-            case CLOSED -> issueStatus.getStyleClass().add("status-cancelled");
-        }
-    }
-
-    private void updatePriorityStyle(IssuePriority priority) {
-        issuePriority.getStyleClass().clear();
-        switch (priority) {
-            case HIGH -> issuePriority.getStyleClass().add("priority-high");
-            case CRITICAL -> issuePriority.getStyleClass().add("priority-critical");
-            case MEDIUM -> issuePriority.getStyleClass().add("priority-medium");
-            case LOW -> issuePriority.getStyleClass().add("priority-low");
-
-        }
     }
 
     private void updateStyles(PatientsDTO patientsDTO) {
-    }
 
-    @Override
-    public void onIssueUpdated(PatientsDTO updatedIssue) {
-        updateStyles(updatedIssue);
-    }
-
-    private void userAccessControl() {
-        if (TherapistsViewController.backgroundColor == null) {
-            System.out.println("Project background color is null");
-        }
-
-        String username = SessionUser.getLoggedInUsername();
-        try {
-            currentUserId = userBO.getUserIdByUsername(username);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (username == null) {
-            System.out.println("User not logged in. username: " + null);
-        }
-        UserRole userRoleByUsername;
-        try {
-            userRoleByUsername = queryDAO.getUserRoleByUsername(username);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (userRoleByUsername == null) {
-            System.out.println("User not logged in. userRoleByUsername: " + null);
-        }
-        System.out.println("User role: " + userRoleByUsername);
-        if (userRoleByUsername != UserRole.ADMIN &&
-                userRoleByUsername != UserRole.RECEPTIONIST) {
-            System.out.println("Access denied: Only Admin, Project Manager, or Product Owner can edit projects.");
-            moreIcon.setVisible(false);
-        }
-    }
-
-    public void moreIconOnclick(MouseEvent mouseEvent) {
-        try {
-            String iconPath = "/asserts/icons/PN.png";
-            String fxmlPath = "/view/nav-buttons/issue/issue-edit-view.fxml";
-
-            Stage modalStage = new Stage();
-            modalStage.initStyle(StageStyle.TRANSPARENT);
-            modalStage.initModality(Modality.WINDOW_MODAL);
-            modalStage.initOwner((Stage) issueSuccessPage.getScene().getWindow());
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            IssueEditViewController controller = loader.getController();
-            controller.setDeletionHandler(this);
-
-            root.setOnMousePressed(event -> {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            });
-
-            root.setOnMouseDragged(event -> {
-                modalStage.setX(event.getScreenX() - xOffset);
-                modalStage.setY(event.getScreenY() - yOffset);
-            });
-
-            Scene scene = new Scene(root);
-            scene.setFill(null);
-            scene.setFill(null);
-
-            modalStage.setScene(scene);
-            modalStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream(iconPath))));
-            modalStage.centerOnScreen();
-            modalStage.show();
-
-        } catch (Exception e) {
-            System.out.println("Error while loading modal: " + e.getMessage());
-            e.printStackTrace();
-            CustomErrorAlert.showAlert("Error", "Error while loading modal.");
-        }
-    }
-
-    @Override
-    public void onIssueDeleted() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/nav-buttons/patients-view.fxml"));
-            AnchorPane newContent = loader.load();
-
-            AnchorPane parentPane = (AnchorPane) issueSuccessPage.getParent();
-
-            parentPane.getChildren().clear();
-
-            newContent.prefWidthProperty().bind(parentPane.widthProperty());
-            newContent.prefHeightProperty().bind(parentPane.heightProperty());
-
-            FadeTransition fadeIn = new FadeTransition(Duration.millis(750), newContent);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.play();
-
-            parentPane.getChildren().add(newContent);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            CustomErrorAlert.showAlert("Error", "Failed to load the issue view.");
-        }
     }
 }
