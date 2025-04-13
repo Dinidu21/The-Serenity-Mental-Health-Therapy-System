@@ -57,7 +57,16 @@ public class PatientBOImpl implements PatientBO {
 
     @Override
     public boolean deletePatient(Long id) throws SQLException, ClassNotFoundException {
-        return false;
+        System.out.println("Deleting Patients with ID: " + id);
+        boolean isDeleted = patientsDAO.deletePatient(id);
+        if (isDeleted) {
+            System.out.println("Patients deleted successfully.");
+            return true;
+        } else {
+            System.out.println("Failed to delete Patients.");
+            CustomErrorAlert.showAlert("ERROR", "Failed to delete Patients.");
+            return false;
+        }
     }
 
     @Override

@@ -47,8 +47,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class CreatePatientSuccessViewController implements Initializable, IssueUpdateListener, IssueDeletionHandler {
-    public Label projectName;
-    public Label assigneeName;
+
     public Label taskName;
     public VBox dragDropArea;
     public Button uploadButton;

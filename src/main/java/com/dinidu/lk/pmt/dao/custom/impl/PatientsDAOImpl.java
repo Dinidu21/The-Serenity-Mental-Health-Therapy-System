@@ -136,4 +136,35 @@ public class PatientsDAOImpl implements PatientsDAO {
     public Long getIdByName(String taskName) throws SQLException, ClassNotFoundException {
         return 0L;
     }
+
+    @Override
+    public boolean deletePatient(Long id) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+
+            Patients patients = session.get(Patients.class, id);
+            if (patients != null) {
+                session.delete(patients);
+                transaction.commit();
+                System.out.println("Patients deleted successfully: " + patients.getFullName());
+                return true;
+            } else {
+                System.out.println("Patients not found with ID: " + id);
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw new SQLException("Error deleting Patients from database.", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }
