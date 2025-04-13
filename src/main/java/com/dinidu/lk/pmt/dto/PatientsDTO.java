@@ -1,73 +1,56 @@
 package com.dinidu.lk.pmt.dto;
 
-import com.dinidu.lk.pmt.utils.issuesTypes.IssuePriority;
-import com.dinidu.lk.pmt.utils.issuesTypes.IssueStatus;
 import javafx.beans.property.*;
 import lombok.*;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 @Getter
 @Setter
-@AllArgsConstructor
+@ToString
 public class PatientsDTO {
     private Long id;
-    private StringProperty projectId = new SimpleStringProperty();
-    private LongProperty taskId = new SimpleLongProperty();
-    private StringProperty description = new SimpleStringProperty();
-    private LongProperty reportedBy = new SimpleLongProperty();
-    private LongProperty assignedTo = new SimpleLongProperty();
-    private ObjectProperty<IssueStatus> status = new SimpleObjectProperty<>();
-    private ObjectProperty<IssuePriority> priority = new SimpleObjectProperty<>();
-    private ObjectProperty<Date> dueDate = new SimpleObjectProperty<>();
-    private ObjectProperty<Timestamp> createdAt = new SimpleObjectProperty<>();
-    private ObjectProperty<Timestamp> updatedAt = new SimpleObjectProperty<>();
 
-    public String getProjectId() { return projectId.get(); }
-    public void setProjectId(String projectId) { this.projectId.set(projectId); }
-    public StringProperty projectIdProperty() { return projectId; }
+    private StringProperty fullName = new SimpleStringProperty();
+    private StringProperty email = new SimpleStringProperty();
+    private StringProperty address = new SimpleStringProperty();
+    private StringProperty phoneNumber = new SimpleStringProperty();
+    private StringProperty medicalHistory = new SimpleStringProperty();
+    private ObjectProperty<LocalDate> registrationDate = new SimpleObjectProperty<>();
 
-    public long getTaskId() { return taskId.get(); }
-    public void setTaskId(long taskId) { this.taskId.set(taskId); }
-    public LongProperty taskIdProperty() { return taskId; }
-
-    public String getDescription() { return description.get(); }
-    public void setDescription(String description) { this.description.set(description); }
-    public StringProperty descriptionProperty() { return description; }
-
-    public long getReportedBy() { return reportedBy.get(); }
-    public void setReportedBy(long reportedBy) { this.reportedBy.set(reportedBy); }
-    public LongProperty reportedByProperty() { return reportedBy; }
-
-    public long getAssignedTo() { return assignedTo.get(); }
-    public void setAssignedTo(long assignedTo) { this.assignedTo.set(assignedTo); }
-    public LongProperty assignedToProperty() { return assignedTo; }
-
-    public IssueStatus getStatus() { return status.get(); }
-    public void setStatus(IssueStatus status) { this.status.set(status); }
-    public ObjectProperty<IssueStatus> statusProperty() { return status; }
-
-    public IssuePriority getPriority() { return priority.get(); }
-    public void setPriority(IssuePriority priority) { this.priority.set(priority); }
-    public ObjectProperty<IssuePriority> priorityProperty() { return priority; }
-
-    public Date getDueDate() { return dueDate.get(); }
-    public void setDueDate(Date dueDate) { this.dueDate.set(dueDate); }
-    public ObjectProperty<Date> dueDateProperty() { return dueDate; }
-
-    public Timestamp getCreatedAt() { return createdAt.get(); }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt.set(createdAt); }
-    public ObjectProperty<Timestamp> createdAtProperty() { return createdAt; }
-
-    public Timestamp getUpdatedAt() { return updatedAt.get(); }
-    public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt.set(updatedAt); }
-    public ObjectProperty<Timestamp> updatedAtProperty() { return updatedAt; }
-
-    public Long getIssueId() {
-        return id;
+    public PatientsDTO(Long id, String fullName, String email, String address, String phoneNumber, String medicalHistory, LocalDate registrationDate) {
+        this.id = id;
+        this.fullName.set(fullName);
+        this.email.set(email);
+        this.address.set(address);
+        this.phoneNumber.set(phoneNumber);
+        this.medicalHistory.set(medicalHistory);
+        this.registrationDate.set(registrationDate);
     }
-}
 
+    public String getFullName() { return fullName.get(); }
+    public void setFullName(String fullName) { this.fullName.set(fullName); }
+    public StringProperty fullNameProperty() { return fullName; }
+
+    public String getEmail() { return email.get(); }
+    public void setEmail(String email) { this.email.set(email); }
+    public StringProperty emailProperty() { return email; }
+
+    public String getAddress() { return address.get(); }
+    public void setAddress(String address) { this.address.set(address); }
+    public StringProperty addressProperty() { return address; }
+
+    public String getPhoneNumber() { return phoneNumber.get(); }
+    public void setPhoneNumber(String phoneNumber) { this.phoneNumber.set(phoneNumber); }
+    public StringProperty phoneNumberProperty() { return phoneNumber; }
+
+    public String getMedicalHistory() { return medicalHistory.get(); }
+    public void setMedicalHistory(String medicalHistory) { this.medicalHistory.set(medicalHistory); }
+    public StringProperty medicalHistoryProperty() { return medicalHistory; }
+
+    public LocalDate getRegistrationDate() { return registrationDate.get(); }
+    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate.set(registrationDate); }
+    public ObjectProperty<LocalDate> registrationDateProperty() { return registrationDate; }
+}

@@ -288,6 +288,12 @@ public class DashboardViewController extends BaseController {
         navigateTo("/view/nav-buttons/settings-view.fxml");
     }
 
+    public void clickOnPatients() {
+        handleButtonClick((Button) dashboardPage.lookup("#patientButton"));
+        hideCardContainers();
+        navigateTo("/view/nav-buttons/patients-view.fxml");
+    }
+
     public void navigateTo(String fxmlPath) {
         try {
             contentPane.getChildren().clear();
@@ -308,11 +314,5 @@ public class DashboardViewController extends BaseController {
             System.out.println("Failed to load page: " + e.getMessage());
             new Alert(Alert.AlertType.ERROR, "Failed to load page!").show();
         }
-    }
-
-    public void clickOnPatients() {
-        handleButtonClick((Button) dashboardPage.lookup("#issuesButton"));
-        hideCardContainers();
-        navigateTo("/view/nav-buttons/patients-view.fxml");
     }
 }

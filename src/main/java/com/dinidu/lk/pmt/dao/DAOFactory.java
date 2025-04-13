@@ -12,7 +12,7 @@ public class DAOFactory {
     }
 
     public enum DAOTypes{
-        USER,TASKS, Therapist,QUERY, TIMESHEET, PROGRAMS
+        USER,TASKS, Therapist,QUERY, TIMESHEET, PROGRAMS,Patients
     }
 
     public SuperDAO getDAO(DAOTypes daoTypes){
@@ -21,6 +21,7 @@ public class DAOFactory {
             case QUERY -> new QueryDAOImpl();
             case Therapist -> new TherapistDAOImpl();
             case PROGRAMS -> new ProgramsDAOImpl();
+            case Patients -> new PatientsDAOImpl();
             default -> null;
         };
     }

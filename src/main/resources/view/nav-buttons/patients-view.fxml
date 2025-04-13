@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="issuesPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/project.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.IssuesViewController">
+<AnchorPane fx:id="issuesPage" prefHeight="700.0" prefWidth="1522.0" stylesheets="@../../styles/dashboard/project.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.PatientsViewController">
     <children>
         <Label layoutX="376.0" layoutY="20.0" styleClass="main-label" text="Patients" />
 

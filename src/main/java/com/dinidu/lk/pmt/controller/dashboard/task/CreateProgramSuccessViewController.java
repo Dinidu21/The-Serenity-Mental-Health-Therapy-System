@@ -110,7 +110,6 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
         if (tasksDTO == null) {
             System.out.println("Error: taskDTO is null");
         }
-
     }
 
     public void setTaskData(TherapyProgramsDTO therapyProgramsDTO) {

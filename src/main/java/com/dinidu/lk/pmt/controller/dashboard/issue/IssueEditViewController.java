@@ -80,7 +80,7 @@ public class IssueEditViewController implements Initializable {
             return;
         }
 
-        currentIssue.setDescription(issueDescriptionField.getText());
+/*        currentIssue.setDescription(issueDescriptionField.getText());
         currentIssue.setStatus(issueStatusComboBox.getValue());
         currentIssue.setPriority(issuePriorityComboBox.getValue());
 
@@ -147,7 +147,7 @@ public class IssueEditViewController implements Initializable {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     @Override
@@ -240,7 +240,7 @@ public class IssueEditViewController implements Initializable {
             return;
         }
 
-        issueDescriptionField.setText(currentIssue.getDescription() != null ? currentIssue.getDescription() : "");
+/*        issueDescriptionField.setText(currentIssue.getDescription() != null ? currentIssue.getDescription() : "");
         issueStatusComboBox.setValue(currentIssue.getStatus());
         issuePriorityComboBox.setValue(currentIssue.getPriority());
 
@@ -278,7 +278,7 @@ public class IssueEditViewController implements Initializable {
             dueDate.setValue(currentIssue.getDueDate().toLocalDate());
         } else {
             dueDate.setValue(null);
-        }
+        }*/
     }
 
 

@@ -1,6 +1,7 @@
 package com.dinidu.lk.pmt.controller.dashboard;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
+import com.dinidu.lk.pmt.bo.custom.PatientBO;
 import com.dinidu.lk.pmt.bo.custom.ProgramsBO;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.controller.BaseController;
@@ -42,7 +43,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public class IssuesViewController extends BaseController implements Initializable {
+public class PatientsViewController extends BaseController implements Initializable {
     @FXML
     public Label createLabel;
     @FXML
@@ -71,6 +72,9 @@ public class IssuesViewController extends BaseController implements Initializabl
     ProgramsBO programsBO =
             (ProgramsBO) BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.PROGRAM);
+    PatientBO patientBO =
+            (PatientBO) BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.PATIENTS);
 
     QueryDAO queryDAO = new QueryDAOImpl();
 
@@ -104,34 +108,10 @@ public class IssuesViewController extends BaseController implements Initializabl
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            Map<String, String> projectNamesMap = therapistsBO.getAllTherapistNames();
-            sortByProjectName.setItems(FXCollections.observableArrayList(projectNamesMap.values()));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        sortByStatus.getItems().addAll(IssueStatus.values());
-        priorityDropdown.getItems().addAll(IssuePriority.values());
-        sortByStatus.setOnAction(event -> {
-            updateIssuesView();
-            resetBTN.setVisible(true);
-        });
-
-        priorityDropdown.setOnAction(event -> {
-            updateIssuesView();
-            resetBTN.setVisible(true);
-        });
-
-        sortByProjectName.setOnAction(event -> {
-            updateIssuesView();
-            resetBTN.setVisible(true);
-        });
-
+        noIssuesLabel.setVisible(false);
+        createLabel.setVisible(false);
+        noIssuesFoundLabel.setVisible(false);
         updateIssuesView();
-
         searchBox.textProperty().addListener((observable, oldValue, newValue) -> {
             searchImg.setVisible(newValue.isEmpty());
             if (!newValue.isEmpty()) {
@@ -141,7 +121,6 @@ public class IssuesViewController extends BaseController implements Initializabl
                 updateIssuesView();
             }
         });
-
         searchBox.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 String projectName = searchBox.getText().trim();
@@ -157,7 +136,6 @@ public class IssuesViewController extends BaseController implements Initializabl
                 }
             }
         });
-
         suggestionList.setOnMouseClicked(event -> {
             String selectedIssueName = suggestionList.getSelectionModel().getSelectedItem();
             if (selectedIssueName != null) {
@@ -199,6 +177,7 @@ public class IssuesViewController extends BaseController implements Initializabl
         if (userRoleByUsername == null) {
             System.out.println("User not logged in. userRoleByUsername: " + null);
         }
+
         System.out.println("User role: " + userRoleByUsername);
         if (userRoleByUsername != UserRole.ADMIN &&
                 userRoleByUsername != UserRole.RECEPTIONIST) {
@@ -208,62 +187,32 @@ public class IssuesViewController extends BaseController implements Initializabl
     }
 
     private void updateIssuesView() {
-        List<PatientsDTO> issues = null;
+        List<PatientsDTO> patientsDTOS = null;
         try {
-            issues = programsBO.getAllPatients();
+            patientsDTOS = patientBO.getAllPatients();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        IssueStatus selectedStatus = sortByStatus.getValue();
-        IssuePriority selectedPriority = priorityDropdown.getValue();
-        String selectedProjectName = sortByProjectName.getValue();
 
-        noIssuesLabel.setVisible(false);
-        createLabel.setVisible(false);
-        noIssuesFoundLabel.setVisible(false);
-        projectIssuesContainer.setVisible(true);
-
-        if (issues == null || issues.isEmpty()) {
+        if (patientsDTOS == null) {
+            System.out.println("Failed to fetch patients.");
             noIssuesLabel.setVisible(true);
             createLabel.setVisible(true);
-            System.out.println("No issues found.");
-            projectIssuesContainer.setVisible(false);
+            noIssuesFoundLabel.setVisible(true);
             return;
         }
 
-        Map<String, String> projectNamesMap = null;
-        try {
-            projectNamesMap = therapistsBO.getAllTherapistNames();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        if (patientsDTOS.isEmpty()) {
+            noIssuesLabel.setVisible(true);
+            createLabel.setVisible(true);
+            System.out.println("No Patients found.");
+            projectIssuesContainer.setVisible(false);
+            return;
         }
-
-/*
-        Map<String, String> finalProjectNamesMap = projectNamesMap;
-        List<PatientsDTO> filteredIssues = issues.stream()
-                .filter(issue -> {
-                    if ((selectedStatus != null && issue.getStatus() != selectedStatus) ||
-                            (selectedPriority != null && issue.getPriority() != selectedPriority)) return false;
-                    if (selectedProjectName == null) return true;
-                    assert finalProjectNamesMap != null;
-                    return finalProjectNamesMap.get(issue.getProjectId()).equals(selectedProjectName);
-                })
-                .collect(Collectors.toList());
-
-        if (filteredIssues.isEmpty()) {
-            noIssuesFoundLabel.setVisible(true);
-            System.out.println("No issues found after filtering.");
-        } else {
-            noIssuesFoundLabel.setVisible(false);
-        }
-*/
-
-//        displayIssues(filteredIssues);
+        displayIssues(patientsDTOS);
     }
 
     public void resetBtnClick() {
@@ -308,12 +257,12 @@ public class IssuesViewController extends BaseController implements Initializabl
             projectDetails.setLayoutX(100);
             projectDetails.setLayoutY(35);
 
-            Label nameLabel = new Label(issue.getDescription());
+            Label nameLabel = new Label(issue.getFullName());
             nameLabel.getStyleClass().add("project-name");
             
             String projName = null;
             try {
-                 projName = programsBO.getTherapistNameById(issue.getProjectId());
+                 projName = programsBO.getTherapistNameById(issue.getFullName());
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } catch (ClassNotFoundException e) {
@@ -322,7 +271,7 @@ public class IssuesViewController extends BaseController implements Initializabl
 
             String taskName = "";
             try {
-                taskName = programsBO.getProgramNameById(issue.getTaskId());
+                taskName = programsBO.getProgramNameById(issue.getId());
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             } catch (ClassNotFoundException e) {
@@ -372,7 +321,7 @@ public class IssuesViewController extends BaseController implements Initializabl
         if (!filteredIssues.isEmpty()) {
             suggestionList.getItems().clear();
             for (PatientsDTO issue : filteredIssues) {
-                suggestionList.getItems().add(issue.getDescription());
+                suggestionList.getItems().add(issue.getAddress());
             }
             suggestionList.setVisible(true);
         } else {

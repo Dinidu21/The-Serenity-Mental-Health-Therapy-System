@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
 @Setter
 @Getter
@@ -20,6 +22,9 @@ public class Patients {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column (name = "address", nullable = false)
+    private String address;
+
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
@@ -27,5 +32,5 @@ public class Patients {
     private String medicalHistory;
 
     @Column(name = "registration_date", nullable = false)
-    private java.time.LocalDateTime registrationDate;
+    private LocalDate registrationDate;
 }

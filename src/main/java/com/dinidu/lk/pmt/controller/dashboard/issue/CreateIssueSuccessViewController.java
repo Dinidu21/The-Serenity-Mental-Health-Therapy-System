@@ -121,7 +121,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
         userAccessControl();
         setupDragAndDrop();
         setupUploadButton();
-        loadExistingAttachments();
+//        loadExistingAttachments();
     }
 
     private void setupDragAndDrop() {
@@ -267,7 +267,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
             }
         };
 
-        loadTask.setOnSucceeded(e -> {
+/*        loadTask.setOnSucceeded(e -> {
             List<IssueAttachmentDTO> attachments = loadTask.getValue();
             if (attachments.isEmpty()) {
                 noAttachments.setVisible(true);
@@ -279,7 +279,7 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
                 System.out.println("=================CREATE ISSUE SUCCESS VIEW CONTROLLER=================");
                 System.out.println("Here is the load Existing Attachments method: Here is Id "+ attachment.getId());
             }
-        });
+        });*/
 
         new Thread(loadTask).start();
     }
@@ -386,10 +386,10 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
     public void setIssuesData(PatientsDTO patientsDTO) {
         this.patientsDTO = patientsDTO;
-        currentIssueId = patientsDTO.getIssueId();
+        currentIssueId = patientsDTO.getId();
         System.out.println("currentIssueId: " + currentIssueId);
 
-        issueDes.textProperty().bind(patientsDTO.descriptionProperty());
+/*        issueDes.textProperty().bind(patientsDTO.descriptionProperty());
         issueStatus.textProperty().bind(patientsDTO.statusProperty().asString());
         issuePriority.textProperty().bind(patientsDTO.priorityProperty().asString());
         issueDueDate.textProperty().bind(Bindings.createStringBinding(() -> {
@@ -402,58 +402,58 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
 
         setProjectDetails(patientsDTO.getProjectId());
         setAssigneeName(patientsDTO.getAssignedTo());
-        setTaskName(patientsDTO.getTaskId());
-        setTeamDetails();
+        setTaskName(patientsDTO.getTaskId());*/
+//        setTeamDetails();
 
         setupStyleListeners();
         updateStyles(patientsDTO);
     }
 
-    private void setTeamDetails() {
-        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(patientsDTO.getProjectId());
-        Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
-        ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
-        int teamMemberCount = 0;
-
-        for (TeamAssignmentDTO assignment : teamAssignments) {
-            if (teamMemberCount >= 4) break;
-
-            Long assignedUserId = assignment.getUserId();
-            if (assignedUserId != null) {
-                String memberName;
-                try {
-                    memberName = userBO.getUserFullNameById(assignedUserId);
-                    System.out.println("===================CreateIssueSuccessViewController: " + memberName);
-
-                } catch (SQLException | ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-
-                Image memberProfilePic ;
-                try {
-                    memberProfilePic = userBO.getUserProfilePicByUserId(assignedUserId);
-                } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-
-                if(memberProfilePic == null){
-                    try {
-                        memberProfilePic = new Image(new FileInputStream("src/main/resources/asserts/icons/noPic.png"));
-                    } catch (FileNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                teamMemberLabels[teamMemberCount].setText(memberName);
-                teamMemberImages[teamMemberCount].setImage(memberProfilePic);
-                teamMemberCount++;
-            }else{
-                System.out.println("User ID is null");
-            }
-        }
-
-        teamCount.setText("" + teamMemberCount);
-    }
+//    private void setTeamDetails() {
+//        List<TeamAssignmentDTO> teamAssignments = getTeamAssignmentsForProject(patientsDTO.getProjectId());
+//        Label[] teamMemberLabels = {teamMember1, teamMember2, teamMember3, teamMember4};
+//        ImageView[] teamMemberImages = {teamMember1Img, teamMember2Img, teamMember3Img, teamMember4Img};
+//        int teamMemberCount = 0;
+//
+//        for (TeamAssignmentDTO assignment : teamAssignments) {
+//            if (teamMemberCount >= 4) break;
+//
+//            Long assignedUserId = assignment.getUserId();
+//            if (assignedUserId != null) {
+//                String memberName;
+//                try {
+//                    memberName = userBO.getUserFullNameById(assignedUserId);
+//                    System.out.println("===================CreateIssueSuccessViewController: " + memberName);
+//
+//                } catch (SQLException | ClassNotFoundException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//                Image memberProfilePic ;
+//                try {
+//                    memberProfilePic = userBO.getUserProfilePicByUserId(assignedUserId);
+//                } catch (SQLException | FileNotFoundException | ClassNotFoundException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//                if(memberProfilePic == null){
+//                    try {
+//                        memberProfilePic = new Image(new FileInputStream("src/main/resources/asserts/icons/noPic.png"));
+//                    } catch (FileNotFoundException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                }
+//
+//                teamMemberLabels[teamMemberCount].setText(memberName);
+//                teamMemberImages[teamMemberCount].setImage(memberProfilePic);
+//                teamMemberCount++;
+//            }else{
+//                System.out.println("User ID is null");
+//            }
+//        }
+//
+//        teamCount.setText("" + teamMemberCount);
+//    }
 
     private void setProjectDetails(String projectId) {
         List<TherapistDTO> therapistDtoList;
@@ -543,12 +543,6 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     }
 
     private void setupStyleListeners() {
-        if (patientsDTO != null) {
-            patientsDTO.statusProperty().addListener((observable, oldValue, newValue) ->
-                    updateStatusStyle(newValue));
-            patientsDTO.priorityProperty().addListener((observable, oldValue, newValue) ->
-                    updatePriorityStyle(newValue));
-        }
     }
 
     private void updateStatusStyle(IssueStatus status) {
@@ -573,8 +567,6 @@ public class CreateIssueSuccessViewController implements Initializable, IssueUpd
     }
 
     private void updateStyles(PatientsDTO patientsDTO) {
-        updateStatusStyle(patientsDTO.getStatus());
-        updatePriorityStyle(patientsDTO.getPriority());
     }
 
     @Override
