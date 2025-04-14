@@ -6,17 +6,17 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="taskChecklistCreatePage" prefHeight="700.0" prefWidth="1522.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.checklist.ChecklistCreateViewController">
+<AnchorPane fx:id="taskChecklistCreatePage" prefHeight="700.0" prefWidth="1522.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.checklist.TherapySessionsCreateViewController">
     <VBox prefHeight="680.0" prefWidth="948.0" spacing="15" AnchorPane.leftAnchor="385.0" AnchorPane.rightAnchor="189.0" AnchorPane.topAnchor="0.0">
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Label styleClass="main-label" text="Create CheckList" />
+            <Label styleClass="main-label" text="Create Therapy Sessions" />
         </HBox>
         <VBox spacing="5" styleClass="description-box">
             <Label styleClass="para" text="Checklists provide a structured approach to tracking essential steps and actions required for successful project completion. Each checklist item represents a clear task or requirement that needs to be addressed, like verifying data accuracy, confirming approvals, or completing testing. By organizing tasks into checklist items, team members can ensure that nothing is overlooked, stay focused on detailed objectives, and efficiently mark progress, ultimately contributing to a thorough and polished final outcome." wrapText="true" />
@@ -30,21 +30,29 @@
                     <ColumnConstraints maxWidth="511.1999877929688" minWidth="103.20001220703125" prefWidth="103.20001220703125" />
                     <ColumnConstraints maxWidth="511.1999877929688" minWidth="200.0" prefWidth="268.8000244140625" />
                 </columnConstraints>
-                <Label styleClass="input-label" text="Name" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="checkListNameField" prefHeight="38.0" prefWidth="310.0" promptText="Enter CheckList name" styleClass="text-input" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Assign To" GridPane.rowIndex="2" />
+                <Label styleClass="input-label" text="Therapy Program" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Therapist" GridPane.rowIndex="2" />
                 <Label styleClass="input-label" text="Description" GridPane.rowIndex="3" />
-                <TextArea fx:id="descriptionIdField" prefHeight="200.0" prefWidth="563.0" promptText="Enter CheckList description" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                <ComboBox fx:id="selectMemberNameComboBox" prefHeight="34.0" prefWidth="251.0" promptText="Select Member" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <ComboBox fx:id="checklistPriorityComboBox" prefHeight="38.0" prefWidth="250.0" promptText="Select Priority" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label layoutX="10.0" layoutY="74.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Due Date" GridPane.columnIndex="2" />
-                <DatePicker fx:id="deadlineForChecklist" prefHeight="38.0" prefWidth="391.0" GridPane.columnIndex="3" />
-                <Label layoutX="565.0" layoutY="10.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Priority" GridPane.rowIndex="1" />
+                <TextArea fx:id="descriptionIdField" prefHeight="200.0" prefWidth="563.0" promptText="Enter description" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <ComboBox fx:id="SelectTherapist" prefHeight="34.0" prefWidth="251.0" promptText="Select Therapist" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ComboBox fx:id="SelectPatient" prefHeight="38.0" prefWidth="250.0" promptText="Select Patient" styleClass="combo-box" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label layoutX="10.0" layoutY="74.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Select Date" GridPane.columnIndex="2" />
+                <DatePicker fx:id="sessionMakeDay" prefHeight="38.0" prefWidth="391.0" GridPane.columnIndex="3" />
+                <Label layoutX="565.0" layoutY="10.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Patient" GridPane.rowIndex="1" />
+            <ComboBox fx:id="SelectProgram" prefHeight="38.0" prefWidth="250.0" promptText="Select Program" styleClass="combo-box" GridPane.columnIndex="1" />
+            <Label layoutX="565.0" layoutY="13.0" prefHeight="39.0" prefWidth="150.0" styleClass="input-label" text="Select Time" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <ComboBox fx:id="timeComboBox" prefHeight="46.0" prefWidth="298.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
         </VBox>
         <HBox alignment="CENTER_RIGHT" prefWidth="862.0" spacing="10">
             <Button onAction="#cancelOnClick" styleClass="button-secondary" text="Cancel" />
-            <Button onAction="#createChecklistClick" styleClass="button-primary" text="Create CheckList" />
+            <Button onAction="#createChecklistClick" styleClass="button-primary" text="Create Sessions" />
         </HBox>
     </VBox>
     <stylesheets>

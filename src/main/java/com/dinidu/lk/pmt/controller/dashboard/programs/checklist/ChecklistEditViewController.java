@@ -4,7 +4,8 @@ import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-import com.dinidu.lk.pmt.dto.ChecklistDTO;
+
+import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
 import com.dinidu.lk.pmt.dto.UserDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
@@ -53,7 +54,7 @@ public class ChecklistEditViewController implements Initializable {
     private TextField TaskDescriptionField;
     @FXML
     private DatePicker endDatePicker;
-    public ChecklistDTO currentChecklist;
+    public TherapySessionsDTO currentChecklist;
 
     UserBO userBO= (UserBO)
             BOFactory.getInstance().
@@ -117,13 +118,14 @@ public class ChecklistEditViewController implements Initializable {
         TaskDescriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
     }
 
-    public void setChecklistData(ChecklistDTO checklist) {
+    public void setChecklistData(TherapySessionsDTO checklist) {
         currentChecklist = checklist;
         loadChecklistData();
     }
 
     private boolean updateModifiedChecklistFields() {
         boolean isModified = false;
+/*
 
         if (!TaskNameField.getText().trim().equals(currentChecklist.nameProperty().get())) {
             currentChecklist.nameProperty().set(TaskNameField.getText().trim());
@@ -158,6 +160,7 @@ public class ChecklistEditViewController implements Initializable {
             isModified = true;
             System.out.println("Checklist end date updated to: " + endDate);
         }
+*/
 
         return isModified;
     }
@@ -193,14 +196,14 @@ public class ChecklistEditViewController implements Initializable {
         if (selectedUser != null) {
             handleMemberAssignment(selectedUser);
         }
-
+/*
         if (updateListener != null) {
             updateListener.onChecklistUpdated(currentChecklist);
             System.out.println("updateListener is not null");
         } else {
             System.out.println("updateListener is null");
             CustomErrorAlert.showAlert("Error", "Failed to update Checklist.");
-        }
+        }*/
 
         backToMain();
     }
@@ -214,6 +217,7 @@ public class ChecklistEditViewController implements Initializable {
             return;
         }
 
+/*
         TaskNameField.setText(currentChecklist.nameProperty().get());
         TaskDescriptionField.setText(currentChecklist.descriptionProperty().get());
         checklistStatusComboBox.setValue(currentChecklist.statusProperty().get());
@@ -234,6 +238,7 @@ public class ChecklistEditViewController implements Initializable {
         } else {
             endDatePicker.setValue(LocalDate.now());
         }
+*/
     }
 
     private void handleMemberAssignment(String selectedUser) {

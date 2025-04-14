@@ -3,7 +3,9 @@ package com.dinidu.lk.pmt.bo.custom.Impl;
 import com.dinidu.lk.pmt.bo.custom.TherapistsBO;
 import com.dinidu.lk.pmt.dao.DAOFactory;
 import com.dinidu.lk.pmt.dao.custom.TherapistDAO;
+import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.dto.TherapistDTO;
+import com.dinidu.lk.pmt.entity.Patients;
 import com.dinidu.lk.pmt.entity.Therapists;
 import com.dinidu.lk.pmt.utils.EntityDTOMapper;
 
@@ -74,6 +76,28 @@ public class TherapistsBOImpl implements TherapistsBO {
         System.out.println("Therapists From DB: " + therapists);
         return EntityDTOMapper.mapEntityListToDTOList(therapists,
                 TherapistDTO.class);
+    }
+
+    @Override
+    public TherapistDTO getTherapistByName(String therapistValue) throws SQLException, ClassNotFoundException {
+        List<Therapists> therapists = therapistDAO.searchByName(therapistValue);
+        if (therapists.isEmpty()) {
+            System.out.println("No Patients found with the name: " + therapistValue);
+            return null;
+        } else {
+            Therapists patients = therapists.get(0);
+            return new TherapistDTO(
+                    patients.getId() ,
+                    patients.getFullName(),
+                    patients.getAddress(),
+                    patients.getPhoneNumber(),
+                    patients.getEmail(),
+                    patients.getStatus(),
+                    patients.getCreatedBy(),
+                    patients.getCreatedAt(),
+                    patients.getUpdatedAt()
+            );
+        }
     }
 
     public void updateTherapist(TherapistDTO currentProject) throws SQLException,ClassNotFoundException{

@@ -5,6 +5,7 @@ import com.dinidu.lk.pmt.dao.custom.ProgramsDAO;
 import com.dinidu.lk.pmt.entity.TherapyPrograms;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import javafx.beans.property.StringProperty;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -248,6 +249,24 @@ public class ProgramsDAOImpl implements ProgramsDAO {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public TherapyPrograms getByName(String name) throws SQLException, ClassNotFoundException {
+        if (name == null || name.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            Query<TherapyPrograms> query = session.createQuery(
+                    "FROM TherapyPrograms WHERE lower(programName) LIKE lower(:name)",
+                    TherapyPrograms.class
+            );
+            query.setParameter("name", name);
+            return query.uniqueResult();
+        } catch (HibernateException e) {
+            throw new SQLException("Error fetching therapy program by name: " + name, e);
         }
     }
 }

@@ -101,7 +101,7 @@ public class ProgramEditViewController implements Initializable {
             if (!tasks.isEmpty()) {
                 currentTask = tasks.get(0);
                 System.out.println("\nNo task selected. Defaulting to first task: " + currentTask.getProgramId());
-                System.out.println("Task ID: " + currentTask.getId());
+                System.out.println("Task ID: " + currentTask.getProgramId());
             } else {
                 System.out.println("No tasks available.");
                 return;
@@ -151,10 +151,10 @@ public class ProgramEditViewController implements Initializable {
 
                 System.out.println("\nUpdating task: " + currentTask.getName());
                 System.out.println("Task Name: " + currentTask.getName());
-                System.out.println("Task ID: " + currentTask.getId());
+                System.out.println("Task ID: " + currentTask.getProgramId());
                 System.out.println("Task Fee: " + currentTask.getFee()+"\n");
 
-                currentTask.setId(currentTask.getId());
+                currentTask.setProgramId(currentTask.getProgramId());
                 programsBO.updateProgram(currentTask);
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
@@ -256,7 +256,7 @@ public class ProgramEditViewController implements Initializable {
         if (confirmed) {
             System.out.println("Deleting task...");
             try {
-                boolean b = programsBO.deleteProgram(currentTask.getId());
+                boolean b = programsBO.deleteProgram(currentTask.getProgramId());
                 if (!b) {
                     System.out.println("Task deletion failed.");
                     CustomErrorAlert.showAlert("Error", "Task deletion failed.");

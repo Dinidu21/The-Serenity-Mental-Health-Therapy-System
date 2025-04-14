@@ -167,4 +167,20 @@ public class PatientsDAOImpl implements PatientsDAO {
             }
         }
     }
+
+    @Override
+    public Patients getById(long patientId) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            return session.get(Patients.class, patientId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error fetching Patients by ID: " + patientId, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

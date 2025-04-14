@@ -113,10 +113,10 @@
         <AnchorPane fx:id="checklistViewPane" layoutX="58.0" layoutY="210.0" prefHeight="466.0" prefWidth="631.0" styleClass="card-container">
             <children>
                 <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" spacing="15">
-                    <Label styleClass="main-label" text="Checklist" />
+                    <Label styleClass="main-label" text="Sessions" />
                     <Region HBox.hgrow="ALWAYS" />
                     <TextField fx:id="checklistSearch" prefHeight="38.0" prefWidth="254.0" promptText="Search items" styleClass="search-field" />
-                    <Button fx:id="createCheckListBtn" onAction="#createCheckList" prefHeight="41.0" prefWidth="163.0" styleClass="button" text="Create Checklist" />
+                    <Button fx:id="createCheckListBtn" onAction="#createCheckList" prefHeight="41.0" prefWidth="163.0" styleClass="button" text="Create Sessions" />
                 </HBox>
                 <HBox layoutX="20.0" layoutY="80.0" prefHeight="47.0" prefWidth="561.0" spacing="10">
                     <ComboBox fx:id="filterStatus" prefHeight="47.0" prefWidth="183.0" promptText="Sort By Status" styleClass="combo-box" />
@@ -127,7 +127,7 @@
                 <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="130.0" prefHeight="293.0" prefWidth="582.0" styleClass="scroll-pane">
                     <content>
                         <VBox fx:id="checklistContainer" prefHeight="286.0" prefWidth="578.0" spacing="10" styleClass="project-card-container">
-                            <Label fx:id="noChecklistLabel" alignment="CENTER" prefHeight="62.0" prefWidth="538.0" styleClass="no-checklist-label" text="No checklist items available.">
+                            <Label fx:id="noChecklistLabel" alignment="CENTER" prefHeight="62.0" prefWidth="538.0" styleClass="no-checklist-label" text="No sessions items available.">
                                 <VBox.margin>
                                     <Insets />
                                 </VBox.margin>

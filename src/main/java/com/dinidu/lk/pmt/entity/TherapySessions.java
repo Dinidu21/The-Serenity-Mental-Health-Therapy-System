@@ -1,12 +1,17 @@
 package com.dinidu.lk.pmt.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
+@Setter
+@ToString
 @Table(name = "therapy_sessions")
 public class TherapySessions {
 
@@ -28,8 +33,22 @@ public class TherapySessions {
     private TherapyPrograms therapyProgram;
 
     @Column(name = "session_date", nullable = false)
-    private java.time.LocalDateTime sessionDate;
+    private LocalDate sessionDate;
+
+    @Column(name = "session_time", nullable = false)
+    private String sessionTime;
+
+    @Column(name = "session_made_date", nullable = false)
+    private LocalDate sessionMadeDate;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "status", nullable = false)
-    private String status; // e.g., "SCHEDULED", "COMPLETED", "CANCELLED"
+    @Enumerated(EnumType.STRING)
+    private SessionStatus status;
+
+    public enum SessionStatus {
+        SCHEDULED, COMPLETED, CANCELLED, IN_PROGRESS
+    }
 }

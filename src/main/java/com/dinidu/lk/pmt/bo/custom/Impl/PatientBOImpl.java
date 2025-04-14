@@ -169,4 +169,24 @@ public class PatientBOImpl implements PatientBO {
         }
         return patientsDTOList;
     }
+
+    @Override
+    public PatientsDTO getPatientByName(String patientValue) throws SQLException, ClassNotFoundException {
+        List<Patients> patientsList = patientsDAO.searchByName(patientValue);
+        if (patientsList.isEmpty()) {
+            System.out.println("No Patients found with the name: " + patientValue);
+            return null;
+        } else {
+            Patients patients = patientsList.get(0);
+            return new PatientsDTO(
+                    patients.getId(),
+                    patients.getFullName(),
+                    patients.getEmail(),
+                    patients.getAddress(),
+                    patients.getPhoneNumber(),
+                    patients.getMedicalHistory(),
+                    patients.getRegistrationDate()
+            );
+        }
+    }
 }

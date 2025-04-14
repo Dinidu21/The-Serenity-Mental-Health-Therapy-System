@@ -74,7 +74,7 @@ public class ProgramsBOImpl implements ProgramsBO {
 
         // Retrieve the existing entity by programId
 
-        TherapyPrograms entity = programsDAO.getById(currentTask.getId());
+        TherapyPrograms entity = programsDAO.getById(currentTask.getProgramId());
         if (entity == null) {
             throw new SQLException("TherapyPrograms with ID " + currentTask.getProgramId() + " not found.");
         }
@@ -96,7 +96,7 @@ public class ProgramsBOImpl implements ProgramsBO {
 
         for (TherapyPrograms program : therapyPrograms) {
             TherapyProgramsDTO dto = new TherapyProgramsDTO();
-            dto.setId(program.getProgramId());
+            dto.setProgramId(program.getProgramId());
             dto.setName(program.getProgramName());
             dto.setFee(program.getFee());
             dto.setDuration(program.getDuration());
@@ -110,7 +110,7 @@ public class ProgramsBOImpl implements ProgramsBO {
     @Override
     public boolean insertProgram(TherapyProgramsDTO thearpyTherapyProgramsDTO) throws SQLException, ClassNotFoundException {
         System.out.println("Inserting program: " + thearpyTherapyProgramsDTO);
-        System.out.println("Program ID: " + thearpyTherapyProgramsDTO.getId());
+        System.out.println("Program ID: " + thearpyTherapyProgramsDTO.getProgramId());
         System.out.println("Program Name: " + thearpyTherapyProgramsDTO.getName());
         System.out.println("Program Fee: " + thearpyTherapyProgramsDTO.getFee());
         System.out.println("Program Duration: " + thearpyTherapyProgramsDTO.getDuration());
@@ -136,7 +136,7 @@ public class ProgramsBOImpl implements ProgramsBO {
 
         for (TherapyPrograms program : therapyPrograms) {
             TherapyProgramsDTO dto = new TherapyProgramsDTO();
-            dto.setId(program.getProgramId());
+            dto.setProgramId(program.getProgramId());
             dto.setName(program.getProgramName());
             dto.setFee(program.getFee());
             dto.setDuration(program.getDuration());
@@ -174,6 +174,15 @@ public class ProgramsBOImpl implements ProgramsBO {
             System.out.println("Program found: " + therapyProgramsDTOList.get(0));
         }
         return therapyProgramsDTOList;
+    }
+
+    @Override
+    public TherapyProgramsDTO getProgramByName(String name) throws SQLException, ClassNotFoundException {
+        TherapyPrograms program = programsDAO.getByName(name);
+        System.out.println("Fetched program by name Programs BO getProgramByName: " + program);
+        return program != null ?
+                new TherapyProgramsDTO(program.getProgramId(), program.getProgramName(), program.getDuration(), program.getFee()) :
+                null;
     }
 
 }

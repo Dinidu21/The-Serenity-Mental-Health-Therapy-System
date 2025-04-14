@@ -7,4 +7,6 @@ import java.sql.SQLException;
 
 public interface PatientsDAO extends CrudDAO<Patients> {
     boolean deletePatient(Long id) throws SQLException , ClassNotFoundException;
+
+    Patients getById(long patientId) throws SQLException , ClassNotFoundException;
 }

@@ -20,4 +20,6 @@ public interface TherapistsBO extends SuperBO {
     List<TherapistDTO> getTherapistById(String projectId) throws SQLException, ClassNotFoundException;
     Map<String, String> getAllTherapistNames() throws SQLException,ClassNotFoundException;
     List<TherapistDTO> searchTherapistByName(String query) throws SQLException, ClassNotFoundException;
+
+    TherapistDTO getTherapistByName(String therapistValue) throws  SQLException, ClassNotFoundException;
 }

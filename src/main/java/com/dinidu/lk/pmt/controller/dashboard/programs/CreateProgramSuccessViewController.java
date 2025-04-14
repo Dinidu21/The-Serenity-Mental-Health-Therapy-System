@@ -3,13 +3,18 @@ package com.dinidu.lk.pmt.controller.dashboard.programs;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.*;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
+import com.dinidu.lk.pmt.controller.dashboard.programs.checklist.ChecklistEditViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
+import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
+import com.dinidu.lk.pmt.entity.TherapySessions;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
 import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistStatus;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
+import com.dinidu.lk.pmt.utils.listeners.ChecklistDeletionHandler;
+import com.dinidu.lk.pmt.utils.listeners.ChecklistUpdateListener;
 import com.dinidu.lk.pmt.utils.listeners.TaskDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.TaskUpdateListener;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
@@ -29,6 +34,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import lombok.Setter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,8 +42,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-public class CreateProgramSuccessViewController implements Initializable, TaskDeletionHandler, TaskUpdateListener {
+public class CreateProgramSuccessViewController implements Initializable, TaskDeletionHandler, TaskUpdateListener , ChecklistUpdateListener, ChecklistDeletionHandler {
     public Button resetFilterBtn;
     public VBox checklistContainer;
     public ComboBox<ChecklistPriority> sortBy;
@@ -88,9 +95,17 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
             BOFactory.getInstance().
                     getBO(BOFactory.BOTypes.PROGRAM);
 
+    TherapySessionsBO sessionsBO = (TherapySessionsBO)
+            BOFactory.getInstance().getBO(BOFactory.BOTypes.SESSIONS);
+
+    PatientBO patientsBO = (PatientBO)
+            BOFactory.getInstance().
+                    getBO(BOFactory.BOTypes.PATIENTS);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         noChecklistLabel.setVisible(false);
+        loadChecklists();
         TherapyProgramsDTO activeTask = CreateProgramSuccessViewController.current_Task;
         if (activeTask != null) {
             this.tasksDTO = activeTask;
@@ -106,9 +121,147 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
 
         sortBy.setValue(null);
         filterStatus.setValue(null);
+        sortBy.getItems().setAll(ChecklistPriority.values());
+        filterStatus.getItems().setAll(ChecklistStatus.values());
+
+        sortBy.setValue(null);
+        filterStatus.setValue(null);
+
+        sortBy.valueProperty().addListener((observable, oldValue, newValue) -> {
+            updateResetButtonVisibility();
+            loadChecklists();
+        });
+
+        filterStatus.valueProperty().addListener((observable, oldValue, newValue) -> {
+            updateResetButtonVisibility();
+            loadChecklists();
+        });
+
+        checklistSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            updateResetButtonVisibility();
+            loadChecklists();
+        });
 
         if (tasksDTO == null) {
             System.out.println("Error: taskDTO is null");
+        }
+    }
+
+    private void updateResetButtonVisibility() {
+        boolean hasFilters = sortBy.getValue() != null ||
+                filterStatus.getValue() != null ||
+                !checklistSearch.getText().isEmpty();
+        resetFilterBtn.setVisible(hasFilters);
+    }
+
+    private void updateChecklistDisplay(List<TherapySessionsDTO> sessionsDTOS) {
+        checklistContainer.getChildren().clear();
+        if (sessionsDTOS.isEmpty()) {
+            showNoChecklists();
+            return;
+        }
+
+        noChecklistLabel.setVisible(false);
+        for (TherapySessionsDTO therapySessionsDTO : sessionsDTOS) {
+            AnchorPane checklistItem = createChecklistItemPane(therapySessionsDTO);
+            checklistContainer.getChildren().add(checklistItem);
+        }
+    }
+
+    private AnchorPane createChecklistItemPane(TherapySessionsDTO therapySessionsDTO) {
+        AnchorPane itemPane = new AnchorPane();
+        itemPane.setPrefHeight(80);
+        itemPane.setPrefWidth(508);
+        itemPane.getStyleClass().add("checklist-item");
+
+        Label nameLabel = new Label();
+
+        nameLabel.textProperty().bind(therapySessionsDTO.descriptionProperty());
+        nameLabel.setLayoutX(15);
+        nameLabel.setLayoutY(10);
+        nameLabel.getStyleClass().add("checklist-name");
+        nameLabel.setMaxWidth(350);
+
+        Label descLabel = new Label();
+        descLabel.textProperty().bind(therapySessionsDTO.sessionTimeProperty());
+        descLabel.setLayoutX(15);
+        descLabel.setLayoutY(35);
+        descLabel.getStyleClass().add("checklist-description");
+
+        Label statusLabel = new Label();
+        statusLabel.textProperty().bind(therapySessionsDTO.statusProperty().asString());
+        statusLabel.setLayoutX(400);
+        statusLabel.setLayoutY(10);
+        statusLabel.getStyleClass().add("checklist-status");
+
+/*
+        Label priorityLabel = new Label();
+        priorityLabel.textProperty().bind(therapySessionsDTO.therapistIdProperty());
+        priorityLabel.setLayoutX(400);
+        priorityLabel.setLayoutY(35);
+        priorityLabel.getStyleClass().add("checklist-priority");
+
+        TherapySessions.SessionStatus currentStatus = therapySessionsDTO.statusProperty().get();
+        if (currentStatus != null) {
+            String statusStyle = "status-" + currentStatus.name().toLowerCase().replace("_", "-") + "-checklist";
+            statusLabel.getStyleClass().add(statusStyle);
+        }
+
+        therapySessionsDTO.statusProperty().addListener((observable, oldValue, newValue) -> {
+            statusLabel.getStyleClass().removeIf(style ->
+                    style.startsWith("status-") && style.endsWith("-checklist"));
+            if (newValue != null) {
+                String newStyle = "status-" + newValue.name().toLowerCase().replace("_", "-") + "-checklist";
+                statusLabel.getStyleClass().add(newStyle);
+            }
+        });
+*/
+
+        itemPane.getChildren().addAll(nameLabel, descLabel, statusLabel);
+        itemPane.setOnMouseClicked(event -> openChecklistEditModal(therapySessionsDTO));
+
+        return itemPane;
+    }
+
+    public void openChecklistEditModal( TherapySessionsDTO sessionsDTO) {
+        try {
+            String fxmlPath = "/view/nav-buttons/task/checklist/checklist-edit-view.fxml";
+
+            Stage modalStage = new Stage();
+            modalStage.initStyle(StageStyle.TRANSPARENT);
+            modalStage.initModality(Modality.WINDOW_MODAL);
+            modalStage.initOwner((Stage) taskCreatedSuccessPage.getScene().getWindow());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            ChecklistEditViewController controller = loader.getController();
+
+            controller.setChecklistData(sessionsDTO);
+            System.out.println("Current Checklist in Success Page: " + sessionsDTO.toString());
+            controller.setDeletionHandler(this);
+            controller.setUpdateListener(this);
+
+            root.setOnMousePressed(event -> {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            });
+
+            root.setOnMouseDragged(event -> {
+                modalStage.setX(event.getScreenX() - xOffset);
+                modalStage.setY(event.getScreenY() - yOffset);
+            });
+
+            Scene scene = new Scene(root);
+            scene.setFill(null);
+            modalStage.setScene(scene);
+            modalStage.centerOnScreen();
+            modalStage.show();
+
+        } catch (Exception e) {
+            System.out.println("Error while loading checklist edit modal: " + e.getMessage());
+            e.printStackTrace();
+            CustomErrorAlert.showAlert("Error", "Error while loading checklist edit modal.");
         }
     }
 
@@ -120,7 +273,7 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
 
         System.out.println("Now in set Task data method : " + therapyProgramsDTO);
 
-        if (therapyProgramsDTO.getProgramId() == null) {
+        if (therapyProgramsDTO.getProgramId() ==0L) {
             return;
         }
 
@@ -131,7 +284,7 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
         ProgramName.textProperty().bind(therapyProgramsDTO.nameProperty());
         ProgramFee.textProperty().bind(therapyProgramsDTO.feeProperty());
         ProgramDuration.textProperty().bind(therapyProgramsDTO.durationProperty());
-        ProgramId.textProperty().bind(therapyProgramsDTO.getProgramId());
+        ProgramId.textProperty().bind(therapyProgramsDTO.programIdProperty().asString());
 
         System.out.println("\nInitializing task data: " + therapyProgramsDTO);
         System.out.println("Program ID: " + therapyProgramsDTO.getProgramId());
@@ -140,7 +293,7 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
         System.out.println("Program Name: " + therapyProgramsDTO.getName() +"\n");
 
 
-        long id = therapyProgramsDTO.getId();
+        long id = therapyProgramsDTO.getProgramId();
         System.out.println("Program ID: " + id);
         if (id == 0 || id == -1) {
             System.out.println("Program ID is null");
@@ -159,16 +312,23 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
         if (!therapyProgramsDTOS.isEmpty()) {
             TherapyProgramsDTO projectDTO = therapyProgramsDTOS.get(0);
             System.out.println("Project DTO: " + projectDTO);
-            ProgramId.textProperty().bind(projectDTO.getProgramId());
-            ProgramIdWith2Digits.textProperty().bind(projectDTO.getProgramId());
+            ProgramId.textProperty().bind(therapyProgramsDTO.programIdProperty().asString());
+            ProgramIdWith2Digits.textProperty().bind(therapyProgramsDTO.programIdProperty().asString());
         } else {
             System.out.println("No project found with the given ID.");
         }
         projectOwnerName.setText(" " + userFullNameById);
     }
+
     @Override
     public void onTaskUpdated(TherapyProgramsDTO updatedTask) {
         setTaskData(updatedTask);
+    }
+
+    @Override
+    public void onChecklistUpdated(TherapySessionsDTO therapySessionsDTO) {
+        setTaskData(tasksDTO);
+        loadChecklists();
     }
 
     public void moreIconOnclick() {
@@ -280,10 +440,67 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
         setTaskData(therapyProgramsDTO);
     }
 
-    public void createCheckList(ActionEvent actionEvent) {
+    public void createCheckList() {
+        TherapistsViewController.bindNavigation(taskCreatedSuccessPage, "/view/nav-buttons/task/checklist/checklist-create-view.fxml");
     }
 
-    public void resetClick(ActionEvent actionEvent) {
+    public void resetClick() {
+        sortBy.setValue(null);
+        filterStatus.setValue(null);
+        checklistSearch.clear();
+        loadChecklists();
+    }
 
+    private void loadChecklists() {
+        System.out.println("\nLoading checklists...");
+        ChecklistStatus statusFilter = filterStatus.getValue();
+        ChecklistPriority priorityFilter = sortBy.getValue();
+        String searchQuery = checklistSearch.getText().toLowerCase().trim();
+
+        List<TherapySessionsDTO> therapyProgramsDTOS;
+        try {
+            therapyProgramsDTOS = sessionsBO.getAllSessions();
+            System.out.println("Fetched checklists: " + therapyProgramsDTOS);
+        } catch (SQLException e) {
+            System.out.println("Error fetching checklists: " + e.getMessage());
+            CustomErrorAlert.showAlert("Error", "Failed to fetch checklists.");
+            return;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (therapyProgramsDTOS.isEmpty()) {
+            showNoChecklists();
+        }
+
+        List<TherapySessionsDTO> filteredChecklists = therapyProgramsDTOS.stream()
+                .filter(checklist -> statusFilter == null || checklist.statusProperty().get().equals(statusFilter))
+                .filter(checklist -> searchQuery.isEmpty() ||
+                        checklist.getDescription().toLowerCase().contains(searchQuery) ||
+                        checklist.descriptionProperty().get().toLowerCase().contains(searchQuery))
+                .collect(Collectors.toList());
+
+        if (filteredChecklists.isEmpty()) {
+            showNoChecklists();
+        } else {
+            updateChecklistDisplay(filteredChecklists);
+        }
+    }
+
+    private void showNoChecklists() {
+        checklistContainer.getChildren().clear();
+        noChecklistLabel.setVisible(true);
+        if (!checklistContainer.getChildren().contains(noChecklistLabel)) {
+            checklistContainer.getChildren().add(noChecklistLabel);
+        }
+    }
+
+    @Override
+    public void onChecklistDeleted() {
+        if(CreateProgramSuccessViewController.current_Task == null){
+            System.out.println("Error: current_Task is null");
+        }
+        System.out.println("Program: " + CreateProgramSuccessViewController.current_Task);
+        updateTaskView(CreateProgramSuccessViewController.current_Task);
     }
 }

@@ -6,6 +6,7 @@ import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.entity.Therapists;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -221,5 +222,19 @@ public class TherapistDAOImpl implements TherapistDAO {
     @Override
     public List<TherapyProgramsDTO> searchProgramsByName(String query) throws SQLException, ClassNotFoundException {
         return List.of();
+    }
+
+    @Override
+    public Therapists getById(String therapistId) throws SQLException, ClassNotFoundException {
+        if (therapistId == null || therapistId.trim().isEmpty()) {
+            throw new SQLException("Therapist ID cannot be null or empty.");
+        }
+
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            return session.get(Therapists.class, therapistId);
+        } catch (HibernateException e) {
+            throw new SQLException("Error fetching therapist by ID: " + therapistId, e);
+        }
     }
 }
