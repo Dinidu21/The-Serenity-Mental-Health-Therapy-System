@@ -9,4 +9,8 @@ import java.util.List;
 public interface TherapySessionsBO extends SuperBO {
     boolean insert(TherapySessionsDTO therapySessions) throws SQLException, ClassNotFoundException;
     List<TherapySessionsDTO> getAllSessions() throws SQLException , ClassNotFoundException;
+
+    boolean updateChecklist(TherapySessionsDTO currentChecklist) throws SQLException, ClassNotFoundException;
+
+    boolean deleteChecklist(long id) throws SQLException, ClassNotFoundException;
 }

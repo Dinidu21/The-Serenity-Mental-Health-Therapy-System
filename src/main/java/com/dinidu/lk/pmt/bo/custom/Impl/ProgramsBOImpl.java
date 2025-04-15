@@ -41,7 +41,14 @@ public class ProgramsBOImpl implements ProgramsBO {
 
     @Override
     public String getProgramNameById(Long taskId) throws SQLException, ClassNotFoundException {
-        return "";
+        TherapyPrograms therapyPrograms = programsDAO.getById(taskId);
+        if (therapyPrograms != null) {
+            System.out.println("Program found: " + therapyPrograms.getProgramName());
+            return therapyPrograms.getProgramName();
+        } else {
+            System.out.println("No program found with ID: " + taskId);
+            return null;
+        }
     }
 
     @Override

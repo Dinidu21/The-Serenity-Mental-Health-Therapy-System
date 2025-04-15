@@ -3,6 +3,9 @@ package com.dinidu.lk.pmt.dao.custom.impl;
 import com.dinidu.lk.pmt.config.FactoryConfiguration;
 import com.dinidu.lk.pmt.dao.custom.TherapySessionsDAO;
 import com.dinidu.lk.pmt.entity.TherapySessions;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.sql.SQLException;
@@ -17,7 +20,30 @@ public class TherapySessionsDAOImpl implements TherapySessionsDAO {
 
     @Override
     public boolean update(TherapySessions dto) throws SQLException, ClassNotFoundException {
-        return false;
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            if (dto == null) {
+                throw new SQLException("TherapySessions object is null.");
+            }
+
+            session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            session.update(dto);
+            transaction.commit();
+            System.out.println("TherapySessions updated successfully: ID=" + dto.getId());
+            return true;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            throw new SQLException("Error updating TherapySessions in database.", e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     @Override
@@ -92,5 +118,30 @@ public class TherapySessionsDAOImpl implements TherapySessionsDAO {
     @Override
     public Long getIdByName(String taskName) throws SQLException, ClassNotFoundException {
         return 0L;
+    }
+
+    @Override
+    public boolean deleteSessions(long id) throws SQLException, ClassNotFoundException {
+        if (id <= 0) {
+            return false;
+        }
+
+        Transaction transaction = null;
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            TherapySessions sessionEntity = session.get(TherapySessions.class, id);
+            if (sessionEntity == null) {
+                return false;
+            }
+            session.delete(sessionEntity);
+            transaction.commit();
+            return true;
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            throw new SQLException("Error deleting therapy session with ID: " + id, e);
+        }
     }
 }

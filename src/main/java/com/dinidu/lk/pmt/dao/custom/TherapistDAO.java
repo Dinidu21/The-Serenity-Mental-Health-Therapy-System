@@ -21,6 +21,5 @@ public interface TherapistDAO extends CrudDAO<Therapists> {
     boolean insertProgram(TherapyProgramsDTO therapyProgramsDTO) throws SQLException,ClassNotFoundException;
     List<TherapyProgramsDTO> getProgramByTherapistId(String s) throws SQLException,ClassNotFoundException;
     List<TherapyProgramsDTO> searchProgramsByName(String query) throws SQLException,ClassNotFoundException;
-
     Therapists getById(String therapistId) throws SQLException,ClassNotFoundException;
 }

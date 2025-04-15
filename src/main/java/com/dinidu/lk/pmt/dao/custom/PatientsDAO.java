@@ -9,4 +9,6 @@ public interface PatientsDAO extends CrudDAO<Patients> {
     boolean deletePatient(Long id) throws SQLException , ClassNotFoundException;
 
     Patients getById(long patientId) throws SQLException , ClassNotFoundException;
+
+    Patients getPatientById(long patientId) throws SQLException , ClassNotFoundException;
 }

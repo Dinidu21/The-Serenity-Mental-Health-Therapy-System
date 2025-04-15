@@ -24,4 +24,6 @@ public interface PatientBO extends SuperBO {
     List<PatientsDTO> searchPatientsByName(String query) throws SQLException, ClassNotFoundException;
 
     PatientsDTO getPatientByName(String patientValue) throws SQLException, ClassNotFoundException;
+
+    String getPatientNameById(long patientId) throws SQLException, ClassNotFoundException;
 }

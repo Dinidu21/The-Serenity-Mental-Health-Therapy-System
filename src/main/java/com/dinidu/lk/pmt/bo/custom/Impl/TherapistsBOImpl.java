@@ -52,7 +52,13 @@ public class TherapistsBOImpl implements TherapistsBO {
 
     @Override
     public String getTherapistNameById(String s) throws SQLException, ClassNotFoundException {
-        return "";
+        Therapists id = therapistDAO.getById(s);
+        if (id == null) {
+            System.out.println("No Patients found with the id: " + s);
+            return null;
+        } else {
+            return id.getFullName();
+        }
     }
 
     @Override

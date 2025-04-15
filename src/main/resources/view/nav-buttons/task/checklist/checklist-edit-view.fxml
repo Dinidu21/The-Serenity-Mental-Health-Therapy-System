@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="TaskEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.checklist.ChecklistEditViewController">
+<AnchorPane fx:id="TaskEdit" prefHeight="600.0" prefWidth="800.0" styleClass="root" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.programs.checklist.ChecklistEditViewController">
     <VBox alignment="CENTER" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" spacing="30.0" styleClass="content-container">
         <HBox alignment="CENTER_LEFT" spacing="20.0">
 
@@ -20,51 +20,57 @@
                     <Font name="Poppins Regular" size="16.0" />
                 </font>
             </Label>
-            <Label prefHeight="30.0" prefWidth="390.0" styleClass="section-title" text="Checklist Details" />
-            <Button fx:id="deleteTaskBtn" onAction="#deleteChecklist" prefHeight="30.0" prefWidth="148.0" styleClass="delete-button" text="Delete Checklist" />
+            <Label prefHeight="30.0" prefWidth="390.0" styleClass="section-title" text="Session Details" />
+            <Button fx:id="deleteTaskBtn" onAction="#deleteChecklist" prefHeight="30.0" prefWidth="148.0" styleClass="delete-button" text="Delete Session " />
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="20.0">
             <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
-                <Label styleClass="form-label" text="Checklist Name" />
-                <TextField fx:id="TaskNameField" onAction="#editName" prefHeight="40.0" prefWidth="300.0" promptText="Enter task name" styleClass="input-field" />
+                <Label styleClass="form-label" text="Therapy Program" />
+                <ComboBox fx:id="programNamesCombo" onAction="#editStatus" prefHeight="52.0" prefWidth="278.0" promptText="Select Program Name" styleClass="input-field" />
             </VBox>
             <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
-                <Label styleClass="form-label" text="Checklist Status" />
-                <ComboBox fx:id="checklistStatusComboBox" onAction="#editStatus" prefHeight="40.0" prefWidth="300.0" promptText="Select task status" styleClass="input-field" />
-            </VBox>
-        </HBox>
-
-        <HBox alignment="CENTER_LEFT" spacing="20.0">
-            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
-                <Label styleClass="form-label" text="End Date" />
-                <DatePicker fx:id="endDatePicker" onAction="#setEndDate" prefHeight="40.0" prefWidth="300.0" promptText="Select Deadline" styleClass="input-field" />
+                <Label styleClass="form-label" text="Patient Name" />
+            <ComboBox fx:id="PatientsNamesCombo" onAction="#editStatus" prefHeight="40.0" prefWidth="300.0" promptText="Select Patient Name" styleClass="input-field" />
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="20.0">
             <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
-                <Label styleClass="form-label" text="Checklist Priority" />
-                <ComboBox fx:id="checklistPriorityComboBox" onAction="#editPriority" prefHeight="40.0" prefWidth="300.0" promptText="Select Checklist priority" styleClass="input-field" />
+                <Label styleClass="form-label" text="Session Date" />
+                <DatePicker fx:id="SessionDatePicker" onAction="#setEndDate" prefHeight="52.0" prefWidth="278.0" promptText="Select Session Day" styleClass="input-field" />
+            </VBox>
+         <VBox alignment="CENTER_LEFT" spacing="10.0">
+            <children>
+               <Label styleClass="form-label" text="Session Status" />
+               <ComboBox fx:id="sessionStatus" onAction="#editStatus" prefHeight="52.0" prefWidth="311.0" promptText="Select Session Status" styleClass="input-field" />
+            </children>
+         </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
+                <Label styleClass="form-label" text="Select Therapist" />
+                <ComboBox fx:id="TherapistNamesCombo" onAction="#editPriority" prefHeight="52.0" prefWidth="337.0" promptText="Select Therapist Name" styleClass="input-field" />
             </VBox>
             <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="10.0">
                 <children>
-                    <Label styleClass="form-label" text="Assign  a Member " />
-                    <ComboBox fx:id="newMembersComboBox" onAction="#assignNewUserForCurrentTask" prefHeight="40.0" prefWidth="300.0" promptText="Select Member name" styleClass="input-field" />
+                    <Label styleClass="form-label" text="Select Time" />
+                    <ComboBox fx:id="SessionTime" onAction="#assignNewUserForCurrentTask" prefHeight="52.0" prefWidth="377.0" promptText="Select Time" styleClass="input-field" />
                 </children>
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_LEFT" spacing="20.0">
             <VBox alignment="CENTER_LEFT" spacing="10.0" HBox.hgrow="ALWAYS">
-                <Label styleClass="form-label" text="Checklist Description" />
-                <TextField fx:id="TaskDescriptionField" onAction="#editTaskDesc" prefHeight="80.0" prefWidth="650.0" promptText="Enter Checklist Description" styleClass="input-field" />
+                <Label styleClass="form-label" text="Session Description" />
+                <TextField fx:id="SessionDescription" onAction="#editTaskDesc" prefHeight="80.0" prefWidth="650.0" promptText="Enter Session Description" styleClass="input-field" />
             </VBox>
         </HBox>
 
         <HBox alignment="CENTER_RIGHT" spacing="20.0">
-            <Button fx:id="saveTaskBtn" onAction="#saveChecklist" prefHeight="40.0" prefWidth="150.0" styleClass="save-button" text="Save Checklist" />
+            <Button fx:id="saveTaskBtn" onAction="#saveChecklist" prefHeight="40.0" prefWidth="150.0" styleClass="save-button" text="Save Session " />
             <Button fx:id="cancelTaskBtn" onAction="#cancelTaskBtnOnClick" prefHeight="40.0" prefWidth="150.0" styleClass="cancel-button" text="Cancel" />
         </HBox>
     </VBox>

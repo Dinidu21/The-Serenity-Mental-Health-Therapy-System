@@ -1,23 +1,21 @@
 package com.dinidu.lk.pmt.controller.dashboard.programs.checklist;
 
 import com.dinidu.lk.pmt.bo.BOFactory;
-import com.dinidu.lk.pmt.bo.custom.UserBO;
+import com.dinidu.lk.pmt.bo.custom.*;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
-
+import com.dinidu.lk.pmt.dto.PatientsDTO;
+import com.dinidu.lk.pmt.dto.TherapistDTO;
+import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
-import com.dinidu.lk.pmt.dto.UserDTO;
+import com.dinidu.lk.pmt.entity.TherapySessions;
 import com.dinidu.lk.pmt.utils.*;
-import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistPriority;
-import com.dinidu.lk.pmt.utils.checklistTypes.ChecklistStatus;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.listeners.ChecklistDeletionHandler;
 import com.dinidu.lk.pmt.utils.listeners.ChecklistUpdateListener;
 import com.dinidu.lk.pmt.utils.userTypes.UserRole;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -30,12 +28,28 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class ChecklistEditViewController implements Initializable {
+    @FXML
     public Button saveTaskBtn;
+    @FXML
     public Button cancelTaskBtn;
+    @FXML
     public Button deleteTaskBtn;
+    @FXML
     public ComboBox<String> newMembersComboBox;
+    @FXML
+    public TextField SessionDescription;
+    @FXML
+    public ComboBox<String> TherapistNamesCombo;
+    @FXML
+    public ComboBox<String> SessionTime;
+    @FXML
+    public ComboBox<String> PatientsNamesCombo;
+    @FXML
+    public ComboBox<String> programNamesCombo;
+    public ComboBox<String> sessionStatus;
     @Setter
     private ChecklistDeletionHandler deletionHandler;
     @Setter
@@ -45,77 +59,46 @@ public class ChecklistEditViewController implements Initializable {
     @FXML
     private AnchorPane TaskEdit;
     @FXML
-    private TextField TaskNameField;
-    @FXML
-    private ComboBox<ChecklistStatus> checklistStatusComboBox;
-    @FXML
-    private ComboBox<ChecklistPriority> checklistPriorityComboBox;
-    @FXML
-    private TextField TaskDescriptionField;
-    @FXML
-    private DatePicker endDatePicker;
+    private DatePicker SessionDatePicker;
+
     public TherapySessionsDTO currentChecklist;
 
-    UserBO userBO= (UserBO)
-            BOFactory.getInstance().
-                    getBO(BOFactory.BOTypes.USER);
-//    ChecklistBO checklistBO = (ChecklistBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.CHECKLISTS);
-
-
-    QueryDAO queryDAO= new QueryDAOImpl();
-
+    private final UserBO userBO = (UserBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.USER);
+    private final TherapySessionsBO sessionsBO = (TherapySessionsBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.SESSIONS);
+    private final TherapistsBO therapistsBO = (TherapistsBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.THERAPIST);
+    private final PatientBO patientBO = (PatientBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.PATIENTS);
+    private final ProgramsBO programsBO = (ProgramsBO) BOFactory.getInstance().getBO(BOFactory.BOTypes.PROGRAM);
+    private final QueryDAO queryDAO = new QueryDAOImpl();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<UserDTO> allActiveMembers;
-        try {
-            allActiveMembers = queryDAO.getAllActiveMembersNames();
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ObservableList<String> memberNames = FXCollections.observableArrayList();
-        for (UserDTO member : allActiveMembers) {
-            memberNames.add(member.getFullName());
-        }
-
-        newMembersComboBox.setItems(memberNames);
-        checklistStatusComboBox.getItems().setAll(ChecklistStatus.values());
-        checklistPriorityComboBox.getItems().setAll(ChecklistPriority.values());
-
+        comboboxInitialization();
         if (currentChecklist == null) {
-/*            List<ChecklistDTO> checklistDTOList = null;
             try {
-                checklistDTOList = checklistBO.getAllChecklists();
-            } catch (SQLException e) {
-                System.out.println("Error while fetching checklistDTOList: " + e.getMessage());
-                CustomErrorAlert.showAlert("Error", "Failed to fetch checklistDTOList.");
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-
-            assert checklistDTOList != null;
-            if (!checklistDTOList.isEmpty()) {
-                currentChecklist = checklistDTOList.get(0);
-            } else {
-                System.out.println("No Checklists available.");
+                List<TherapySessionsDTO> checklistDTOList = sessionsBO.getAllSessions();
+                if (!checklistDTOList.isEmpty()) {
+                    currentChecklist = checklistDTOList.get(0);
+                } else {
+                    CustomErrorAlert.showAlert("No Data", "No checklists available.");
+                    return;
+                }
+            } catch (SQLException | ClassNotFoundException e) {
+                CustomErrorAlert.showAlert("Error", "Failed to fetch checklists: " + e.getMessage());
                 return;
-            }*/
+            }
         }
         loadChecklistData();
 
-        endDatePicker.setDayCellFactory(picker -> new DateCell() {
+        SessionDatePicker.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
-                if (date != null && (date.isBefore(LocalDate.now()) || date.isEqual(LocalDate.now()))) {
+                if (date != null && date.isBefore(LocalDate.now())) {
                     setDisable(true);
                     setStyle("-fx-background-color: #ffc0cb;");
                 }
             }
         });
-
-        TaskNameField.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
-        TaskDescriptionField.textProperty().addListener((observable, oldValue, newValue) -> validateFields());
     }
 
     public void setChecklistData(TherapySessionsDTO checklist) {
@@ -123,229 +106,214 @@ public class ChecklistEditViewController implements Initializable {
         loadChecklistData();
     }
 
-    private boolean updateModifiedChecklistFields() {
+    private void comboboxInitialization() {
+        try {
+            // Populate PatientsNamesCombo
+            List<String> patientNames = patientBO.getAllPatients().stream()
+                    .map(PatientsDTO::getFullName)
+                    .collect(Collectors.toList());
+            PatientsNamesCombo.getItems().setAll(patientNames);
+
+            // Populate TherapistNamesCombo
+            List<String> therapistNames = therapistsBO.getAllTherapists().stream()
+                    .map(TherapistDTO::getFullName)
+                    .collect(Collectors.toList());
+            TherapistNamesCombo.getItems().setAll(therapistNames);
+
+            // Populate programNamesCombo
+            List<String> programNames = programsBO.getAllPrograms().stream()
+                    .map(TherapyProgramsDTO::getName)
+                    .collect(Collectors.toList());
+            programNamesCombo.getItems().setAll(programNames);
+
+            // Populate SessionTime
+            for (int i = 8; i <= 17; i++) {
+                SessionTime.getItems().add(String.format("%02d:00", i));
+                SessionTime.getItems().add(String.format("%02d:30", i));
+            }
+
+            // Populate sessionStatus
+            sessionStatus.getItems().addAll("SCHEDULED", "COMPLETED", "CANCELLED", "IN_PROGRESS");
+
+        } catch (SQLException | ClassNotFoundException e) {
+            CustomErrorAlert.showAlert("Initialization Error", "Failed to populate dropdowns: " + e.getMessage());
+        }
+    }
+
+    private boolean updateModifiedChecklistFields() throws SQLException, ClassNotFoundException {
         boolean isModified = false;
-/*
 
-        if (!TaskNameField.getText().trim().equals(currentChecklist.nameProperty().get())) {
-            currentChecklist.nameProperty().set(TaskNameField.getText().trim());
+        String description = SessionDescription.getText().trim();
+        if (!description.equals(currentChecklist.getDescription() == null ? "" : currentChecklist.getDescription())) {
+            currentChecklist.setDescription(description);
             isModified = true;
-            System.out.println("Checklist name updated to: " + TaskNameField.getText().trim());
         }
 
-        if (!TaskDescriptionField.getText().trim().equals(currentChecklist.descriptionProperty().get())) {
-            currentChecklist.descriptionProperty().set(TaskDescriptionField.getText().trim());
+        LocalDate sessionDate = SessionDatePicker.getValue();
+        if (sessionDate != null && !sessionDate.equals(currentChecklist.getSessionDate())) {
+            currentChecklist.setSessionDate(sessionDate);
             isModified = true;
-            System.out.println("Checklist description updated to: " + TaskDescriptionField.getText().trim());
         }
 
-        ChecklistStatus newStatus = checklistStatusComboBox.getValue();
-        if (newStatus != null && !newStatus.equals(currentChecklist.statusProperty().get())) {
-            currentChecklist.statusProperty().set(newStatus);
+        String sessionTime = SessionTime.getValue();
+        if (sessionTime != null && !sessionTime.equals(currentChecklist.getSessionTime())) {
+            currentChecklist.setSessionTime(sessionTime);
             isModified = true;
-            System.out.println("Checklist status updated to: " + newStatus);
         }
 
-        ChecklistPriority newPriority = checklistPriorityComboBox.getValue();
-        if (newPriority != null && !newPriority.equals(currentChecklist.priorityProperty().get())) {
-            currentChecklist.priorityProperty().set(newPriority);
-            isModified = true;
-            System.out.println("Checklist priority updated to: " + newPriority);
+        String therapistName = TherapistNamesCombo.getValue();
+        if (therapistName != null) {
+            TherapistDTO therapist = therapistsBO.getTherapistByName(therapistName);
+            if (therapist != null && !therapist.getId().equals(currentChecklist.getTherapistId())) {
+                currentChecklist.setTherapistId(therapist.getId());
+                isModified = true;
+            }
         }
 
-        LocalDate endDate = endDatePicker.getValue();
-        if (endDate != null && (currentChecklist.dueDateProperty().get() == null ||
-                !currentChecklist.dueDateProperty().get().toLocalDate().equals(endDate))) {
-            currentChecklist.dueDateProperty().set(endDate.atStartOfDay());
-            isModified = true;
-            System.out.println("Checklist end date updated to: " + endDate);
+        String patientName = PatientsNamesCombo.getValue();
+        if (patientName != null) {
+            PatientsDTO patient = patientBO.getPatientByName(patientName);
+            if (patient != null && !patient.getId().equals(currentChecklist.getPatientId())) {
+                currentChecklist.setPatientId(patient.getId());
+                isModified = true;
+            }
         }
-*/
+
+        String programName = programNamesCombo.getValue();
+        if (programName != null) {
+            TherapyProgramsDTO program = programsBO.getProgramByName(programName);
+            if (program != null && program.getProgramId() != currentChecklist.getTherapyProgramId()) {
+                currentChecklist.setTherapyProgramId(program.getProgramId());
+                isModified = true;
+            }
+        }
+
+        String status = sessionStatus.getValue();
+        if (status != null && !status.equals(currentChecklist.getStatus().toString())) {
+            currentChecklist.setStatus(TherapySessions.SessionStatus.valueOf(status));
+            isModified = true;
+        }
 
         return isModified;
     }
 
     @FXML
     public void saveChecklist() {
-        System.out.println("Saving checklist...");
-        boolean isModified = updateModifiedChecklistFields();
-
-        if (!isModified) {
-            System.out.println("No changes detected, nothing to save.");
-            return;
-        }
-
-        if (!validateFilledFields()) {
-            return;
-        }
-
-/*        boolean isChecklistUpdated;
         try {
-            isChecklistUpdated = checklistBO.updateChecklist(currentChecklist);
+            boolean isModified = updateModifiedChecklistFields();
+            if (!isModified) {
+                CustomAlert.showAlert("No Changes", "No changes detected.");
+                return;
+            }
+
+            if (!validateFilledFields()) {
+                return;
+            }
+
+            System.out.println("Saving checklist: " + currentChecklist);
+
+            System.out.println("Therapist ID: " + currentChecklist.getTherapistId());
+            System.out.println("Patient ID: " + currentChecklist.getPatientId());
+            System.out.println("Program ID: " + currentChecklist.getTherapyProgramId());
+            System.out.println("Session Date: " + currentChecklist.getSessionDate());
+            System.out.println("Session Time: " + currentChecklist.getSessionTime());
+            System.out.println("Session Description: " + currentChecklist.getDescription());
+            System.out.println("Session ID: " + currentChecklist.getId());
+            System.out.println("Session Made Date: " + currentChecklist.getSessionMadeDate());
+            System.out.println("Session Status: " + currentChecklist.getStatus());
+
+            boolean isChecklistUpdated = sessionsBO.updateChecklist(currentChecklist);
+            if (isChecklistUpdated) {
+                CustomAlert.showAlert("Success", "Checklist updated successfully.");
+                if (updateListener != null) {
+                    updateListener.onChecklistUpdated(currentChecklist);
+                }
+                backToMain();
+            } else {
+                CustomErrorAlert.showAlert("Error", "Failed to update checklist.");
+            }
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            CustomErrorAlert.showAlert("Error", "Failed to save checklist: " + e.getMessage());
         }
-        if (!isChecklistUpdated) {
-            CustomErrorAlert.showAlert("Error", "Failed to update checklist.");
-            return;
-        }*/
-
-        System.out.println("Checklist updated successfully.");
-        CustomAlert.showAlert("Success", "Changes saved successfully.");
-        String selectedUser = newMembersComboBox.getValue();
-        if (selectedUser != null) {
-            handleMemberAssignment(selectedUser);
-        }
-/*
-        if (updateListener != null) {
-            updateListener.onChecklistUpdated(currentChecklist);
-            System.out.println("updateListener is not null");
-        } else {
-            System.out.println("updateListener is null");
-            CustomErrorAlert.showAlert("Error", "Failed to update Checklist.");
-        }*/
-
-        backToMain();
     }
-
 
     private void loadChecklistData() {
-        System.out.println("Loading Checklist data...");
-
         if (currentChecklist == null) {
-            System.out.println("currentChecklist is null");
+            CustomErrorAlert.showAlert("No Data", "No checklist selected.");
             return;
         }
+        SessionDescription.setText(currentChecklist.getDescription());
+        SessionDatePicker.setValue(currentChecklist.getSessionDate());
+        SessionTime.setValue(currentChecklist.getSessionTime());
+        sessionStatus.setValue(currentChecklist.getStatus().toString());
 
-/*
-        TaskNameField.setText(currentChecklist.nameProperty().get());
-        TaskDescriptionField.setText(currentChecklist.descriptionProperty().get());
-        checklistStatusComboBox.setValue(currentChecklist.statusProperty().get());
-        checklistPriorityComboBox.setValue(currentChecklist.priorityProperty().get());
-
-        if (currentChecklist.assignedToProperty().get() != 0) {
-            String userFullNameById;
-            try {
-                userFullNameById = userBO.getUserFullNameById(currentChecklist.assignedToProperty().get());
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            newMembersComboBox.setValue(userFullNameById);
-        }
-
-        if (currentChecklist.dueDateProperty().get() != null) {
-            endDatePicker.setValue(currentChecklist.dueDateProperty().get().toLocalDate());
-        } else {
-            endDatePicker.setValue(LocalDate.now());
-        }
-*/
-    }
-
-    private void handleMemberAssignment(String selectedUser) {
-/*        Long selectedUserId;
         try {
-            selectedUserId = userBO.getUserIdByFullName(selectedUser);
+            TherapistNamesCombo.setValue(therapistsBO.getTherapistNameById(currentChecklist.getTherapistId()));
+            System.out.println("Here is the therapist name: " + therapistsBO.getTherapistNameById(currentChecklist.getTherapistId()));
+            PatientsNamesCombo.setValue(patientBO.getPatientNameById(currentChecklist.getPatientId()));
+            System.out.println("Here is the patient name: " + patientBO.getPatientNameById(currentChecklist.getPatientId()));
+            programNamesCombo.setValue(programsBO.getProgramNameById(currentChecklist.getTherapyProgramId()));
+            System.out.println("Here is the program name: " + programsBO.getProgramNameById(currentChecklist.getTherapyProgramId()));
+
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        Long currentlyAssignedUserId = currentChecklist.assignedToProperty().get();
-
-        if (currentlyAssignedUserId.equals(selectedUserId)) {
-            notifyUserReassignment(selectedUser);
-            return;
-        }
-
-        currentChecklist.assignedToProperty().set(selectedUserId);
-
-        boolean isChecklistUpdated;
-        try {
-            isChecklistUpdated = checklistBO.updateChecklist(currentChecklist);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        if (isChecklistUpdated) {
-            handleSuccessfulAssignment(selectedUser);
-        } else {
-            CustomErrorAlert.showAlert("Error", "Failed to assign the user to the checklist.");
-        }*/
     }
 
     private boolean validateFilledFields() {
-        boolean hasErrors = false;
         StringBuilder errorMessage = new StringBuilder();
+        boolean hasErrors = false;
 
-        if (TaskNameField.getText().trim().isEmpty()) {
-            errorMessage.append("Checklist name cannot be empty.\n");
+        if (SessionDescription.getText().isEmpty()) {
+            errorMessage.append("Session description cannot be empty.\n");
             hasErrors = true;
         }
-
-        if (TaskDescriptionField.getText().trim().isEmpty()) {
-            errorMessage.append("Checklist description cannot be empty.\n");
+        if (SessionDatePicker.getValue() == null) {
+            errorMessage.append("Session date cannot be empty.\n");
             hasErrors = true;
         }
-
-        if (checklistStatusComboBox.getValue() == null) {
-            errorMessage.append("Checklist status must be selected.\n");
+        if (SessionTime.getValue() == null) {
+            errorMessage.append("Session time cannot be empty.\n");
             hasErrors = true;
         }
-
-        if (checklistPriorityComboBox.getValue() == null) {
-            errorMessage.append("Checklist priority must be selected.\n");
+        if (TherapistNamesCombo.getValue() == null) {
+            errorMessage.append("Therapist name cannot be empty.\n");
+            hasErrors = true;
+        }
+        if (PatientsNamesCombo.getValue() == null) {
+            errorMessage.append("Patient name cannot be empty.\n");
+            hasErrors = true;
+        }
+        if (programNamesCombo.getValue() == null) {
+            errorMessage.append("Program name cannot be empty.\n");
             hasErrors = true;
         }
 
         if (hasErrors) {
             CustomErrorAlert.showAlert("Validation Error", errorMessage.toString());
-            System.out.println("Error: " + errorMessage);
             return false;
         }
         return true;
     }
 
-    private void handleSuccessfulAssignment(String selectedUser) {
-        CustomAlert.showAlert("SUCCESS", "User successfully assigned.");
-        System.out.println("New user assigned: " + selectedUser);
-    }
-
-    private void notifyUserReassignment(String selectedUser) {
-        System.out.println("User already assigned: " + selectedUser);
-    }
-
-    private void validateFields() {
-        boolean isValid = !TaskNameField.getText().isEmpty() &&
-                !TaskDescriptionField.getText().isEmpty() &&
-                endDatePicker.getValue() != null;
-        saveTaskBtn.setDisable(!isValid);
-    }
-
     @FXML
     public void deleteChecklist() {
         String username = SessionUser.getLoggedInUsername();
-        System.out.println("Deleting checklist for user: " + username);
-
         if (username == null) {
-            System.out.println("User not logged in. username: " + null);
-        }
-
-        UserRole userRoleByUsername;
-
-        try {
-            userRoleByUsername = queryDAO.getUserRoleByUsername(username);
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (userRoleByUsername == null) {
-            System.out.println("User not logged in. userRoleByUsername: " + null);
+            CustomErrorAlert.showAlert("Error", "User not logged in.");
             return;
         }
 
-        System.out.println("User role: " + userRoleByUsername);
+        UserRole userRole;
+        try {
+            userRole = queryDAO.getUserRoleByUsername(username);
+        } catch (SQLException | ClassNotFoundException e) {
+            CustomErrorAlert.showAlert("Error", "Failed to verify user role: " + e.getMessage());
+            return;
+        }
 
-        if (userRoleByUsername != UserRole.ADMIN &&
-                userRoleByUsername != UserRole.RECEPTIONIST) {
-            System.out.println("Access denied: Only Admin, Project Manager, or Product Owner can delete projects.");
-            CustomErrorAlert.showAlert("Access Denied", "You do not have permission to delete projects.");
+        if (userRole != UserRole.ADMIN && userRole != UserRole.RECEPTIONIST) {
+            CustomErrorAlert.showAlert("Access Denied", "Only Admin or Receptionist can delete checklists.");
             deleteTaskBtn.setVisible(false);
             return;
         }
@@ -353,74 +321,47 @@ public class ChecklistEditViewController implements Initializable {
         boolean confirmed = CustomDeleteAlert.showAlert(
                 (Stage) TaskEdit.getScene().getWindow(),
                 "Confirm Deletion",
-                "Are you sure you want to delete this checklist? "
+                "Are you sure you want to delete this checklist?"
         );
 
-/*        if (confirmed) {
-            System.out.println("Deleting checklist...");
+        if (confirmed) {
             try {
-                if(checklistBO.deleteChecklist(currentChecklist.idProperty())) {
-                    System.out.println("Checklist deleted successfully.");
+                if (sessionsBO.deleteChecklist(currentChecklist.getId())) {
                     CustomAlert.showAlert("Success", "Checklist deleted successfully.");
-
                     Stage currentStage = (Stage) TaskEdit.getScene().getWindow();
                     currentStage.close();
-
                     if (deletionHandler != null) {
                         deletionHandler.onChecklistDeleted();
-                    }else {
-                        System.out.println("deletionHandler is null");
                     }
-                }else {
+                } else {
                     CustomErrorAlert.showAlert("Error", "Failed to delete checklist.");
-                    System.out.println("Error while deleting checklist.");
                 }
             } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                CustomErrorAlert.showAlert("Error", "Failed to delete checklist: " + e.getMessage());
             }
-        } else {
-            System.out.println("Checklist deletion canceled by user.");
-        }*/
-    }
-
-    @FXML
-    public void editStatus() {
-        System.out.println("Editing checklist status...");
-    }
-
-    @FXML
-    public void editPriority() {
-        System.out.println("Editing checklist priority...");
+        }
     }
 
     @FXML
     public void backToMain() {
-        System.out.println("Returning to main...");
         ((Stage) backToMain.getScene().getWindow()).close();
     }
 
     @FXML
     public void cancelTaskBtnOnClick() {
-        System.out.println("Cancelling checklist edit...");
         ((Stage) TaskEdit.getScene().getWindow()).close();
     }
 
     @FXML
-    public void editName() {
-        System.out.println("Editing checklist name...");
-    }
-
+    public void editStatus() {}
     @FXML
-    public void setEndDate() {
-        System.out.println("Setting end date...");
-    }
-
+    public void editPriority() {}
     @FXML
-    public void editTaskDesc() {
-        System.out.println("Editing checklist description...");
-    }
-
-    public void assignNewUserForCurrentTask() {
-        System.out.println("Assigning new user for current checklist...");
-    }
+    public void editName() {}
+    @FXML
+    public void setEndDate() {}
+    @FXML
+    public void editTaskDesc() {}
+    @FXML
+    public void assignNewUserForCurrentTask() {}
 }

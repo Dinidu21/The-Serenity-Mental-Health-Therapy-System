@@ -502,5 +502,6 @@ public class CreateProgramSuccessViewController implements Initializable, TaskDe
         }
         System.out.println("Program: " + CreateProgramSuccessViewController.current_Task);
         updateTaskView(CreateProgramSuccessViewController.current_Task);
+        loadChecklists();
     }
 }

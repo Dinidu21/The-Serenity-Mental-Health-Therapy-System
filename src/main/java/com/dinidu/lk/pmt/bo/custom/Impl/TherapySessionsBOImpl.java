@@ -108,4 +108,34 @@ public class TherapySessionsBOImpl implements TherapySessionsBO {
 
         return dtoList;
     }
+
+    @Override
+    public boolean updateChecklist(TherapySessionsDTO sessionsDTO) throws SQLException, ClassNotFoundException {
+
+        if (sessionsDTO == null) {
+            throw new SQLException("TherapySessionsDTO cannot be null.");
+        }
+        if (sessionsDTO.getId() == 0L){
+            throw new SQLException("TherapySessionsDTO ID cannot be null.");
+        }
+        TherapySessions entity = new TherapySessions();
+        entity.setId(sessionsDTO.getId());
+        entity.setDescription(sessionsDTO.getDescription());
+        entity.setSessionDate(sessionsDTO.getSessionDate());
+        entity.setSessionMadeDate(sessionsDTO.getSessionMadeDate());
+        entity.setSessionTime(sessionsDTO.getSessionTime());
+        entity.setStatus(sessionsDTO.getStatus());
+        entity.setPatient(patientsDAO.getById(sessionsDTO.getPatientId()));
+        entity.setTherapyProgram(programsDAO.getById(sessionsDTO.getTherapyProgramId()));
+        entity.setTherapist(therapistsDAO.getById(sessionsDTO.getTherapistId()));
+        return therapySessionsDAO.update(entity);
+    }
+
+    @Override
+    public boolean deleteChecklist(long id) throws SQLException, ClassNotFoundException {
+        if (id <= 0) {
+            throw new SQLException("Invalid therapy session ID: " + id);
+        }
+        return therapySessionsDAO.deleteSessions(id);
+    }
 }
