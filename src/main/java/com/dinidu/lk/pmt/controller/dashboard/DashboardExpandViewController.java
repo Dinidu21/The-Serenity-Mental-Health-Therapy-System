@@ -3,6 +3,7 @@ package com.dinidu.lk.pmt.controller.dashboard;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -30,6 +31,7 @@ public class DashboardExpandViewController implements Initializable {
     public Circle userAvatar2;
     public Circle userAvatar1;
     public AnchorPane myDashboard;
+    public Button paymentsPageBtn;
     @FXML private MediaView mediaView;
     @FXML private ComboBox<String> dashboardComboBox;
     @FXML private Label daysLabel;
@@ -178,5 +180,12 @@ public class DashboardExpandViewController implements Initializable {
     }
 
     public void petMoreOnClick(MouseEvent mouseEvent) {
+    }
+
+    public void navigatePaymentPg(ActionEvent actionEvent) {
+        TherapistsViewController.bindNavigation(
+                myDashboard,
+                "/view/nav-buttons/payments-view.fxml"
+        );
     }
 }

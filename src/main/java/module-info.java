@@ -32,4 +32,5 @@ module com.dinidu.lk.pmt {
     opens com.dinidu.lk.pmt.utils.customAlerts to javafx.fxml;
     opens com.dinidu.lk.pmt.controller.dashboard.timesheet to javafx.fxml;
     opens com.dinidu.lk.pmt.bo.custom.Impl to javafx.fxml;
+    opens com.dinidu.lk.pmt.controller.dashboard.payments to javafx.fxml;
 }

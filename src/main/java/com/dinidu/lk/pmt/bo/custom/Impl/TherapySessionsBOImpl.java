@@ -138,4 +138,26 @@ public class TherapySessionsBOImpl implements TherapySessionsBO {
         }
         return therapySessionsDAO.deleteSessions(id);
     }
+
+    @Override
+    public TherapySessionsDTO getSessionIdByDesc(String selectedSession) throws SQLException, ClassNotFoundException {
+        if (selectedSession == null || selectedSession.isEmpty()) {
+            throw new SQLException("Selected session cannot be null or empty.");
+        }
+        TherapySessions therapySession = therapySessionsDAO.getSessionIdByDesc(selectedSession);
+        if (therapySession == null) {
+            return null;
+        }
+        return new TherapySessionsDTO(
+                therapySession.getId(),
+                therapySession.getTherapist() != null ? therapySession.getTherapist().getId() : null,
+                therapySession.getPatient() != null ? therapySession.getPatient().getId() : null,
+                therapySession.getTherapyProgram() != null ? therapySession.getTherapyProgram().getProgramId() : null,
+                therapySession.getSessionDate(),
+                therapySession.getSessionTime(),
+                therapySession.getSessionMadeDate(),
+                therapySession.getDescription(),
+                therapySession.getStatus()
+        );
+    }
 }

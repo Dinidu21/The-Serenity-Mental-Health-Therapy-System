@@ -11,4 +11,6 @@ public interface PatientsDAO extends CrudDAO<Patients> {
     Patients getById(long patientId) throws SQLException , ClassNotFoundException;
 
     Patients getPatientById(long patientId) throws SQLException , ClassNotFoundException;
+
+    Patients findById(Long patientId) throws SQLException , ClassNotFoundException;
 }

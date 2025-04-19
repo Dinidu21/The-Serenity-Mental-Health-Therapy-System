@@ -144,4 +144,47 @@ public class TherapySessionsDAOImpl implements TherapySessionsDAO {
             throw new SQLException("Error deleting therapy session with ID: " + id, e);
         }
     }
+
+    @Override
+    public TherapySessions getSessionIdByDesc(String selectedSession) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            String hql = "FROM TherapySessions WHERE description = :description";
+            Query<TherapySessions> query = session.createQuery(hql, TherapySessions.class);
+            query.setParameter("description", selectedSession);
+            List<TherapySessions> resultList = query.getResultList();
+            if (resultList.isEmpty()) {
+                return null;
+            }
+            return resultList.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error fetching TherapySession by description: " + selectedSession, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public TherapySessions findById(Long sessionId) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        try {
+            session = FactoryConfiguration.getInstance().getSession();
+            TherapySessions therapySession = session.get(TherapySessions.class, sessionId);
+            if (therapySession == null) {
+                throw new SQLException("TherapySession with ID " + sessionId + " not found.");
+            }
+            return therapySession;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Error fetching TherapySession by ID: " + sessionId, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

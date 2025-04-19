@@ -19,7 +19,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane fx:id="myDashboard" prefHeight="722.0" prefWidth="1522.0" styleClass="main-container" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.DashboardExpandViewController">
+<AnchorPane fx:id="myDashboard" prefHeight="722.0" prefWidth="1522.0" styleClass="main-container" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.DashboardExpandViewController">
     <stylesheets>
         <URL value="@../../styles/dashboard/dashboards-navbar.css" />
     </stylesheets>
@@ -27,7 +27,7 @@
         <HBox alignment="CENTER_LEFT" styleClass="top-bar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <ComboBox fx:id="dashboardComboBox" styleClass="dashboard-combo" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button styleClass="add-widget-btn" text="Add widget" />
+            <Button fx:id="paymentsPageBtn" onAction="#navigatePaymentPg" styleClass="add-widget-btn" text="Payments" />
             <Button styleClass="share-btn" text="Share" />
             <Button styleClass="edit-btn" text="Edit" />
         </HBox>

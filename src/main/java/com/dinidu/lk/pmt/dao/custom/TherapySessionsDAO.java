@@ -8,4 +8,8 @@ import java.sql.SQLException;
 public interface TherapySessionsDAO extends CrudDAO<TherapySessions> {
 
     boolean deleteSessions(long id) throws SQLException, ClassNotFoundException;
+
+    TherapySessions getSessionIdByDesc(String selectedSession) throws SQLException, ClassNotFoundException;
+
+    TherapySessions findById(Long sessionId) throws SQLException, ClassNotFoundException;
 }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Setter
 @Getter
@@ -26,8 +28,21 @@ public class Payments {
     private Double amount;
 
     @Column(name = "payment_date", nullable = false)
-    private java.time.LocalDateTime paymentDate;
+    private LocalDateTime paymentDate;
 
     @Column(name = "status", nullable = false)
-    private String status; // e.g., "PENDING", "COMPLETED"
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
+    @Column(name = "payment_method", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod;
+
+    public enum PaymentMethod {
+        CASH, CARD, INSURANCE
+    }
+
+    public enum PaymentStatus {
+        PENDING, COMPLETED
+    }
 }
