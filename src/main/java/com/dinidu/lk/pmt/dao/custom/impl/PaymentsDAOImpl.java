@@ -46,7 +46,20 @@ public class PaymentsDAOImpl implements PaymentsDAO {
 
     @Override
     public List<Payments> fetchAll() throws SQLException, ClassNotFoundException {
-        return List.of();
+        Transaction transaction = null;
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            List<Payments> paymentsList = session.createQuery("FROM Payments", Payments.class).list();
+            transaction.commit();
+            return paymentsList;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -62,5 +75,64 @@ public class PaymentsDAOImpl implements PaymentsDAO {
     @Override
     public Long getIdByName(String taskName) throws SQLException, ClassNotFoundException {
         return 0L;
+    }
+
+    @Override
+    public Payments findById(Long id) throws SQLException, ClassNotFoundException {
+        Transaction transaction = null;
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            Payments payment = session.get(Payments.class, id);
+            transaction.commit();
+            return payment;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean deleteID(Long id) throws SQLException, ClassNotFoundException {
+        Transaction transaction = null;
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            Payments payment = session.get(Payments.class, id);
+            if (payment != null) {
+                session.delete(payment);
+                transaction.commit();
+                return true;
+            } else {
+                return false; // Payment not found
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public List<Payments> findAll() throws SQLException, ClassNotFoundException {
+        Transaction transaction = null;
+        try {
+            Session session = FactoryConfiguration.getInstance().getSession();
+            transaction = session.beginTransaction();
+            List<Payments> paymentsList = session.createQuery("FROM Payments", Payments.class).list();
+            transaction.commit();
+            return paymentsList;
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return null;
+        }
     }
 }

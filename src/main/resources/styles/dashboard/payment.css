@@ -70,12 +70,30 @@
 .table-view {
     -fx-background-color: white;
     -fx-border-color: #ddd;
+    -fx-visibility: visible;
+    -fx-opacity: 1.0;
+    -fx-min-height: 200px;
+    -fx-pref-height: 400px;
 }
 
 .table-view .column-header {
     -fx-background-color: #ecf0f1;
     -fx-padding: 10px;
     -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.table-view .table-cell {
+    -fx-text-fill: #2c3e50;
+    -fx-alignment: center-left;
+}
+
+.table-view .table-column {
+    -fx-min-width: 100px;
+}
+
+.table-row-cell {
+    -fx-background-color: white;
 }
 
 .table-row-cell:odd {

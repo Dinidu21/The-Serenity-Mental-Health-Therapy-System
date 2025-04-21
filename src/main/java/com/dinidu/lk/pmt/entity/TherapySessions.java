@@ -51,4 +51,9 @@ public class TherapySessions {
     public enum SessionStatus {
         SCHEDULED, COMPLETED, CANCELLED, IN_PROGRESS
     }
+
+    @Override
+    public String toString() {
+        return description != null ? description : "Unknown Session";
+    }
 }

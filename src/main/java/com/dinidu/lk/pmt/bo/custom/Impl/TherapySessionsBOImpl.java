@@ -160,4 +160,26 @@ public class TherapySessionsBOImpl implements TherapySessionsBO {
                 therapySession.getStatus()
         );
     }
+
+    @Override
+    public TherapySessionsDTO getSessionById(Long sessionId) throws SQLException, ClassNotFoundException {
+        if (sessionId == null || sessionId <= 0) {
+            throw new SQLException("Invalid session ID: " + sessionId);
+        }
+        TherapySessions therapySession = therapySessionsDAO.findById(sessionId);
+        if (therapySession == null) {
+            return null;
+        }
+        return new TherapySessionsDTO(
+                therapySession.getId(),
+                therapySession.getTherapist() != null ? therapySession.getTherapist().getId() : null,
+                therapySession.getPatient() != null ? therapySession.getPatient().getId() : null,
+                therapySession.getTherapyProgram() != null ? therapySession.getTherapyProgram().getProgramId() : null,
+                therapySession.getSessionDate(),
+                therapySession.getSessionTime(),
+                therapySession.getSessionMadeDate(),
+                therapySession.getDescription(),
+                therapySession.getStatus()
+        );
+    }
 }

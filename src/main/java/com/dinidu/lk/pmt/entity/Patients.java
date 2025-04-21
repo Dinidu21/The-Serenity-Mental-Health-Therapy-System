@@ -33,4 +33,9 @@ public class Patients {
 
     @Column(name = "registration_date", nullable = false)
     private LocalDate registrationDate;
+
+    @Override
+    public String toString() {
+        return fullName != null ? fullName : "Unknown Patient";
+    }
 }

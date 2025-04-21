@@ -15,4 +15,6 @@ public interface TherapySessionsBO extends SuperBO {
     boolean deleteChecklist(long id) throws SQLException, ClassNotFoundException;
 
     TherapySessionsDTO getSessionIdByDesc(String selectedSession) throws SQLException, ClassNotFoundException;
+
+    TherapySessionsDTO getSessionById(Long sessionId) throws SQLException, ClassNotFoundException;
 }

@@ -23,7 +23,7 @@
         </Label>
         <Separator />
     </VBox>
-    <SplitPane dividerPositions="0.6"
+    <SplitPane dividerPositions="0.4"
                orientation="VERTICAL"
                AnchorPane.topAnchor="90.0"
                AnchorPane.leftAnchor="0.0"
@@ -70,68 +70,70 @@
                         <ComboBox fx:id="statusComboBox" promptText="Select Status" GridPane.rowIndex="5" GridPane.columnIndex="1" />
                     </GridPane>
 
-
                     <HBox spacing="10" alignment="CENTER_RIGHT">
                         <Button fx:id="processPaymentBtn" text="Process Payment" styleClass="btn-primary" onAction="#handleProcessPayment" />
                         <Button fx:id="clearFormBtn" text="Clear Form" onAction="#handleClearForm" />
                     </HBox>
                 </VBox>
             </TitledPane>
-
-            <!-- Invoice Management Section -->
-            <TitledPane text="Invoice Management" styleClass="section-title">
-                <HBox spacing="20">
-                    <VBox spacing="10" HBox.hgrow="ALWAYS">
-                        <Label text="Invoice Details" styleClass="subsection-title" />
-                        <TextArea fx:id="invoiceDetailsArea" prefHeight="150" editable="false" styleClass="invoice-details" />
-                    </VBox>
-                    <VBox spacing="10" alignment="CENTER">
-                        <Button fx:id="generateInvoiceBtn" text="Generate Invoice" prefWidth="150" styleClass="btn-primary" onAction="#handleGenerateInvoice" />
-                        <Button fx:id="printInvoiceBtn" text="Print Invoice" prefWidth="150" onAction="#handlePrintInvoice" />
-                        <Button fx:id="emailInvoiceBtn" text="Email Invoice" prefWidth="150" onAction="#handleEmailInvoice" />
-                    </VBox>
-                </HBox>
-            </TitledPane>
         </VBox>
 
-        <!-- Transactions Section -->
-        <VBox spacing="10" styleClass="content-panel">
+        <!-- Combined Invoice and Transactions Section -->
+        <VBox spacing="15" styleClass="content-panel">
             <padding>
                 <Insets top="15" right="20" bottom="15" left="20" />
             </padding>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Payment Transactions" styleClass="section-title" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Label text="Filter:" />
-                <ComboBox fx:id="filterComboBox" promptText="All Transactions">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="All Transactions" />
-                            <String fx:value="Pending" />
-                            <String fx:value="Completed" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-                <TextField fx:id="searchField" promptText="Search transactions..." prefWidth="200" />
-            </HBox>
+            <TitledPane text="Invoice and Transactions" styleClass="section-title">
+                <VBox spacing="15">
+                    <!-- Invoice Management Controls -->
+                    <HBox spacing="20">
+                        <VBox spacing="10" HBox.hgrow="ALWAYS">
+                            <Label text="Invoice Details" styleClass="subsection-title" />
+                            <TextArea fx:id="invoiceDetailsArea" prefHeight="150" editable="false" styleClass="invoice-details" />
+                        </VBox>
+                        <VBox spacing="10" alignment="CENTER">
+                            <Button fx:id="generateInvoiceBtn" text="Generate Invoice" prefWidth="150" styleClass="btn-primary" onAction="#handleGenerateInvoice" />
+                            <Button fx:id="printInvoiceBtn" text="Print Invoice" prefWidth="150" onAction="#handlePrintInvoice" />
+                            <Button fx:id="emailInvoiceBtn" text="Email Invoice" prefWidth="150" onAction="#handleEmailInvoice" />
+                        </VBox>
+                    </HBox>
 
-            <TableView fx:id="transactionsTableView" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="idColumn" text="Payment ID" prefWidth="100" />
-                    <TableColumn fx:id="patientColumn" text="Patient" prefWidth="150" />
-                    <TableColumn fx:id="sessionColumn" text="Session" prefWidth="150" />
-                    <TableColumn fx:id="amountColumn" text="Amount" prefWidth="100" />
-                    <TableColumn fx:id="dateColumn" text="Date" prefWidth="100" />
-                    <TableColumn fx:id="methodColumn" text="Method" prefWidth="100" />
-                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
-                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="120" />
-                </columns>
-            </TableView>
+                    <!-- Transaction Controls -->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Payment Transactions" styleClass="subsection-title" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Filter:" />
+                        <ComboBox fx:id="filterComboBox" promptText="All Transactions">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="All Transactions" />
+                                    <String fx:value="Pending" />
+                                    <String fx:value="Completed" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <TextField fx:id="searchField" promptText="Search transactions..." prefWidth="200" />
+                    </HBox>
 
-            <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Button fx:id="refreshBtn" text="Refresh" onAction="#handleRefresh" />
-                <Button fx:id="exportBtn" text="Export Data" onAction="#handleExport" />
-            </HBox>
+                    <TableView fx:id="transactionsTableView" VBox.vgrow="ALWAYS" style="-fx-border-color: red; -fx-border-width: 2;">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="Payment ID" prefWidth="100" />
+                            <TableColumn fx:id="patientColumn" text="Patient" prefWidth="150" />
+                            <TableColumn fx:id="sessionColumn" text="Session" prefWidth="150" />
+                            <TableColumn fx:id="amountColumn" text="Amount" prefWidth="100" />
+                            <TableColumn fx:id="dateColumn" text="Date" prefWidth="150" />
+                            <TableColumn fx:id="methodColumn" text="Method" prefWidth="100" />
+                            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+                            <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="120" />
+                        </columns>
+                    </TableView>
+
+                    <HBox spacing="10" alignment="CENTER_RIGHT">
+                        <Button fx:id="refreshBtn" text="Refresh" onAction="#handleRefresh" />
+                        <Button fx:id="exportBtn" text="Export Data" onAction="#handleExport" />
+                    </HBox>
+                </VBox>
+            </TitledPane>
         </VBox>
     </SplitPane>
 </AnchorPane>

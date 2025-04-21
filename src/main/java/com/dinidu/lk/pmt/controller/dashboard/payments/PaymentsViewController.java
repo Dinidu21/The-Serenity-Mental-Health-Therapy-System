@@ -7,7 +7,9 @@ import com.dinidu.lk.pmt.bo.custom.TherapySessionsBO;
 import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.dto.PaymentDTO;
 import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
+import com.dinidu.lk.pmt.entity.Patients;
 import com.dinidu.lk.pmt.entity.Payments;
+import com.dinidu.lk.pmt.entity.TherapySessions;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -15,6 +17,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -130,14 +133,73 @@ public class PaymentsViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupComboBoxes();
         setupTableView();
-        setupSearchAndFilter();
+        loadInitialData();
+    }
+
+    private void loadInitialData() {
+        try {
+            List<PaymentDTO> paymentDTOs = paymentsBO.getAllPayments();
+            System.out.println("Fetched PaymentDTOs: " + paymentDTOs.size());
+            paymentDTOs.forEach(dto -> System.out.println("PaymentDTO: " + dto));
+
+            List<Payments> payments = paymentDTOs.stream()
+                    .map(this::convertToPaymentsEntity)
+                    .collect(Collectors.toList());
+            System.out.println("Converted Payments: " + payments);
+            payments.forEach(p -> System.out.println("Payment: ID=" + p.getId() +
+                    ", Patient=" + (p.getPatient() != null ? p.getPatient().getFullName() : "null") +
+                    ", Session=" + (p.getTherapySession() != null ? p.getTherapySession().getDescription() : "null") +
+                    ", Amount=" + p.getAmount() +
+                    ", Date=" + p.getPaymentDate() +
+                    ", Method=" + p.getPaymentMethod() +
+                    ", Status=" + p.getStatus()));
+
+            ObservableList<Payments> paymentList = FXCollections.observableArrayList(payments);
+            transactionsTableView.setItems(paymentList);
+            transactionsTableView.refresh();
+            System.out.println("TableView items set: " + transactionsTableView.getItems().size());
+        } catch (SQLException | ClassNotFoundException e) {
+            CustomErrorAlert.showAlert("Data Load Error", "Failed to load payment data: " + e.getMessage());
+        }
+    }
+
+    private Payments convertToPaymentsEntity(PaymentDTO dto) {
+        Payments payment = new Payments();
+        payment.setId(dto.getId());
+        payment.setAmount(dto.getAmount());
+        payment.setPaymentDate(dto.getPaymentDate());
+        payment.setStatus(dto.getStatus());
+        payment.setPaymentMethod(dto.getPaymentMethod());
+
+        try {
+            // Fetch patient
+            PatientsDTO patientDTO = patientBO.getPatientById(dto.getPatientId());
+            Patients patient = new Patients();
+            patient.setId(patientDTO.getId());
+            patient.setFullName(patientDTO.getFullName()); // Adjust based on actual fields
+            payment.setPatient(patient);
+
+            // Fetch therapy session
+            TherapySessionsDTO sessionDTO = sessionsBO.getSessionById(dto.getSessionId());
+            TherapySessions session = new TherapySessions();
+            session.setId(sessionDTO.getId());
+            session.setDescription(sessionDTO.getDescription()); // Adjust based on actual fields
+            payment.setTherapySession(session);
+        } catch (SQLException | ClassNotFoundException e) {
+            CustomErrorAlert.showAlert("Data Conversion Error", "Failed to convert DTO to entity: " + e.getMessage());
+        }
+
+        return payment;
+    }
+
+    @FXML
+    private void handleRefresh(ActionEvent event) {
         loadInitialData();
     }
 
     private void setupComboBoxes() {
         comboboxInitialization();
         statusComboBox.setItems(FXCollections.observableArrayList(Payments.PaymentStatus.values()));
-
         filterComboBox.setItems(FXCollections.observableArrayList("All Transactions", "Pending", "Completed"));
         filterComboBox.getSelectionModel().selectFirst();
     }
@@ -161,15 +223,55 @@ public class PaymentsViewController implements Initializable {
     }
 
     private void setupTableView() {
-        idColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getId()).asObject());
-        patientColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getPatient() != null ? cellData.getValue().getPatient().toString() : ""));
-        sessionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getTherapySession() != null ? cellData.getValue().getTherapySession().toString() : ""));
-        amountColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getAmount()).asObject());
-        dateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPaymentDate()));
-        methodColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPaymentMethod()));
-        statusColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getStatus()));
+        System.out.println("\nSetting up table view...\n");
+
+        idColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            System.out.println("ID for payment: " + payment.getId());
+            return new SimpleLongProperty(payment.getId()).asObject();
+        });
+
+        patientColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            String patientName = payment.getPatient() != null && payment.getPatient().getFullName() != null
+                    ? payment.getPatient().getFullName()
+                    : "Unknown Patient";
+            System.out.println("Patient for payment " + payment.getId() + ": " + patientName);
+            return new SimpleStringProperty(patientName);
+        });
+
+        sessionColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            String sessionDesc = payment.getTherapySession() != null && payment.getTherapySession().getDescription() != null
+                    ? payment.getTherapySession().getDescription()
+                    : "Unknown Session";
+            System.out.println("Session for payment " + payment.getId() + ": " + sessionDesc);
+            return new SimpleStringProperty(sessionDesc);
+        });
+
+        amountColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            System.out.println("Amount for payment " + payment.getId() + ": " + payment.getAmount());
+            return new SimpleDoubleProperty(payment.getAmount() != null ? payment.getAmount() : 0.0).asObject();
+        });
+
+        dateColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            System.out.println("Date for payment " + payment.getId() + ": " + payment.getPaymentDate());
+            return new SimpleObjectProperty<>(payment.getPaymentDate());
+        });
+
+        methodColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            System.out.println("Method for payment " + payment.getId() + ": " + payment.getPaymentMethod());
+            return new SimpleObjectProperty<>(payment.getPaymentMethod());
+        });
+
+        statusColumn.setCellValueFactory(cellData -> {
+            Payments payment = cellData.getValue();
+            System.out.println("Status for payment " + payment.getId() + ": " + payment.getStatus());
+            return new SimpleObjectProperty<>(payment.getStatus());
+        });
 
         // Setup actions column
         actionsColumn.setCellFactory(param -> new TableCell<>() {
@@ -195,18 +297,9 @@ public class PaymentsViewController implements Initializable {
             }
         });
 
-//        transactionsTableView.setItems();
+        // Set placeholder
+        transactionsTableView.setPlaceholder(new Label("No payments available"));
     }
-
-    private void setupSearchAndFilter() {
-        searchField.textProperty().addListener((obs, oldValue, newValue) -> filterTransactions());
-        filterComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> filterTransactions());
-    }
-
-    private void loadInitialData() {
-
-    }
-
     @FXML
     private void handleProcessPayment(ActionEvent event) {
         try {
@@ -288,8 +381,15 @@ public class PaymentsViewController implements Initializable {
     }
 
     private void clearForm() {
-
+        patientComboBox.getSelectionModel().clearSelection();
+        sessionComboBox.getSelectionModel().clearSelection();
+        amountField.clear();
+        paymentDatePicker.setValue(LocalDate.now());
+        statusComboBox.getSelectionModel().clearSelection();
+        paymentMethodToggle.selectToggle(cashRadio);
+        invoiceDetailsArea.clear();
     }
+
 
     @FXML
     private void handleClearForm(ActionEvent event) {
@@ -317,11 +417,6 @@ public class PaymentsViewController implements Initializable {
     }
 
     @FXML
-    private void handleRefresh(ActionEvent event) {
-
-    }
-
-    @FXML
     private void handleExport(ActionEvent event) {
         showAlert(Alert.AlertType.INFORMATION, "Export", "Exporting data...");
     }
@@ -336,46 +431,24 @@ public class PaymentsViewController implements Initializable {
     }
 
     private void deletePayment(Payments payment) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Delete payment ID " + payment.getId() + "?");
-        confirm.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    paymentsBO.delete(payment);
-                } catch (SQLException | ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+        try {
+            boolean isDeleted = paymentsBO.delete(payment.getId());
+            if (isDeleted) {
+                transactionsTableView.getItems().remove(payment);
+                showAlert(Alert.AlertType.INFORMATION, "Deleted", "Payment deleted successfully!");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Delete Failed", "Unable to delete payment.");
             }
-        });
+        } catch (Exception e) {
+            CustomErrorAlert.showAlert("Delete Error", "Failed to delete payment: " + e.getMessage());
+        }
     }
 
-    private void filterTransactions() {
-        String searchText = searchField.getText().toLowerCase();
-        String filter = filterComboBox.getValue();
-
-        ObservableList<Payments> filteredList = FXCollections.observableArrayList();
-
-//        for (Payments payment : paymentsList) {
-//            boolean matchesSearch = searchText.isEmpty() ||
-//                    String.valueOf(payment.getId()).contains(searchText) ||
-//                    (payment.getPatient() != null && payment.getPatient().toString().toLowerCase().contains(searchText));
-//
-//            boolean matchesFilter = filter == null || filter.equals("All Transactions") ||
-//                    (filter.equals("Pending") && payment.getStatus() == Payments.PaymentStatus.PENDING) ||
-//                    (filter.equals("Completed") && payment.getStatus() == Payments.PaymentStatus.COMPLETED);
-//
-//            if (matchesSearch && matchesFilter) {
-//                filteredList.add(payment);
-//            }
-//        }
-
-        transactionsTableView.setItems(filteredList);
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String content) {
+    private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

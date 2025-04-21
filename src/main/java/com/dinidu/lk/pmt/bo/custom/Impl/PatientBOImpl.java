@@ -200,4 +200,23 @@ public class PatientBOImpl implements PatientBO {
             return null;
         }
     }
+
+    @Override
+    public PatientsDTO getPatientById(Long patientId) throws SQLException, ClassNotFoundException {
+        Patients patients = patientsDAO.getPatientById(patientId);
+        if (patients != null) {
+            return new PatientsDTO(
+                    patients.getId(),
+                    patients.getFullName(),
+                    patients.getEmail(),
+                    patients.getAddress(),
+                    patients.getPhoneNumber(),
+                    patients.getMedicalHistory(),
+                    patients.getRegistrationDate()
+            );
+        } else {
+            System.out.println("No Patients found with the ID: " + patientId);
+            return null;
+        }
+    }
 }
