@@ -10,6 +10,7 @@ import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
 import com.dinidu.lk.pmt.entity.Patients;
 import com.dinidu.lk.pmt.entity.Payments;
 import com.dinidu.lk.pmt.entity.TherapySessions;
+import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -17,12 +18,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 
 public class PaymentsViewController implements Initializable {
 
+    public AnchorPane paymentsPage;
     @FXML
     private ComboBox<String> patientComboBox;
 
@@ -432,15 +435,38 @@ public class PaymentsViewController implements Initializable {
 
     private void deletePayment(Payments payment) {
         try {
-            boolean isDeleted = paymentsBO.delete(payment.getId());
-            if (isDeleted) {
-                transactionsTableView.getItems().remove(payment);
-                showAlert(Alert.AlertType.INFORMATION, "Deleted", "Payment deleted successfully!");
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Delete Failed", "Unable to delete payment.");
+            if (payment == null) {
+                showAlert(Alert.AlertType.ERROR, "Delete Failed", "No payment selected.");
+                return;
             }
-        } catch (Exception e) {
-            CustomErrorAlert.showAlert("Delete Error", "Failed to delete payment: " + e.getMessage());
+            if (payment.getId() == null) {
+                showAlert(Alert.AlertType.ERROR, "Delete Failed", "Payment ID is null.");
+                return;
+            }
+            // Confirm deletion
+            boolean confirmed = CustomDeleteAlert.showAlert(
+                    (Stage) paymentsPage.getScene().getWindow(),
+                    "Confirm Deletion",
+                    "Are you sure you want to delete this Payment ? "
+            );
+
+            if (confirmed) {
+                boolean isDeleted;
+                try {
+                        isDeleted = paymentsBO.delete(payment.getId());
+                    } catch (SQLException | ClassNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (isDeleted) {
+                        transactionsTableView.getItems().remove(payment);
+                        showAlert(Alert.AlertType.INFORMATION, "Deleted", "Payment deleted successfully!");
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Delete Failed", "Unable to delete payment.");
+                    }
+                }
+
+            } catch (RuntimeException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
