@@ -105,6 +105,18 @@
     -fx-text-fill: white;
 }
 
+/* ScrollPane Styles */
+.scroll-pane {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-visibility: visible;
+    -fx-opacity: 1.0;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: white;
+}
+
 /* TitledPane customization */
 .titled-pane {
     -fx-text-fill: #2c3e50;
