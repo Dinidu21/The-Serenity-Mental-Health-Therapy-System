@@ -22,7 +22,7 @@
         </VBox>
         <VBox prefHeight="460.0" prefWidth="953.0">
             <Label styleClass="section-label" text="General Info" />
-            <GridPane hgap="20" prefHeight="380.0" prefWidth="911.0" vgap="15">
+            <GridPane hgap="20" prefHeight="294.0" prefWidth="949.0" vgap="15">
                 <columnConstraints>
                     <ColumnConstraints maxWidth="234.800048828125" minWidth="100.0" prefWidth="140.40001220703124" />
                     <ColumnConstraints hgrow="ALWAYS" maxWidth="375.7999877929687" minWidth="98.40000915527344" prefWidth="268.59997558593744" />
@@ -33,10 +33,20 @@
                 <Label prefHeight="20.0" prefWidth="109.0" styleClass="input-label" text="Patient Email" GridPane.rowIndex="1" />
                 <Label prefHeight="20.0" prefWidth="154.0" styleClass="input-label" text="Patient  Mobile" GridPane.rowIndex="2" />
                 <Label styleClass="input-label" text="Patient Address" GridPane.rowIndex="3" />
-                <TextArea fx:id="PatientAddress" prefHeight="234.0" prefWidth="570.0" promptText="Enter Patient Address" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                <TextArea fx:id="PatientAddress" prefHeight="62.0" prefWidth="276.0" promptText="Enter Patient Address" styleClass="text-area" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
             <TextField fx:id="PatientName" prefHeight="68.0" prefWidth="268.0" promptText="Patient Name" GridPane.columnIndex="1" />
             <TextField fx:id="PatientEmail" prefHeight="68.0" prefWidth="268.0" promptText="Patient Email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="PatientMobileNumber" prefHeight="68.0" prefWidth="268.0" promptText="Enter Patient Mobile Number" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <Button onAction="#cancelOnClick" prefHeight="42.0" prefWidth="108.0" styleClass="button-secondary" text="Cancel" GridPane.columnIndex="3">
+                   <padding>
+                       <Insets right="10.0" />
+                   </padding>
+               </Button>
+               <Button onAction="#createIssueOnClick" styleClass="button-primary" text="Create Patient" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                   <padding>
+                       <Insets right="10.0" />
+                   </padding>
+               </Button>
                 <rowConstraints>
                     <RowConstraints maxHeight="39.19998779296875" minHeight="27.9999755859375" prefHeight="39.19998779296875" />
                     <RowConstraints maxHeight="48.800024414062506" minHeight="37.600012207031256" prefHeight="37.600012207031256" />
@@ -48,23 +58,7 @@
                 <Insets bottom="10.0" />
             </VBox.margin>
         </VBox>
-        <HBox alignment="CENTER_RIGHT" prefHeight="83.0" prefWidth="949.0" spacing="20" AnchorPane.bottomAnchor="20.0">
-            <Button onAction="#cancelOnClick" prefHeight="42.0" prefWidth="108.0" styleClass="button-secondary" text="Cancel">
-                <padding>
-                    <Insets right="10.0" />
-                </padding>
-                <HBox.margin>
-                    <Insets right="10.0" />
-                </HBox.margin>
-            </Button>
-            <Button onAction="#createIssueOnClick" styleClass="button-primary" text="Create Patient">
-                <padding>
-                    <Insets right="10.0" />
-                </padding>
-                <HBox.margin>
-                    <Insets right="10.0" />
-                </HBox.margin>
-            </Button>
+        <HBox alignment="CENTER_RIGHT" prefHeight="240.0" prefWidth="949.0" spacing="20" AnchorPane.bottomAnchor="20.0">
             <VBox.margin>
                 <Insets bottom="10.0" />
             </VBox.margin>
