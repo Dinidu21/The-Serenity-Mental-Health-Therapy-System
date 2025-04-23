@@ -8,6 +8,7 @@ import com.dinidu.lk.pmt.dto.PatientsDTO;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
+import com.dinidu.lk.pmt.utils.regex.Regex;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,6 +79,21 @@ public class CreatePatientViewController implements Initializable {
 
             if (patientsDTO.getFullName().isEmpty() || patientsDTO.getEmail().isEmpty() || patientsDTO.getAddress().isEmpty() || patientsDTO.getPhoneNumber().isEmpty()) {
                 CustomErrorAlert.showAlert("ERROR", "Please fill all the fields.");
+                return;
+            }
+
+            if (!Regex.isEmailValid(PatientEmail.getText())) {
+                CustomErrorAlert.showAlert("ERROR", "Invalid email format.");
+                return;
+            }
+
+            if (!Regex.validatePhoneNumber(PatientMobileNumber.getText())) {
+                CustomErrorAlert.showAlert("ERROR", "Invalid phone number format.");
+                return;
+            }
+
+            if (!Regex.isAlphabetic(PatientName.getText())) {
+                CustomErrorAlert.showAlert("ERROR", "Name should contain only letters.");
                 return;
             }
 

@@ -11,6 +11,7 @@ import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.utils.*;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
+import com.dinidu.lk.pmt.utils.regex.Regex;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

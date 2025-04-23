@@ -10,6 +10,7 @@ import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
+import com.dinidu.lk.pmt.utils.regex.Regex;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -92,6 +93,22 @@ public class CreateTherapistsViewController {
             System.out.println("Error: Therapist's name cannot be empty!");
             return null;
         }
+
+        if (!Regex.isEmailValid(emailField.getText())) {
+            CustomErrorAlert.showAlert("Invalid Email", "Please enter a valid email address.");
+            return null;
+        }
+
+        if (!Regex.validatePhoneNumber(phoneNumberField.getText())) {
+            CustomErrorAlert.showAlert("Invalid Phone Number", "Please enter a valid phone number.");
+            return null;
+        }
+
+        if (!Regex.isAlphabetic(name)) {
+            CustomErrorAlert.showAlert("Invalid Name", "Please enter a valid name.");
+            return null;
+        }
+
         therapistDTO.setFullName(name);
         therapistDTO.setEmail(emailField.getText());
         therapistDTO.setPhoneNumber(phoneNumberField.getText());
