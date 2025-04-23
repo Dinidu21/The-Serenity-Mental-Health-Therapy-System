@@ -8,6 +8,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -24,7 +25,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.ScrollPane?>
 
 <AnchorPane fx:id="paymentsPage" stylesheets="@../../styles/dashboard/payment.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.payments.PaymentsViewController">
     <VBox spacing="10" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -88,7 +88,7 @@
             </TitledPane>
         </VBox>
         <!-- Combined Invoice and Transactions Section -->
-        <VBox spacing="15" styleClass="content-panel">
+        <VBox prefHeight="737.0" prefWidth="1503.0" spacing="15" styleClass="content-panel">
             <padding>
                 <Insets bottom="15" left="20" right="20" top="15" />
             </padding>
@@ -124,17 +124,17 @@
                         </ComboBox>
                         <TextField fx:id="searchField" prefWidth="200" promptText="Search transactions..." />
                     </HBox>
-                    <ScrollPane pannable="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-                        <TableView fx:id="transactionsTableView" style="-fx-border-color: red; -fx-border-width: 2;">
+                    <ScrollPane hbarPolicy="ALWAYS" pannable="true" prefHeight="575.0" prefWidth="1436.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="transactionsTableView" prefWidth="1408.0" style="-fx-border-color: red; -fx-border-width: 2;">
                             <columns>
-                                <TableColumn fx:id="idColumn" text="Payment ID"/>
-                                <TableColumn fx:id="patientColumn" text="Patient"/>
-                                <TableColumn fx:id="sessionColumn" text="Session"/>
-                                <TableColumn fx:id="amountColumn" text="Amount"/>
-                                <TableColumn fx:id="dateColumn" text="Date"/>
-                                <TableColumn fx:id="methodColumn" text="Method"/>
-                                <TableColumn fx:id="statusColumn" text="Status"/>
-                                <TableColumn fx:id="actionsColumn" text="Actions"/>
+                                <TableColumn fx:id="idColumn" prefWidth="169.60002851486206" text="Payment ID" />
+                                <TableColumn fx:id="patientColumn" minWidth="0.0" prefWidth="204.00006103515625" text="Patient" />
+                                <TableColumn fx:id="sessionColumn" minWidth="0.0" prefWidth="166.39993286132812" text="Session" />
+                                <TableColumn fx:id="amountColumn" prefWidth="177.60003662109375" text="Amount" />
+                                <TableColumn fx:id="dateColumn" minWidth="3.20001220703125" prefWidth="177.5999755859375" text="Date" />
+                                <TableColumn fx:id="methodColumn" minWidth="0.0" prefWidth="92.0" text="Method" />
+                                <TableColumn fx:id="statusColumn" prefWidth="220.7999267578125" text="Status" />
+                                <TableColumn fx:id="actionsColumn" prefWidth="203.9998779296875" text="Actions" />
                             </columns>
                         </TableView>
                     </ScrollPane>
