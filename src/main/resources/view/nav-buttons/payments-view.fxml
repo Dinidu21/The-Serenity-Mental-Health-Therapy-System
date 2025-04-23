@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -21,31 +14,35 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="paymentsPage" stylesheets="@../../styles/dashboard/payment.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dinidu.lk.pmt.controller.dashboard.payments.PaymentsViewController">
-    <VBox spacing="10" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <padding>
-            <Insets bottom="10" left="20" right="20" top="20" />
-        </padding>
-        <Label styleClass="page-title" text="Payment &amp; Invoice Management">
-            <font>
-                <Font name="System Bold" size="22.0" />
-            </font>
-        </Label>
-        <Separator />
-    </VBox>
-    <SplitPane dividerPositions="0.4" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
-        <VBox spacing="15" styleClass="content-panel">
+   <HBox layoutX="22.0" prefHeight="100.0" prefWidth="1463.0">
+      <children>
+           <Label prefHeight="103.0" prefWidth="442.0" styleClass="page-title" text="Payment &amp; Invoice Management">
+               <font>
+                   <Font name="System Bold" size="22.0" />
+               </font>
+           </Label>
+         <AnchorPane prefHeight="100.0" prefWidth="882.0" />
+         <VBox prefHeight="100.0" prefWidth="144.0">
+            <children>
+               <AnchorPane prefHeight="12.0" prefWidth="112.0" />
+               <Button fx:id="viewTransactionsBtn" onAction="#handleViewTransactions" prefHeight="52.0" prefWidth="146.0" styleClass="btn-primary" text="View Transactions" />
+            </children>
+         </VBox>
+      </children>
+   </HBox>
+    <SplitPane orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
+        <VBox prefHeight="767.0" prefWidth="1503.0" spacing="15" styleClass="content-panel">
             <padding>
                 <Insets bottom="15" left="20" right="20" top="15" />
             </padding>
             <!-- Payment Processing Section -->
-            <TitledPane styleClass="section-title" text="Process Payment">
-                <VBox spacing="15">
+            <TitledPane prefHeight="436.0" prefWidth="1463.0" styleClass="section-title" text="Process Payment">
+                <VBox prefHeight="485.0" prefWidth="1462.0" spacing="15">
                     <GridPane hgap="15" vgap="10">
                         <columnConstraints>
                             <ColumnConstraints minWidth="100" prefWidth="150" />
@@ -84,60 +81,6 @@
                         <Button fx:id="processPaymentBtn" onAction="#handleProcessPayment" styleClass="btn-primary" text="Process Payment" />
                         <Button fx:id="clearFormBtn" onAction="#handleClearForm" text="Clear Form" />
                     </HBox>
-                </VBox>
-            </TitledPane>
-        </VBox>
-        <!-- Combined Invoice and Transactions Section -->
-        <VBox prefHeight="737.0" prefWidth="1503.0" spacing="15" styleClass="content-panel">
-            <padding>
-                <Insets bottom="15" left="20" right="20" top="15" />
-            </padding>
-            <TitledPane styleClass="section-title" text="Invoice and Transactions">
-                <VBox spacing="15">
-                    <!-- Invoice Management Controls -->
-                    <HBox spacing="20">
-                        <VBox spacing="10" HBox.hgrow="ALWAYS">
-                            <Label styleClass="subsection-title" text="Invoice Details" />
-                            <TextArea fx:id="invoiceDetailsArea" editable="false" prefHeight="150" styleClass="invoice-details" />
-                        </VBox>
-                        <VBox alignment="CENTER" spacing="10">
-                            <Button fx:id="generateInvoiceBtn" onAction="#handleGenerateInvoice" prefWidth="150" styleClass="btn-primary" text="Generate Invoice" />
-                            <Button fx:id="printInvoiceBtn" onAction="#handlePrintInvoice" prefWidth="150" text="Print Invoice" />
-                            <Button fx:id="emailInvoiceBtn" onAction="#handleEmailInvoice" prefWidth="150" text="Email Invoice" />
-                        </VBox>
-                    </HBox>
-                    <!-- Transaction Controls -->
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label styleClass="subsection-title" text="Payment Transactions" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="refreshBtn" onAction="#handleRefresh" text="Refresh" />
-                        <Button fx:id="exportBtn" onAction="#handleExport" text="Export Data" />
-                        <Label text="Filter:" />
-                        <ComboBox fx:id="filterComboBox" promptText="All Transactions">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="All Transactions" />
-                                    <String fx:value="Pending" />
-                                    <String fx:value="Completed" />
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-                        <TextField fx:id="searchField" prefWidth="200" promptText="Search transactions..." />
-                    </HBox>
-                    <ScrollPane hbarPolicy="ALWAYS" pannable="true" prefHeight="575.0" prefWidth="1436.0" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-                        <TableView fx:id="transactionsTableView" prefWidth="1408.0" style="-fx-border-color: red; -fx-border-width: 2;">
-                            <columns>
-                                <TableColumn fx:id="idColumn" prefWidth="169.60002851486206" text="Payment ID" />
-                                <TableColumn fx:id="patientColumn" minWidth="0.0" prefWidth="204.00006103515625" text="Patient" />
-                                <TableColumn fx:id="sessionColumn" minWidth="0.0" prefWidth="166.39993286132812" text="Session" />
-                                <TableColumn fx:id="amountColumn" prefWidth="177.60003662109375" text="Amount" />
-                                <TableColumn fx:id="dateColumn" minWidth="3.20001220703125" prefWidth="177.5999755859375" text="Date" />
-                                <TableColumn fx:id="methodColumn" minWidth="0.0" prefWidth="92.0" text="Method" />
-                                <TableColumn fx:id="statusColumn" prefWidth="220.7999267578125" text="Status" />
-                                <TableColumn fx:id="actionsColumn" prefWidth="203.9998779296875" text="Actions" />
-                            </columns>
-                        </TableView>
-                    </ScrollPane>
                 </VBox>
             </TitledPane>
         </VBox>
