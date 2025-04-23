@@ -11,6 +11,7 @@ import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
 import com.dinidu.lk.pmt.entity.Patients;
 import com.dinidu.lk.pmt.entity.Payments;
 import com.dinidu.lk.pmt.entity.TherapySessions;
+import com.dinidu.lk.pmt.execeptions.PaymentException;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomDeleteAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -146,6 +147,7 @@ public class PaymentsViewController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Error", "Invalid amount format");
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to process payment: " + e.getMessage());
+            throw new PaymentException(e.getMessage());
         }
     }
 

@@ -1,6 +1,7 @@
 package com.dinidu.lk.pmt.controller.forgetpassword;
 
 import com.dinidu.lk.pmt.controller.BaseController;
+import com.dinidu.lk.pmt.execeptions.LoginException;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.ModalLoaderUtil;
@@ -144,6 +145,7 @@ public class OTPViewController extends BaseController implements Initializable {
         } catch (Exception e) {
             CustomErrorAlert.showAlert("ERROR", "Error while redirecting to login: ");
             System.out.println(e.getMessage());
+            throw  new LoginException(""+e);
         }
     }
 

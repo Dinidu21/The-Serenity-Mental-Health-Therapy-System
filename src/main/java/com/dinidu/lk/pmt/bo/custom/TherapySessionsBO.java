@@ -4,6 +4,7 @@ import com.dinidu.lk.pmt.bo.SuperBO;
 import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TherapySessionsBO extends SuperBO {
@@ -17,4 +18,6 @@ public interface TherapySessionsBO extends SuperBO {
     TherapySessionsDTO getSessionIdByDesc(String selectedSession) throws SQLException, ClassNotFoundException;
 
     TherapySessionsDTO getSessionById(Long sessionId) throws SQLException, ClassNotFoundException;
+
+    boolean checkSchedulingConflict(String therapistId, LocalDate sessionDate, String sessionTime) throws SQLException, ClassNotFoundException;
 }

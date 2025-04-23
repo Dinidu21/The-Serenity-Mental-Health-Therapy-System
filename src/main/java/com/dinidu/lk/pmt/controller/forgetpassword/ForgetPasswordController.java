@@ -3,6 +3,7 @@ package com.dinidu.lk.pmt.controller.forgetpassword;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.controller.BaseController;
+import com.dinidu.lk.pmt.execeptions.LoginException;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.ModalLoaderUtil;
 import com.dinidu.lk.pmt.utils.regex.Regex;
@@ -91,7 +92,7 @@ public class ForgetPasswordController extends BaseController {
                 return;
             }
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new LoginException("Error occurred while checking email: " + e.getMessage());
         }
 
         loadingIndicator.setVisible(true);

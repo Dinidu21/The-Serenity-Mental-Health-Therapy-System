@@ -8,8 +8,10 @@ import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.entity.Patients;
 import com.dinidu.lk.pmt.entity.Therapists;
 import com.dinidu.lk.pmt.utils.EntityDTOMapper;
+import com.dinidu.lk.pmt.utils.projectTypes.TherapistStatus;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -104,6 +106,27 @@ public class TherapistsBOImpl implements TherapistsBO {
                     patients.getUpdatedAt()
             );
         }
+    }
+
+    @Override
+    public List<TherapistDTO> getAllAvailableTherapists() throws SQLException, ClassNotFoundException {
+        List<Therapists> therapists = therapistDAO.fetchAll();
+        System.out.println("Therapists From DB: " + therapists);
+        List<TherapistDTO> availableTherapists = new ArrayList<>();
+        for (Therapists therapist : therapists) {
+            if (therapist.getStatus() == TherapistStatus.AVAILABLE) {
+                System.out.println("Available Therapist: " + therapist);
+                TherapistDTO dto = new TherapistDTO();
+                dto.setId(therapist.getId());
+                dto.setFullName(therapist.getFullName());
+                dto.setEmail(therapist.getEmail());
+                dto.setPhoneNumber(therapist.getPhoneNumber());
+                dto.setAddress(therapist.getAddress());
+                dto.setStatus(therapist.getStatus());
+                availableTherapists.add(dto);
+            }
+        }
+        return availableTherapists;
     }
 
     public void updateTherapist(TherapistDTO currentProject) throws SQLException,ClassNotFoundException{

@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -181,6 +182,40 @@ public class TherapySessionsDAOImpl implements TherapySessionsDAO {
         } catch (Exception e) {
             e.printStackTrace();
             throw new SQLException("Error fetching TherapySession by ID: " + sessionId, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public List<TherapySessions> findByTherapistIdAndSessionDateAndSessionTime(String therapistId, LocalDate sessionDate, String sessionTime) throws SQLException, ClassNotFoundException {
+        Session session = null;
+        try {
+            // Obtain a Hibernate session from FactoryConfiguration
+            session = FactoryConfiguration.getInstance().getSession();
+
+            // Begin a transaction
+            session.beginTransaction();
+
+            // HQL query to find TherapySessions matching therapistId, sessionDate, and sessionTime
+            String hql = "FROM TherapySessions ts WHERE ts.therapist.id = :therapistId AND ts.sessionDate = :sessionDate AND ts.sessionTime = :sessionTime";
+            List<TherapySessions> sessions = session.createQuery(hql, TherapySessions.class)
+                    .setParameter("therapistId", therapistId)
+                    .setParameter("sessionDate", sessionDate)
+                    .setParameter("sessionTime", sessionTime)
+                    .getResultList();
+
+            // Commit the transaction
+            session.getTransaction().commit();
+
+            return sessions;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+            throw new SQLException("Failed to query therapy sessions: " + e.getMessage(), e);
         } finally {
             if (session != null) {
                 session.close();

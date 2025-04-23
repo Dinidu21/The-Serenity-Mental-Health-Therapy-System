@@ -3,7 +3,6 @@ package com.dinidu.lk.pmt.controller.dashboard.programs.checklist;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.*;
 import com.dinidu.lk.pmt.controller.dashboard.TherapistsViewController;
-import com.dinidu.lk.pmt.controller.dashboard.programs.CreateProgramSuccessViewController;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
 import com.dinidu.lk.pmt.dto.PatientsDTO;
@@ -11,6 +10,7 @@ import com.dinidu.lk.pmt.dto.TherapistDTO;
 import com.dinidu.lk.pmt.dto.TherapyProgramsDTO;
 import com.dinidu.lk.pmt.dto.TherapySessionsDTO;
 import com.dinidu.lk.pmt.entity.TherapySessions;
+import com.dinidu.lk.pmt.execeptions.SchedulingConflictException;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
 import com.dinidu.lk.pmt.utils.SessionUser;
@@ -82,7 +82,7 @@ public class TherapySessionsCreateViewController {
             SelectPatient.getItems().addAll(patientNames);
 
             // Convert therapists to names
-            List<String> therapistNames = therapistsBO.getAllTherapists().stream()
+            List<String> therapistNames = therapistsBO.getAllAvailableTherapists().stream()
                     .map(TherapistDTO::getFullName)
                     .collect(Collectors.toList());
             SelectTherapist.getItems().addAll(therapistNames);
@@ -156,6 +156,18 @@ public class TherapySessionsCreateViewController {
                 return;
             }
 
+            // Check for scheduling conflicts
+            boolean hasConflict = sessionsBO.checkSchedulingConflict(
+                    therapist.getId(),
+                    sessionMakeDay.getValue(),
+                    timeValue
+            );
+            if (hasConflict) {
+                throw new SchedulingConflictException(
+                        "The selected date and time are already booked for therapist " + therapistValue + "."
+                );
+            }
+
             boolean isSaved = sessionsBO.insert(therapySessionsDTO);
             if (isSaved) {
                 CustomAlert.showAlert("Checklist Created", "Checklist created successfully!");
@@ -164,6 +176,8 @@ public class TherapySessionsCreateViewController {
             } else {
                 CustomErrorAlert.showAlert("Save Failed", "Failed to save the checklist.");
             }
+        } catch (SchedulingConflictException e) {
+            CustomErrorAlert.showAlert("Scheduling Conflict", e.getMessage());
         } catch (SQLException e) {
             System.err.println("Database error: " + e.getMessage());
             CustomErrorAlert.showAlert("Database Error", "Failed to save checklist due to a database issue.");

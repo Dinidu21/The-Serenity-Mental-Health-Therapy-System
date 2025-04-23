@@ -4,6 +4,7 @@ import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dao.QueryDAO;
 import com.dinidu.lk.pmt.dao.custom.impl.QueryDAOImpl;
+import com.dinidu.lk.pmt.execeptions.LoginException;
 import com.dinidu.lk.pmt.utils.regex.Regex;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.FeedbackUtil;
@@ -87,7 +88,7 @@ public class LoginViewController extends BaseController {
             try {
                 result = userBO.verifyUser(username, password);
             } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                throw new LoginException("Error occurred while verifying user: " + e.getMessage());
             }
 
             switch (result) {

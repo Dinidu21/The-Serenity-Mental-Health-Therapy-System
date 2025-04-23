@@ -182,4 +182,12 @@ public class TherapySessionsBOImpl implements TherapySessionsBO {
                 therapySession.getStatus()
         );
     }
+
+    @Override
+    public boolean checkSchedulingConflict(String therapistId, LocalDate sessionDate, String sessionTime) throws SQLException, ClassNotFoundException {
+        List<TherapySessions> conflictingSessions = therapySessionsDAO.findByTherapistIdAndSessionDateAndSessionTime(
+                therapistId, sessionDate, sessionTime
+        );
+        return !conflictingSessions.isEmpty();
+    }
 }

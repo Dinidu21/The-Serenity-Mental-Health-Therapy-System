@@ -3,6 +3,7 @@ package com.dinidu.lk.pmt.controller;
 import com.dinidu.lk.pmt.bo.BOFactory;
 import com.dinidu.lk.pmt.bo.custom.UserBO;
 import com.dinidu.lk.pmt.dto.UserDTO;
+import com.dinidu.lk.pmt.execeptions.RegistrationException;
 import com.dinidu.lk.pmt.utils.regex.Regex;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomAlert;
 import com.dinidu.lk.pmt.utils.customAlerts.CustomErrorAlert;
@@ -152,6 +153,7 @@ public class SignUpViewController extends BaseController {
         } catch (Exception e) {
             CustomErrorAlert.showAlert("Error", "An unexpected error occurred");
             System.out.println(e.getMessage());
+            throw new RegistrationException("Registration failed! Please try again.");
         }
     }
 

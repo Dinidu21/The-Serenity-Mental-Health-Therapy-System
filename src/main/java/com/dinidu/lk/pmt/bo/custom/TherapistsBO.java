@@ -4,6 +4,7 @@ import com.dinidu.lk.pmt.bo.SuperBO;
 import com.dinidu.lk.pmt.dto.TherapistDTO;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,6 +21,6 @@ public interface TherapistsBO extends SuperBO {
     List<TherapistDTO> getTherapistById(String projectId) throws SQLException, ClassNotFoundException;
     Map<String, String> getAllTherapistNames() throws SQLException,ClassNotFoundException;
     List<TherapistDTO> searchTherapistByName(String query) throws SQLException, ClassNotFoundException;
-
     TherapistDTO getTherapistByName(String therapistValue) throws  SQLException, ClassNotFoundException;
+    List<TherapistDTO> getAllAvailableTherapists() throws SQLException, ClassNotFoundException;
 }
