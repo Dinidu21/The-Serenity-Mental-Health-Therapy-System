@@ -148,6 +148,7 @@ public class TherapySessionsBOImpl implements TherapySessionsBO {
         if (therapySession == null) {
             return null;
         }
+
         return new TherapySessionsDTO(
                 therapySession.getId(),
                 therapySession.getTherapist() != null ? therapySession.getTherapist().getId() : null,

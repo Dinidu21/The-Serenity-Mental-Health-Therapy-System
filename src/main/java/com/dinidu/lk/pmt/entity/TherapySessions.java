@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "therapy_sessions")
 public class TherapySessions {
 
